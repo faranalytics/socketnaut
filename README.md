@@ -59,4 +59,7 @@ The socketnaut framework consists of the following 2 concepts.
 ## FAQ
 
 ### What kind of scaling implementation is this?
-Socketnaut is a multithreaded *vertical* scaling implementation.  However, socketnaut could be containerized and scaled horizontally.
+Socketnaut is a multithreaded *vertical* scaling implementation. However, socketnaut could be containerized and scaled horizontally.
+
+### How is Socketnaut related to [eptanaut](https://github.com/faranalytics/eptanaut)?
+Socketnaut is an offshoot from the eptanaut project. Socketnaut provides functionality similar to eptanaut; however, it implements a clear separation between the Proxy and Service concepts.
