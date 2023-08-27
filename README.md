@@ -166,13 +166,13 @@ Socketnaut scaling can be tuned by specifying a minimum and maximum number of al
 
     - `serversCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `Server`s will be cleaned up. **Default**: `30000`
 
-The `minThreads` argument specifies the minimum number of Worker threads permitted.  `minThreads` threads will be instantiated when the eptanaut Server starts.  Eptanaut will not allow the thread pool to drop below the specified threshold.
+The `minServers` argument specifies the minimum number of Worker threads permitted.  `minServers` threads will be instantiated when the Socketnaut Server starts.  Eptanaut will not allow the thread pool to drop below the specified threshold.
 
-The `maxThreads` argument is a hard limit. 
+The `maxServers` argument is a hard limit. 
 
-The `serversCheckingInterval` specifies the approximate interval at which eptanaut will attempt to clean up inactive threads.  If eptanaut's Proxy finds that a thread has 0 connections, eptanaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
+The `serversCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
 
-By variously specifying `minServers`, `maxServers`, `serversCheckingInterval` you can tune eptanaut according to the requirements of your environment.
+By variously specifying `minServers`, `maxServers`, `serversCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
 ## Logging
 
@@ -185,5 +185,5 @@ Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which c
 ### What kind of scaling implementation is this?
 Socketnaut is a multithreaded *vertical* scaling implementation. However, Socketnaut could be containerized and scaled horizontally.
 
-### How is Socketnaut related to [eptanaut](https://github.com/faranalytics/eptanaut)?
-Socketnaut is an offshoot from the eptanaut project. Socketnaut provides functionality similar to eptanaut; however, it implements a clear separation between the Proxy and Server concepts.
+### How is Socketnaut related to [Socketnaut](https://github.com/faranalytics/Socketnaut)?
+Socketnaut is an offshoot from the Socketnaut project. Socketnaut provides functionality similar to Socketnaut; however, it implements a clear separation between the Proxy and Server concepts.
