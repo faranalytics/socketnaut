@@ -122,10 +122,10 @@ let fastify_proxy = new ServiceProxy({
     minServers: 4,
     maxServers: 100,
     servicesCheckingInterval: 1e6,
-    serviceURL: require.resolve('./fastify_http_service.js')
+    workerURL: require.resolve('./fastify_http_server.js')
 })
 
-fastify_proxy.server.listen({ port: 3010, host: '0.0.0.0' });
+fastify_proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 ```
 
 `fastify_http_service.js`
@@ -134,7 +134,7 @@ import * as http from 'node:http';
 import { ServiceServer } from 'socketnaut';
 import Fastify from 'fastify'
 
-const serverFactory = (handler, opts) => {
+const serverFactory = (handler: any, opts: any) => {
     let service = new ServiceServer({
         server: http.createServer((req, res) => { 
             handler(req, res) 
