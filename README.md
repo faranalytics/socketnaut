@@ -110,7 +110,7 @@ service.server.on('request', (req, res) => {
 service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
 
-### *Pass a custom Socketnaut server to Fastify's serverFactory option.* <sup><sup>(example)</sup></sup>
+### *Pass a custom Socketnaut server to Fastify's `serverFactory` option.* <sup><sup>(example)</sup></sup>
 
 `index.js`
 ```js
