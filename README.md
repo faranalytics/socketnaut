@@ -46,7 +46,7 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 
 ## API
 
-### The ServiceProxy Class
+### The `ServiceProxy` Class
 
 #### socketnaut.ServiceProxy(options)
 - options `<ServiceProxyOptions>`
@@ -61,7 +61,9 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
-### The ServiceServer Class
+    - `workerURL` `<string | URL>` The URL for the `.js` file that contains the `ServiceServer` instance.
+
+### The `ServiceServer` Class
 
 #### socketnaut.ServiceServer(options)
 - options `<ServiceServerOptions>`

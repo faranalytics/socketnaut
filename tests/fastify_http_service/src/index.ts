@@ -6,7 +6,7 @@ let fastify_proxy = new ServiceProxy({
     minServers: 4,
     maxServers: 100,
     servicesCheckingInterval: 1e6,
-    serverURL: require.resolve('./fastify_http_service.js')
+    workerURL: require.resolve('./fastify_http_server.js')
 })
 
 fastify_proxy.server.listen({ port: 3000, host: '0.0.0.0' });
