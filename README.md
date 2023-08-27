@@ -1,11 +1,11 @@
 # **Socketnaut** 
 
-Scalable multithreaded Node.js HTTP server.
+Scalable multithreaded Node.js servers made easy.
 
-Socketnaut makes scaling native Node.js HTTP servers easy.  Each socketnaut app consists of a TCP Proxy and a pool of HTTP Services.  When the Service pool is exhausted, socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated Services.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on socketnaut!
+Socketnaut makes scaling native Node.js HTTP servers (e.g., TCP, HTTP, HTTPS) easy.  Each socketnaut app consists of a TCP Proxy and a pool of HTTP Services.  When the Service pool is exhausted, socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated Services.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on socketnaut!
 
 ## Features
-- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the FAR Analytics and Research org.  
+- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org.  
 Dependencies:
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
     - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC facility.
