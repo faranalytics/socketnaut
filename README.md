@@ -33,7 +33,7 @@ npm install Socketnaut
 ``` 
 ## Concepts
 
-The Socketnaut framework consists of the following 2 Service concepts.
+Socketnaut consists of the following 2 Service concepts.
 
 ### ServiceProxy
 
