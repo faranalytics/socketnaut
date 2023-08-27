@@ -12,10 +12,9 @@ export interface ProxyOptions {
     workerOptions?: threads.WorkerOptions;
 }
 
-export class Proxy {
+export class ServiceProxy {
 
     public server: net.Server;
-    public listenOptions?: net.ListenOptions;
     public serviceURL: string | URL;
     public minServices: number;
     public maxServices?: number;
@@ -28,7 +27,7 @@ export class Proxy {
         serviceURL,
         minServices = 0,
         maxServices,
-        servicesCheckingInterval,
+        servicesCheckingInterval = 30000,
         workerOptions
     }: ProxyOptions) {
 

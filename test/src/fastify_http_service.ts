@@ -3,11 +3,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as http from 'node:http';
-import { Service } from 'socketnaut';
+import { ServiceServer } from 'socketnaut';
 import Fastify from 'fastify'
 
 const serverFactory = (handler: any, opts: any) => {
-    let service = new Service({
+    let service = new ServiceServer({
         server: http.createServer((req, res) => { 
             handler(req, res) 
         })

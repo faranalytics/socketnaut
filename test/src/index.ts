@@ -1,8 +1,17 @@
 import * as net from 'node:net';
+import { ServiceProxy } from 'socketnaut';
 
-import { Proxy } from 'socketnaut';
+let hello_world_proxy = new ServiceProxy({
+    server: net.createServer(),
+    minServices: 4,
+    maxServices: 100,
+    servicesCheckingInterval: 1e6,
+    serviceURL: require.resolve('./hello_world_http_service.js')
+})
 
-let proxy = new Proxy({
+hello_world_proxy.server.listen({ port: 3000, host: '0.0.0.0' });
+
+let fastify_proxy = new ServiceProxy({
     server: net.createServer(),
     minServices: 4,
     maxServices: 100,
@@ -10,4 +19,5 @@ let proxy = new Proxy({
     serviceURL: require.resolve('./fastify_http_service.js')
 })
 
-proxy.server.listen({ port: 3000, host: '0.0.0.0' });
+fastify_proxy.server.listen({ port: 3010, host: '0.0.0.0' });
+

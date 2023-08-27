@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as threads from 'node:worker_threads';
-import { Service } from './service.js';
-import { Proxy } from './proxy.js';
+import { ServiceServer } from './service_server.js';
+import { ServiceProxy } from './service_proxy.js';
 import { log } from './logging.js';
 
-export { Proxy, Service };
+export { ServiceProxy, ServiceServer };
 
 if (threads.isMainThread) {
     const { version } = require('../package.json');

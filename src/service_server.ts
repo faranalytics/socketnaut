@@ -15,24 +15,20 @@ const log = new LevelLogger<string, string>({ name: 'socketnaut' });
 
 export interface ServiceOptions {
     server: https.Server | http.Server;
-    listenOptions?: net.ListenOptions;
 }
 
-export class Service {
+export class ServiceServer {
 
     public server: http.Server | https.Server;
-    public listenOptions?: net.ListenOptions;
     public addressInfo?: string | net.AddressInfo | null;
     public agent?: Agent;
     public serverDescription: string;
 
     constructor({
-        server,
-        listenOptions
+        server
     }: ServiceOptions) {
 
         this.server = server;
-        this.listenOptions = listenOptions;
 
         this.serverDescription = `Thread: ${thread.threadId}`;
 
@@ -58,8 +54,6 @@ export class Service {
         }
 
         this.server.once('listening', this.postListeningMessage.bind(this));
-
-        // this.server.listen(listenOptions ? listenOptions : { port: 0, host: '127.0.0.1' });
 
         thread.parentPort?.unref();
 
