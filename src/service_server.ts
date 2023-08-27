@@ -13,7 +13,7 @@ import { IMeta, Level, LevelLogger, MetaFormatter } from 'memoir';
 
 const log = new LevelLogger<string, string>({ name: 'socketnaut' });
 
-export interface ServiceOptions {
+export interface ServiceServerOptions {
     server: https.Server | http.Server;
 }
 
@@ -26,7 +26,7 @@ export class ServiceServer {
 
     constructor({
         server
-    }: ServiceOptions) {
+    }: ServiceServerOptions) {
 
         this.server = server;
 
