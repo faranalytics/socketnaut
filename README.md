@@ -70,7 +70,7 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 
 ## Usage
 
-Each Socketnaut application consists of at least one `ServiceProxy` and a respective `ServiceServer`.  Please see the [examples](#examples) section for how to use the package.
+Each Socketnaut Service consists of at least one `ServiceProxy` and a respective `ServiceServer`.  Please see the [examples](#examples) section for how to create a Socketnaut Service.
 
 ## Examples
 
@@ -107,6 +107,52 @@ service.server.on('request', (req, res) => {
 
 service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
+
+### *A Socketnaut Service that uses Fastify's `serverFactory` facility.* <sup><sup>(example)</sup></sup>
+
+`index.js`
+```js
+import * as net from 'node:net';
+import { ServiceProxy } from 'socketnaut';
+
+let fastify_proxy = new ServiceProxy({
+    server: net.createServer(),
+    minServices: 4,
+    maxServices: 100,
+    servicesCheckingInterval: 1e6,
+    serviceURL: require.resolve('./fastify_http_service.js')
+})
+
+fastify_proxy.server.listen({ port: 3010, host: '0.0.0.0' });
+```
+
+`fastify_http_service.js`
+```js
+import * as http from 'node:http';
+import { ServiceServer } from 'socketnaut';
+import Fastify from 'fastify'
+
+const serverFactory = (handler, opts) => {
+    let service = new ServiceServer({
+        server: http.createServer((req, res) => { 
+            handler(req, res) 
+        })
+    });
+
+    return service.server;
+}
+
+const fastify = Fastify({ serverFactory });
+
+fastify.post('/blocking-request', (req, reply) => {
+    for (let now = Date.now(), then = now + 100; now < then; now = Date.now());
+    reply.send({ hello: 'world' });
+});
+
+fastify.listen({ port: 0, host: '127.0.0.1' });
+```
+
+
 
 ## Tuning Strategies
 
