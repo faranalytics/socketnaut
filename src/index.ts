@@ -5,7 +5,7 @@ import { ServiceServer } from './service_server.js';
 import { ServiceProxy } from './service_proxy.js';
 import { log } from './logging.js';
 
-export { ServiceProxy, ServiceServer };
+export { ServiceProxy, ServiceServer, log as socketlog };
 
 if (threads.isMainThread) {
     const { version } = require('../package.json');

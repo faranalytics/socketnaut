@@ -61,14 +61,14 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
-    - `workerURL` `<string | URL>` The URL or path to the `.js` file that contains the `ServiceServer` instance e.g., `require.resolve('./server.js')`.  Please see the [Examples](#examples) section for how to set up a Socketnaut project. 
+    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` file that contains the `ServiceServer` instance e.g., `require.resolve('./server.js')`.  Please see the [Examples](#examples) section for how to reference a `ServiceServer` module. 
 
 ### The `ServiceServer` Class
 
 #### socketnaut.ServiceServer(options)
 - options `<ServiceServerOptions>`
 
-    - `server` `<http.Server>` or `<https.Server>` A `http.Server` configured however you choose.
+    - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` A native Node.js `Server` configured however you choose.
 
 ## Usage
 
