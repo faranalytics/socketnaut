@@ -187,4 +187,4 @@ Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which c
 Socketnaut is a multithreaded *vertical* scaling implementation. However, Socketnaut could be containerized and scaled horizontally.
 
 ### How is Socketnaut related to [eptanaut](https://github.com/faranalytics/eptanaut)?
-Socketnaut is an offshoot from the eptanaut project. Socketnaut provides functionality similar to eptanaut; however, it implements a clear separation between the Proxy and Server concepts.  Socketnaut can be used in order to scale otherwise single threaded Node.js server implementations.
+Socketnaut is an offshoot of the eptanaut project. Socketnaut provides functionality similar to eptanaut; however, it implements a clean separation between the Proxy and Server concepts.  Socketnaut can be used in order to easily scale otherwise single threaded Node.js server implementations.
