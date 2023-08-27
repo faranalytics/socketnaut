@@ -5,11 +5,10 @@ import { log } from './logging.js';
 
 export interface ProxyOptions {
     server: net.Server;
-    listenOptions?: net.ListenOptions;
-    workerUrl: string | URL;
-    minWorkers: number;
-    maxWorkers?: number;
-    workersCheckingInterval?: number;
+    serviceURL: string | URL;
+    minServices: number;
+    maxServices?: number;
+    servicesCheckingInterval?: number;
     workerOptions?: threads.WorkerOptions;
 }
 
@@ -17,36 +16,32 @@ export class Proxy {
 
     public server: net.Server;
     public listenOptions?: net.ListenOptions;
-    public workerUrl: string | URL;
-    public minWorkers: number;
-    public maxWorkers?: number;
-    public workersCheckingInterval?: number;
+    public serviceURL: string | URL;
+    public minServices: number;
+    public maxServices?: number;
+    public servicesCheckingInterval?: number;
     public workerOptions?: threads.WorkerOptions;
     public agents: Array<WorkerAgent>;
 
     constructor({
         server = net.createServer(),
-        listenOptions,
-        workerUrl,
-        minWorkers = 0,
-        maxWorkers,
-        workersCheckingInterval,
+        serviceURL,
+        minServices = 0,
+        maxServices,
+        servicesCheckingInterval,
         workerOptions
     }: ProxyOptions) {
 
         this.server = server;
-        this.listenOptions = listenOptions;
-        this.workerUrl = workerUrl;
-        this.minWorkers = minWorkers;
-        this.maxWorkers = maxWorkers;
-        this.workersCheckingInterval = workersCheckingInterval;
+        this.serviceURL = serviceURL;
+        this.minServices = minServices;
+        this.maxServices = maxServices;
+        this.servicesCheckingInterval = servicesCheckingInterval;
         this.workerOptions = workerOptions;
 
         this.agents = [];
 
         this.server.on('connection', this.handleClientSocket.bind(this));
-
-        this.server.listen(this.listenOptions);
 
         void this.spawnMinWorkers();
     }
@@ -84,18 +79,14 @@ export class Proxy {
                     this.reorderAgent(agent);
                     await this.createServerConnection(clientProxySocket, agent.proxyServerConnectOptions);
                 }
-                else if (this.agents.length === this.maxWorkers) {
+                else if (this.agents.length === this.maxServices) {
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
                     await this.createServerConnection(clientProxySocket, agent.proxyServerConnectOptions as net.SocketConnectOpts);
                 }
                 else {
-                    const worker = new threads.Worker(this.workerUrl, this.workerOptions);
-                    agent = new WorkerAgent({ worker });
-                    agent.register('serviceLog', this.serviceLog.bind(this));
-                    worker.once('error', this.removeAgent.bind(this, agent));
-                    worker.once('exit', this.removeAgent.bind(this, agent));
+                    const agent = await this.spawnWorker();
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
@@ -134,16 +125,15 @@ export class Proxy {
                 proxyServerSocket.removeListener('error', j);
 
                 proxyServerSocket.on('error', (err: Error) => {
-                    // Emitted when an error occurs. The 'close' event will be called directly following this event (https://nodejs.org/api/net.html).
                     log.error(`Server socket error.  ${this.describeError(err)}  ${message}.`);
                 });
 
                 proxyServerSocket.on('timeout', () => {
-                    log.debug(`Timeout. ${message}.`);
+                    log.debug(`Server timeout. ${message}.`);
                 });
 
                 clientProxySocket.on('timeout', () => {
-                    log.debug(`Timeout. ${message}.`);
+                    log.debug(`Client timeout. ${message}.`);
                 });
 
                 proxyServerSocket.once('end', () => {
@@ -152,7 +142,6 @@ export class Proxy {
                 });
 
                 proxyServerSocket.once('close', (hadError: boolean) => {
-                    // Emitted once the socket is fully closed. The argument hadError is a boolean which says if the socket was closed due to a transmission error (https://nodejs.org/api/net.html).
                     log.debug(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
                 });
@@ -185,7 +174,7 @@ export class Proxy {
         try {
             log.debug(`Thread Count: ${this.agents.length}`);
 
-            if (this.agents.length > this.minWorkers) {
+            if (this.agents.length > this.minServices) {
                 for (const agent of [...this.agents]) {
                     if (agent.proxyServerConnectOptions && agent.connections === 0) {
                         try {
@@ -196,7 +185,7 @@ export class Proxy {
                             log.error(this.describeError(err));
                         }
 
-                        if (this.agents.length <= this.minWorkers) {
+                        if (this.agents.length <= this.minServices) {
                             break;
                         }
                     }
@@ -204,7 +193,7 @@ export class Proxy {
             }
         }
         finally {
-            setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
+            setTimeout(this.checkThreads.bind(this), this.servicesCheckingInterval);
         }
     }
 
@@ -242,15 +231,11 @@ export class Proxy {
         this.agents.push(agent);
     }
 
-    protected async spawnMinWorkers() {
+    protected async spawnMinWorkers(): Promise<void> {
 
         try {
-            while (this.agents.length < this.minWorkers) {
-                const worker = new threads.Worker(this.workerUrl, this.workerOptions);
-                const agent = new WorkerAgent({ worker });
-                agent.register('serviceLog', this.serviceLog.bind(this));
-                worker.once('error', this.removeAgent.bind(this, agent));
-                worker.once('exit', this.removeAgent.bind(this, agent));
+            while (this.agents.length < this.minServices) {
+                const agent = await this.spawnWorker();
                 this.agents.push(agent);
                 await agent.online;
                 this.reorderAgent(agent);
@@ -261,6 +246,15 @@ export class Proxy {
         }
     }
 
+    protected async spawnWorker(): Promise<WorkerAgent> {
+        const worker = new threads.Worker(this.serviceURL, this.workerOptions);
+        const agent = new WorkerAgent({ worker });
+        agent.register('serviceLog', this.serviceLog.bind(this));
+        worker.once('error', this.removeAgent.bind(this, agent));
+        worker.once('exit', this.removeAgent.bind(this, agent));
+        return agent;
+    }
+    
     protected serviceLog(message: { level: string, value: string }) {
         switch (message.level) {
             case 'DEBUG':

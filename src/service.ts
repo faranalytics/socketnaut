@@ -59,7 +59,7 @@ export class Service {
 
         this.server.once('listening', this.postListeningMessage.bind(this));
 
-        this.server.listen({ port: 0, host: '127.0.0.1' });
+        // this.server.listen(listenOptions ? listenOptions : { port: 0, host: '127.0.0.1' });
 
         thread.parentPort?.unref();
 
