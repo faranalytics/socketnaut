@@ -51,13 +51,13 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 #### socketnaut.ServiceProxy(options)
 - options `<ServiceProxyOptions>`
 
-    - `maxServers` `<number>` Optional argument that specifies the maximum number of `Server` threads permitted.
+    - `maxServers` `<number>` Optional argument that specifies the maximum number of `ServiceServer` threads permitted.
 
-    - `minServers` `<number>` Optional argument that specifies the minimum number of `Server` threads permitted. **Default**: `0`
+    - `minServers` `<number>` Optional argument that specifies the minimum number of `ServiceServer` threads permitted. **Default**: `0`
 
     - `server` `<node:net.Server>` A `net.Server` configured however you choose.
 
-    - `serversCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `Server`s will be cleaned up. **Default**: `30000`
+    - `serversCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceServer`s will be cleaned up. **Default**: `30000`
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
@@ -156,16 +156,16 @@ fastify.listen({ port: 0, host: '127.0.0.1' });
 
 ## Tuning Strategies
 
-Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `Server` threads.  The minimum and maximum number of `Server` threads can be specified in the constructor of each `Proxy` by assigning values to the `minServers` and `maxServers` parameters.  Further, the `serversCheckingInterval` can be used in order to set the frequency at which `Server`s are culled until the `minServers` threshold is reached.
+Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceServer` threads.  The minimum and maximum number of `ServiceServer` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minServers` and `maxServers` parameters.  Further, the `serversCheckingInterval` can be used in order to set the frequency at which `ServiceServer`s are culled until the `minServers` threshold is reached.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### **socketnaut.ServiceProxy(options)**
 - options `<ServiceProxyOptions>`
-    - `minServers` `<number>` An argument that specifies the minimum number of `Server` threads permitted.
+    - `minServers` `<number>` An argument that specifies the minimum number of `ServiceServer` threads permitted.
 
-    - `maxServers` `<number>` An argument that specifies the maximum number of `Server` threads permitted.
+    - `maxServers` `<number>` An argument that specifies the maximum number of `ServiceServer` threads permitted.
 
-    - `serversCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `Server`s will be cleaned up. **Default**: `30000`
+    - `serversCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceServer`s will be cleaned up. **Default**: `30000`
 
 The `minServers` argument specifies the minimum number of Worker threads permitted.  `minServers` threads will be instantiated when the Socketnaut Server starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
 
