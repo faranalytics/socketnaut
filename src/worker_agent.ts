@@ -14,7 +14,7 @@ interface WorkerAgentOptions {
 export class WorkerAgent extends Agent {
     public worker: threads.Worker;
     public connections: number;
-    public proxyServerConnectOptions?: net.SocketConnectOpts;
+    public socketConnectOpts?: net.SocketConnectOpts;
     public online: Promise<net.SocketConnectOpts>;
 
     constructor({
@@ -32,15 +32,15 @@ export class WorkerAgent extends Agent {
             worker.once('error', j);
 
             worker.once('online', async () => {
-                const proxyServerConnectOptions = await this.call<net.SocketConnectOpts>('proxyServerConnectOptions');
-                if (proxyServerConnectOptions) {
-                    this.proxyServerConnectOptions = proxyServerConnectOptions;
+                const socketConnectOpts = await this.call<net.SocketConnectOpts>('socketConnectOpts');
+                if (socketConnectOpts) {
+                    this.socketConnectOpts = socketConnectOpts;
                 }
                 else {
-                    j("The Worker came online; however, it is missing a proxyServerConnectOptions.");
+                    j("The Worker came online; however, it is missing a socketConnectOpts.");
                 }
 
-                r(proxyServerConnectOptions);
+                r(socketConnectOpts);
 
                 worker.removeListener('exit', j);
                 worker.removeListener('error', j);

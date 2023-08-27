@@ -73,23 +73,23 @@ export class ServiceProxy {
             let agent = this.agents[0];
 
             try {
-                if (agent.proxyServerConnectOptions && agent.connections === 0) {
+                if (agent.socketConnectOpts && agent.connections === 0) {
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
-                    await this.createServerConnection(clientProxySocket, agent.proxyServerConnectOptions);
+                    await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
                 }
                 else if (this.agents.length === this.maxServers) {
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
-                    await this.createServerConnection(clientProxySocket, agent.proxyServerConnectOptions as net.SocketConnectOpts);
+                    await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
                 }
                 else {
                     const agent = await this.spawnWorker();
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
-                    await this.createServerConnection(clientProxySocket, agent.proxyServerConnectOptions as net.SocketConnectOpts);
+                    await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
                 }
             }
             catch (err) {
@@ -109,11 +109,11 @@ export class ServiceProxy {
         }
     }
 
-    protected async createServerConnection(clientProxySocket: net.Socket, proxyServerConnectOptions: net.SocketConnectOpts): Promise<void> {
+    protected async createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void> {
 
-        const message = `Proxy Server Connect Options: ${JSON.stringify(proxyServerConnectOptions)}.`;
+        const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}.`;
 
-        const proxyServerSocket = net.createConnection(proxyServerConnectOptions);
+        const proxyServerSocket = net.createConnection(socketConnectOpts);
 
         return new Promise((r, j) => {
 
@@ -175,7 +175,7 @@ export class ServiceProxy {
 
             if (this.agents.length > this.minServers) {
                 for (const agent of [...this.agents]) {
-                    if (agent.proxyServerConnectOptions && agent.connections === 0) {
+                    if (agent.socketConnectOpts && agent.connections === 0) {
                         try {
                             this.removeAgent(agent);
                             await agent.call('tryTerminate');

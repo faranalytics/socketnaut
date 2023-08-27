@@ -82,21 +82,21 @@ export class ServiceServer {
 
         this.addressInfo = this.server.address();
 
-        let proxyServerConnectOptions: net.SocketConnectOpts | null;
+        let socketConnectOpts: net.SocketConnectOpts | null;
 
         if (typeof this.addressInfo == 'string') {
-            proxyServerConnectOptions = { path: this.addressInfo };
+            socketConnectOpts = { path: this.addressInfo };
         }
         else if (this.addressInfo?.port) {
-            proxyServerConnectOptions = { port: this.addressInfo.port, host: this.addressInfo.address };
+            socketConnectOpts = { port: this.addressInfo.port, host: this.addressInfo.address };
         }
         else {
-            proxyServerConnectOptions = null;
+            socketConnectOpts = null;
         }
 
-        log.debug(`Service thread ${thread.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
+        log.debug(`Server thread ${thread.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
 
-        this.agent?.register('proxyServerConnectOptions', () => proxyServerConnectOptions);
+        this.agent?.register('proxyServerConnectOptions', () => socketConnectOpts);
     }
 
     protected describeError(err: unknown) {
