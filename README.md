@@ -30,7 +30,7 @@ Dependencies:
 ## Installation
 
 ```bash
-npm install Socketnaut
+npm install socketnaut
 ``` 
 ## Concepts
 
