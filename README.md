@@ -186,5 +186,5 @@ Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which c
 ### What kind of scaling implementation is this?
 Socketnaut is a multithreaded *vertical* scaling implementation. However, Socketnaut could be containerized and scaled horizontally.
 
-### How is Socketnaut related to [Socketnaut](https://github.com/faranalytics/Socketnaut)?
+### How is Socketnaut related to [eptanaut](https://github.com/faranalytics/eptanaut)?
 Socketnaut is an offshoot from the Socketnaut project. Socketnaut provides functionality similar to Socketnaut; however, it implements a clear separation between the Proxy and Server concepts.
