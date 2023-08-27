@@ -22,6 +22,7 @@ Dependencies:
 4. [Usage](#usage)
 5. [Examples](#examples)
     - [*An instance of Hello World!.*](#an-instance-of-hello-world-example)
+    - [*Pass A custom Socketnaut server to Fastify's serverFactory option.*](#pass-a-custom-socketnaut-server-to-fastifys-serverfactory-option-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
 8. [FAQ](#faq)
@@ -107,7 +108,7 @@ service.server.on('request', (req, res) => {
 service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
 
-### *A Socketnaut Service that uses Fastify's `serverFactory` facility.* <sup><sup>(example)</sup></sup>
+### *Pass A custom Socketnaut server to Fastify's serverFactory option.* <sup><sup>(example)</sup></sup>
 
 `index.js`
 ```js
