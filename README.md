@@ -6,6 +6,8 @@ Scalable multithreaded Node.js servers made easy.
 
 Socketnaut makes scaling native Node.js servers (e.g., HTTP, HTTPS, TCP) easy.  Each Socketnaut Service consists of a TCP Proxy and a pool of HTTP servers.  When the server pool is exhausted, Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut!
 
+Socketnaut can be combined with performant single threaded HTTP server implementations in order to easily scale otherwise single threaded requests.
+
 ## Features
 - **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org.  
 Dependencies:
@@ -187,4 +189,4 @@ Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which c
 Socketnaut is a multithreaded *vertical* scaling implementation. However, Socketnaut could be containerized and scaled horizontally.
 
 ### How is Socketnaut related to [eptanaut](https://github.com/faranalytics/eptanaut)?
-Socketnaut is an offshoot of the eptanaut project. Socketnaut's achitecture resembles eptanaut's; however, it implements a clean separation between the Proxy and Server concepts.  Socketnaut can be used in order to easily scale otherwise single threaded Node.js server implementations.  Please see the [Examples](#examples) section for instruction on how to use Socketnaut in order to create a Fastify `serverFactory` that returns a native Node.js server.
+Socketnaut is an offshoot of the eptanaut project. Socketnaut's achitecture resembles eptanaut's; however, it implements a clean separation between the Proxy and Server concepts.  Socketnaut can be used in order to easily scale otherwise single threaded Node.js server implementations.  Please see the [Examples](#examples) section for instructions on how to use Socketnaut in order to create a Fastify `serverFactory` that returns a native Node.js server.
