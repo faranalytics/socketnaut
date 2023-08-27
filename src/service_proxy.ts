@@ -8,7 +8,7 @@ export interface ServiceProxyOptions {
     workerURL: string | URL;
     minServers: number;
     maxServers?: number;
-    servicesCheckingInterval?: number;
+    serversCheckingInterval?: number;
     workerOptions?: threads.WorkerOptions;
 }
 
@@ -18,7 +18,7 @@ export class ServiceProxy {
     public workerURL: string | URL;
     public minServers: number;
     public maxServers?: number;
-    public servicesCheckingInterval?: number;
+    public serversCheckingInterval?: number;
     public workerOptions?: threads.WorkerOptions;
     public agents: Array<WorkerAgent>;
 
@@ -27,7 +27,7 @@ export class ServiceProxy {
         workerURL,
         minServers = 0,
         maxServers,
-        servicesCheckingInterval = 30000,
+        serversCheckingInterval = 30000,
         workerOptions
     }: ServiceProxyOptions) {
 
@@ -35,7 +35,7 @@ export class ServiceProxy {
         this.workerURL = workerURL;
         this.minServers = minServers;
         this.maxServers = maxServers;
-        this.servicesCheckingInterval = servicesCheckingInterval;
+        this.serversCheckingInterval = serversCheckingInterval;
         this.workerOptions = workerOptions;
 
         this.agents = [];
@@ -192,7 +192,7 @@ export class ServiceProxy {
             }
         }
         finally {
-            setTimeout(this.checkThreads.bind(this), this.servicesCheckingInterval);
+            setTimeout(this.checkThreads.bind(this), this.serversCheckingInterval);
         }
     }
 

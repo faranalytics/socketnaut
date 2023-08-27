@@ -89,7 +89,7 @@ const proxy = new ServiceProxy({
     server: net.createServer(),
     minServers: 4,
     maxServers: 100,
-    servicesCheckingInterval: 1e6,
+    serversCheckingInterval: 1e6,
     workerURL: require.resolve('./hello_world_http_server.js')
 })
 
@@ -124,7 +124,7 @@ let proxy = new ServiceProxy({
     server: net.createServer(),
     minServers: 4,
     maxServers: 100,
-    servicesCheckingInterval: 1e6,
+    serversCheckingInterval: 1e6,
     workerURL: require.resolve('./fastify_http_server.js')
 })
 
