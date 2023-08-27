@@ -2,7 +2,7 @@
 
 Scalable multithreaded Node.js servers made easy.
 
-![Eptanaut](./transport.svg)
+![Socketnaut](./transport.svg)
 
 Socketnaut makes scaling native Node.js servers (e.g., HTTP, HTTPS, TCP) easy.  Each Socketnaut Service consists of a TCP Proxy and a pool of HTTP servers.  When the server pool is exhausted, Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut!
 
@@ -166,7 +166,7 @@ Socketnaut scaling can be tuned by specifying a minimum and maximum number of al
 
     - `serversCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `Server`s will be cleaned up. **Default**: `30000`
 
-The `minServers` argument specifies the minimum number of Worker threads permitted.  `minServers` threads will be instantiated when the Socketnaut Server starts.  Eptanaut will not allow the thread pool to drop below the specified threshold.
+The `minServers` argument specifies the minimum number of Worker threads permitted.  `minServers` threads will be instantiated when the Socketnaut Server starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
 
 The `maxServers` argument is a hard limit. 
 
