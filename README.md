@@ -111,7 +111,7 @@ service.server.on('request', (req, res) => {
 
 service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
-### *Socketnaut used with Fastify's <sub><sup>`serverFactory`</sup></sub> option.* <sup><sup>(example)</sup></sup>
+### *Socketnaut used with [Fastify's](https://github.com/fastify/fastify) <sub><sup>`serverFactory`</sup></sub> option.* <sup><sup>(example)</sup></sup>
 
 In this example you will use Fastify's `serverFactory` option in order to construct a `ServiceServer` and return a native Node.js HTTP server.
 
