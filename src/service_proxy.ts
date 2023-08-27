@@ -6,8 +6,8 @@ import { log } from './logging.js';
 export interface ProxyOptions {
     server: net.Server;
     serviceURL: string | URL;
-    minServices: number;
-    maxServices?: number;
+    minServers: number;
+    maxServers?: number;
     servicesCheckingInterval?: number;
     workerOptions?: threads.WorkerOptions;
 }
@@ -16,8 +16,8 @@ export class ServiceProxy {
 
     public server: net.Server;
     public serviceURL: string | URL;
-    public minServices: number;
-    public maxServices?: number;
+    public minServers: number;
+    public maxServers?: number;
     public servicesCheckingInterval?: number;
     public workerOptions?: threads.WorkerOptions;
     public agents: Array<WorkerAgent>;
@@ -25,16 +25,16 @@ export class ServiceProxy {
     constructor({
         server = net.createServer(),
         serviceURL,
-        minServices = 0,
-        maxServices,
+        minServers = 0,
+        maxServers,
         servicesCheckingInterval = 30000,
         workerOptions
     }: ProxyOptions) {
 
         this.server = server;
         this.serviceURL = serviceURL;
-        this.minServices = minServices;
-        this.maxServices = maxServices;
+        this.minServers = minServers;
+        this.maxServers = maxServers;
         this.servicesCheckingInterval = servicesCheckingInterval;
         this.workerOptions = workerOptions;
 
@@ -78,7 +78,7 @@ export class ServiceProxy {
                     this.reorderAgent(agent);
                     await this.createServerConnection(clientProxySocket, agent.proxyServerConnectOptions);
                 }
-                else if (this.agents.length === this.maxServices) {
+                else if (this.agents.length === this.maxServers) {
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
@@ -173,7 +173,7 @@ export class ServiceProxy {
         try {
             log.debug(`Thread Count: ${this.agents.length}`);
 
-            if (this.agents.length > this.minServices) {
+            if (this.agents.length > this.minServers) {
                 for (const agent of [...this.agents]) {
                     if (agent.proxyServerConnectOptions && agent.connections === 0) {
                         try {
@@ -184,7 +184,7 @@ export class ServiceProxy {
                             log.error(this.describeError(err));
                         }
 
-                        if (this.agents.length <= this.minServices) {
+                        if (this.agents.length <= this.minServers) {
                             break;
                         }
                     }
@@ -233,7 +233,7 @@ export class ServiceProxy {
     protected async spawnMinWorkers(): Promise<void> {
 
         try {
-            while (this.agents.length < this.minServices) {
+            while (this.agents.length < this.minServers) {
                 const agent = await this.spawnWorker();
                 this.agents.push(agent);
                 await agent.online;

@@ -37,7 +37,7 @@ Socketnaut consists of the following 2 Service concepts.
 
 ### ServiceProxy
 
-A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly dispatches TCP connections to `ServiceServer`s (e.g., HTTP servers) in the Worker thread pool.  The `ServiceProxy` manages the thread pool according to the values assigned to the `minServers` and `maxServers` parameters.  
+A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly distributes TCP connections to `ServiceServer`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values assigned to the `minServers` and `maxServers` parameters.  
 
 ### ServiceServer
 
@@ -56,7 +56,7 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 
     - `server` `<node:net.Server>` A `net.Server` configured however you choose.
 
-    - `servicesCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `Server`s will be cleaned up. **Default**: `30000`
+    - `serversCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `Server`s will be cleaned up. **Default**: `30000`
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
@@ -82,8 +82,8 @@ import { ServiceProxy } from 'socketnaut';
 
 let hello_world_proxy = new ServiceProxy({
     server: net.createServer(),
-    minServices: 4,
-    maxServices: 100,
+    minServers: 4,
+    maxServers: 100,
     servicesCheckingInterval: 1e6,
     serviceURL: require.resolve('./hello_world_http_service.js')
 })
@@ -116,8 +116,8 @@ import { ServiceProxy } from 'socketnaut';
 
 let fastify_proxy = new ServiceProxy({
     server: net.createServer(),
-    minServices: 4,
-    maxServices: 100,
+    minServers: 4,
+    maxServers: 100,
     servicesCheckingInterval: 1e6,
     serviceURL: require.resolve('./fastify_http_service.js')
 })
