@@ -24,8 +24,7 @@ Dependencies:
     - [*An instance of Hello World!.*](#an-instance-of-hello-world-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
-8. [Extending Socketnaut](#extending-Socketnaut)
-9. [FAQ](#faq)
+8. [FAQ](#faq)
 
 ## Installation
 
@@ -177,7 +176,9 @@ By variously specifying `minThreads`, `maxThreads`, `threadsCheckingInterval` yo
 
 ## Logging
 
-## Extending Socketnaut
+Socketnaut uses the Node.js `memoir` logging facility.  You can set the log level in your `index.js` by passing a valid log level argument to the `logLevel` parameter of the `ServiceProxy` constructor.
+
+Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which can be consumed and reconfigured by another `memoir` logger; see the `memoir` documentation for how to do this - *or use the logger of your choice*.
 
 ## FAQ
 
