@@ -44,7 +44,7 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 
 ### ServiceServer
 
-A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server can be used in the same way it would be used natively; it can even be passed into a routing facility. 
+A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server is used the same way it is used natively; it can even be passed into an external routing facility. 
 
 ## API
 
