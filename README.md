@@ -79,12 +79,12 @@ Each Socketnaut application consists of at least one `ServiceProxy` and a respec
 `index.js`
 ```js
 import * as net from 'node:net';
-import { Proxy } from 'socketnaut';
+import { ServiceProxy } from 'socketnaut';
 
-let hello_world_proxy = new Proxy({
-    server: net.createServer(), // Configure this TCP server however you choose.
-    minServers: 4,
-    maxServers: 100,
+let hello_world_proxy = new ServiceProxy({
+    server: net.createServer(),
+    minServices: 4,
+    maxServices: 100,
     servicesCheckingInterval: 1e6,
     serviceURL: require.resolve('./hello_world_http_service.js')
 })
@@ -95,10 +95,10 @@ hello_world_proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 `hello_world_http_service.js`
 ```js
 import * as http from 'node:http';
-import { Server } from 'socketnaut';
+import { ServiceServer } from 'socketnaut';
 
-let service = new Server({
-    server: http.createServer() // Configure this HTTP server however you choose.
+let service = new ServiceServer({
+    server: http.createServer()
 });
 
 service.server.on('request', (req, res) => {
