@@ -157,9 +157,9 @@ fastify.listen({ port: 0, host: '127.0.0.1' });
 
 Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `Server` threads.  The minimum and maximum number of `Server` threads can be specified in the constructor of each `Proxy` by assigning values to the `minServers` and `maxServers` parameters.  Further, the `serversCheckingInterval` can be used in order to set the frequency at which `Server`s are culled until the `minServers` threshold is reached.
 
-### `Proxy` constructor parameters relevant to tuning:
-#### **socketnaut.Proxy(options)**
-- options `<ProxyOptions>`
+### `ServiceProxy` constructor parameters relevant to tuning:
+#### **socketnaut.ServiceProxy(options)**
+- options `<ServiceProxyOptions>`
     - `minServers` `<number>` An argument that specifies the minimum number of `Server` threads permitted.
 
     - `maxServers` `<number>` An argument that specifies the maximum number of `Server` threads permitted.
