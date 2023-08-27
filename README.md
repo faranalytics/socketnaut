@@ -83,15 +83,15 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 import * as net from 'node:net';
 import { ServiceProxy } from 'socketnaut';
 
-let hello_world_proxy = new ServiceProxy({
+const proxy = new ServiceProxy({
     server: net.createServer(),
     minServers: 4,
     maxServers: 100,
     servicesCheckingInterval: 1e6,
-    serviceURL: require.resolve('./hello_world_http_service.js')
+    workerURL: require.resolve('./hello_world_http_server.js')
 })
 
-hello_world_proxy.server.listen({ port: 3000, host: '0.0.0.0' });
+proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 ```
 
 `hello_world_http_service.js`
