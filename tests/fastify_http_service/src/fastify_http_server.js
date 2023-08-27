@@ -6,7 +6,7 @@ import * as http from 'node:http';
 import { ServiceServer } from 'socketnaut';
 import Fastify from 'fastify'
 
-const serverFactory = (handler: any, opts: any) => {
+const serverFactory = (handler, opts) => {
     let service = new ServiceServer({
         server: http.createServer((req, res) => { 
             handler(req, res) 
@@ -23,4 +23,6 @@ fastify.post('/blocking-request', (req, reply) => {
     reply.send({ hello: 'world' });
 });
 
-fastify.listen({ port: 0, host: '127.0.0.1' });
+fastify.listen({ port: 0, host: '127.0.0.1' }); 
+// Specifying port 0 here will cause the Server to listen on a random port.
+// Socketnaut will communicate the random port number to the ServiceProxy.

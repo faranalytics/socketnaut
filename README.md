@@ -120,7 +120,7 @@ In this example you will use Fastify's `serverFactory` option in order to constr
 import * as net from 'node:net';
 import { ServiceProxy } from 'socketnaut';
 
-let fastify_proxy = new ServiceProxy({
+let proxy = new ServiceProxy({
     server: net.createServer(),
     minServers: 4,
     maxServers: 100,
@@ -128,7 +128,7 @@ let fastify_proxy = new ServiceProxy({
     workerURL: require.resolve('./fastify_http_server.js')
 })
 
-fastify_proxy.server.listen({ port: 3000, host: '0.0.0.0' });
+proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 ```
 
 `fastify_http_service.js`
@@ -137,7 +137,7 @@ import * as http from 'node:http';
 import { ServiceServer } from 'socketnaut';
 import Fastify from 'fastify'
 
-const serverFactory = (handler: any, opts: any) => {
+const serverFactory = (handler, opts) => {
     let service = new ServiceServer({
         server: http.createServer((req, res) => { 
             handler(req, res) 
@@ -154,7 +154,9 @@ fastify.post('/blocking-request', (req, reply) => {
     reply.send({ hello: 'world' });
 });
 
-fastify.listen({ port: 0, host: '127.0.0.1' });
+fastify.listen({ port: 0, host: '127.0.0.1' }); 
+// Specifying port 0 here will cause the Server to listen on a random port.
+// Socketnaut will communicate the random port number to the ServiceProxy.
 ```
 ## Tuning Strategies
 
