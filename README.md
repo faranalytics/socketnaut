@@ -22,7 +22,7 @@ Dependencies:
 4. [Usage](#usage)
 5. [Examples](#examples)
     - [*An instance of Hello World!.*](#an-instance-of-hello-world-example)
-    - [*Pass a custom Socketnaut server to Fastify's serverFactory option.*](#pass-a-custom-socketnaut-server-to-fastifys-serverfactory-option-example)
+    - [*Socketnaut used with Fastify's `serverFactory` option.*](#socketnaut-used-with-fastifys-serverfactory-option-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
 8. [FAQ](#faq)
@@ -110,7 +110,9 @@ service.server.on('request', (req, res) => {
 service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
 
-### *Pass a custom Socketnaut server to Fastify's `serverFactory` option.* <sup><sup>(example)</sup></sup>
+### *Socketnaut used with Fastify's `serverFactory` option.* <sup><sup>(example)</sup></sup>
+
+In this example you will use Fastify's `serverFactory` option in order to construct a `ServiceServer` and return a native Node.js HTTP server.
 
 `index.js`
 ```js
@@ -186,4 +188,4 @@ Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which c
 Socketnaut is a multithreaded *vertical* scaling implementation. However, Socketnaut could be containerized and scaled horizontally.
 
 ### How is Socketnaut related to [eptanaut](https://github.com/faranalytics/eptanaut)?
-Socketnaut is an offshoot of the eptanaut project. Socketnaut's achitecture resembles eptanaut's; however, it implements a clean separation between the Proxy and Server concepts.  Socketnaut can be used in order to easily scale otherwise single threaded Node.js server implementations.
+Socketnaut is an offshoot of the eptanaut project. Socketnaut's achitecture resembles eptanaut's; however, it implements a clean separation between the Proxy and Server concepts.  Socketnaut can be used in order to easily scale otherwise single threaded Node.js server implementations.  Please see the [Examples](#examples) section for instruction on how to 
