@@ -1,0 +1,30 @@
+{
+  "name": "socketnaut",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faranalytics/socketnaut.git"
+  },
+  "author": "FAR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/faranalytics/socketnaut/issues"
+  },
+  "homepage": "https://github.com/faranalytics/socketnaut#readme",
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "memoir": "^1.2.1",
+    "port_agent": "^1.1.3"
+  }
+}
