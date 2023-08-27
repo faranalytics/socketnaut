@@ -181,7 +181,14 @@ By variously specifying `minServers`, `maxServers`, `serversCheckingInterval` yo
 
 ## Logging
 
-Socketnaut uses the Node.js `memoir` logging facility.  You can set the log level in your `index.js` by passing a valid log level argument to the `logLevel` parameter of the `ServiceProxy` constructor.
+Socketnaut uses the Node.js `memoir` logging facility.  You can set Socketnaut's log level in your `index.js` by importing the memoir `consoleHandler` and setting it's `logLevel` to `DEBUG` | `INFO` | `WARN` | `ERROR`.  The default is `DEBUG`.  For example:
+
+`index.js`
+```js
+import { consoleHandler, Level } from 'socketnaut';
+
+consoleHandler.setLevel(Level['DEBUG']);
+```
 
 Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which can be consumed and reconfigured by another `memoir` logger; see the `memoir` documentation for how to do this - *or use the logger of your choice*.
 

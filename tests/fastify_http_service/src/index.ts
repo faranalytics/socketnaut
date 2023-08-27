@@ -1,5 +1,7 @@
 import * as net from 'node:net';
-import { ServiceProxy } from 'socketnaut';
+import { ServiceProxy, consoleHandler, Level } from 'socketnaut';
+
+consoleHandler.setLevel(Level['DEBUG']);
 
 let proxy = new ServiceProxy({
     server: net.createServer(),

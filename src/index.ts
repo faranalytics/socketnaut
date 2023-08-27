@@ -3,9 +3,9 @@
 import * as threads from 'node:worker_threads';
 import { ServiceServer } from './service_server.js';
 import { ServiceProxy } from './service_proxy.js';
-import { log } from './logging.js';
+import { log, consoleHandler, formatter, Level } from './logging.js';
 
-export { ServiceProxy, ServiceServer, log as socketlog };
+export { ServiceProxy, ServiceServer, log as socketlog, consoleHandler, formatter, Level };
 
 if (threads.isMainThread) {
     const { version } = require('../package.json');
