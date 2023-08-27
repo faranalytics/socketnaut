@@ -5,7 +5,7 @@ import { log } from './logging.js';
 
 export interface ServiceProxyOptions {
     server: net.Server;
-    serviceURL: string | URL;
+    serverURL: string | URL;
     minServers: number;
     maxServers?: number;
     servicesCheckingInterval?: number;
@@ -15,7 +15,7 @@ export interface ServiceProxyOptions {
 export class ServiceProxy {
 
     public server: net.Server;
-    public serviceURL: string | URL;
+    public serverURL: string | URL;
     public minServers: number;
     public maxServers?: number;
     public servicesCheckingInterval?: number;
@@ -24,7 +24,7 @@ export class ServiceProxy {
 
     constructor({
         server = net.createServer(),
-        serviceURL,
+        serverURL,
         minServers = 0,
         maxServers,
         servicesCheckingInterval = 30000,
@@ -32,7 +32,7 @@ export class ServiceProxy {
     }: ServiceProxyOptions) {
 
         this.server = server;
-        this.serviceURL = serviceURL;
+        this.serverURL = serverURL;
         this.minServers = minServers;
         this.maxServers = maxServers;
         this.servicesCheckingInterval = servicesCheckingInterval;
@@ -246,7 +246,7 @@ export class ServiceProxy {
     }
 
     protected async spawnWorker(): Promise<WorkerAgent> {
-        const worker = new threads.Worker(this.serviceURL, this.workerOptions);
+        const worker = new threads.Worker(this.serverURL, this.workerOptions);
         const agent = new WorkerAgent({ worker });
         agent.register('serviceLog', this.serviceLog.bind(this));
         worker.once('error', this.removeAgent.bind(this, agent));
