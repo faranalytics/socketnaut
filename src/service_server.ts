@@ -96,7 +96,7 @@ export class ServiceServer {
 
         log.debug(`Server thread ${thread.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
 
-        this.agent?.register('proxyServerConnectOptions', () => socketConnectOpts);
+        this.agent?.register('socketConnectOpts', () => socketConnectOpts);
     }
 
     protected describeError(err: unknown) {
