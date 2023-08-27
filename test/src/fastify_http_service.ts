@@ -13,7 +13,7 @@ const serverFactory = (handler: any, opts: any) => {
         })
     });
 
-    return service.server
+    return service.server;
 }
 
 const fastify = Fastify({ serverFactory });
