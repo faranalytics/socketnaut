@@ -22,7 +22,7 @@ Dependencies:
 4. [Usage](#usage)
 5. [Examples](#examples)
     - [*An instance of Hello World!.*](#an-instance-of-hello-world-example)
-    - [*Pass A custom Socketnaut server to Fastify's serverFactory option.*](#pass-a-custom-socketnaut-server-to-fastifys-serverfactory-option-example)
+    - [*Pass a custom Socketnaut server to Fastify's serverFactory option.*](#pass-a-custom-socketnaut-server-to-fastifys-serverfactory-option-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
 8. [FAQ](#faq)
@@ -108,7 +108,7 @@ service.server.on('request', (req, res) => {
 service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
 
-### *Pass A custom Socketnaut server to Fastify's serverFactory option.* <sup><sup>(example)</sup></sup>
+### *Pass a custom Socketnaut server to Fastify's serverFactory option.* <sup><sup>(example)</sup></sup>
 
 `index.js`
 ```js
@@ -151,9 +151,6 @@ fastify.post('/blocking-request', (req, reply) => {
 
 fastify.listen({ port: 0, host: '127.0.0.1' });
 ```
-
-
-
 ## Tuning Strategies
 
 Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceServer` threads.  The minimum and maximum number of `ServiceServer` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minServers` and `maxServers` parameters.  Further, the `serversCheckingInterval` can be used in order to set the frequency at which `ServiceServer`s are culled until the `minServers` threshold is reached.
