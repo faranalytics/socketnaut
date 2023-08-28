@@ -12,6 +12,6 @@
     "env": {
       "NODE_ENV": "development"
     },
-    "ext": "ts,json",
+    "ext": "js,ts,json",
     "exec": "clear && npm run build && node ."
   }
