@@ -22,6 +22,7 @@ module.exports = {
     "ignorePatterns": [
       ".eslintrc.cjs", 
       "/node_modules",
-      "/dist"
+      "/dist",
+      "/examples"
     ],
 };
