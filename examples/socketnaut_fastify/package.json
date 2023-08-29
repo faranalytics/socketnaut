@@ -2,7 +2,7 @@
   "name": "test",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index.js",
+  "main": "./index.js",
   "scripts": {
     "start": "node ."
   },
@@ -11,8 +11,6 @@
   "dependencies": {
     "fastify": "^4.22.0",
     "socketnaut": "file:../.."
-  },
-  "devDependencies": {
   },
   "type": "module"
 }

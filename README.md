@@ -23,8 +23,9 @@ Dependencies:
 3. [API](#api)
 4. [Usage](#usage)
 5. [Examples](#examples)
-    - [*An instance of Hello World!.*](#an-instance-of-hello-world-example)
+    - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
     - [*Use Socketnaut to scale the main thread of a Fastify server.*]()
+    - [*Use Socketnaut to scale the main thread of an Express server.*]()
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
 8. [FAQ](#faq)
@@ -78,7 +79,7 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 
 ## Examples
 
-### *An instance of Hello World!.* <sup><sup>(example)</sup></sup>
+### *An instance of Hello World!* <sup><sup>(example)</sup></sup>
 
 `index.js`
 ```js
@@ -87,77 +88,41 @@ import { ServiceProxy } from 'socketnaut';
 
 const proxy = new ServiceProxy({
     server: net.createServer(),
-    minServers: 4,
+    minServers: 42,
     maxServers: 100,
     serversCheckingInterval: 1e6,
-    workerURL: require.resolve('./hello_world_http_server.js')
-})
+    workerURL: './http_server.js'
+});
 
 proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 ```
 
-`hello_world_http_service.js`
+`http_server.js`
 ```js
 import * as http from 'node:http';
 import { ServiceServer } from 'socketnaut';
 
-let service = new ServiceServer({
-    server: http.createServer()
+const service = new ServiceServer({
+    server: http.createServer() // Configure this HTTP server however you choose.
 });
 
 service.server.on('request', (req, res) => {
+    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     res.end('Hello World!');
 });
 
 service.server.listen({ port: 0, host: '127.0.0.1' });
-```
-### *Use Socketnaut to scale the main thread of a Fastify server.* <sup><sup>(example)</sup></sup>
-
-In this example you will use Fastify's `serverFactory` option in order to construct a `ServiceServer` and return a native Node.js HTTP server.
-
-`index.js`
-```js
-import * as net from 'node:net';
-import { ServiceProxy } from 'socketnaut';
-
-let proxy = new ServiceProxy({
-    server: net.createServer(),
-    minServers: 4,
-    maxServers: 100,
-    serversCheckingInterval: 1e6,
-    workerURL: require.resolve('./fastify_http_server.js')
-})
-
-proxy.server.listen({ port: 3000, host: '0.0.0.0' });
-```
-
-`fastify_http_service.js`
-```js
-import * as http from 'node:http';
-import { ServiceServer } from 'socketnaut';
-import Fastify from 'fastify'
-
-const serverFactory = (handler, opts) => {
-    let service = new ServiceServer({
-        server: http.createServer((req, res) => { 
-            handler(req, res) 
-        })
-    });
-
-    return service.server;
-}
-
-const fastify = Fastify({ serverFactory });
-
-fastify.post('/blocking-request', (req, reply) => {
-    for (let now = Date.now(), then = now + 100; now < then; now = Date.now());
-    reply.send({ hello: 'world' });
-});
-
-fastify.listen({ port: 0, host: '127.0.0.1' }); 
 // Specifying port 0 here will cause the Server to listen on a random port.
 // Socketnaut will communicate the random port number to the ServiceProxy.
 ```
+### *Use Socketnaut to scale the main thread of a Fastify server.* <sup><sup>(example)</sup></sup>
+
+Please see the [Fastify](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) example for a working implementation.
+
+### *Use Socketnaut to scale the main thread of an Express server.* <sup><sup>(example)</sup></sup>
+
+Please see the [Express](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) example for a working implementation.
+
 ## Tuning Strategies
 
 Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceServer` threads.  The minimum and maximum number of `ServiceServer` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minServers` and `maxServers` parameters.  Further, the `serversCheckingInterval` can be used in order to set the frequency at which `ServiceServer`s are culled until the `minServers` threshold is reached.
