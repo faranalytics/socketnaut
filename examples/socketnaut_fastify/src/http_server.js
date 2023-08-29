@@ -19,7 +19,7 @@ const serverFactory = (handler, opts) => {
 const fastify = Fastify({ serverFactory });
 
 fastify.post('/blocking-request', (req, reply) => {
-    for (let now = Date.now(), then = now + 500; now < then; now = Date.now());
+    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     reply.send({ hello: 'world' });
 });
 

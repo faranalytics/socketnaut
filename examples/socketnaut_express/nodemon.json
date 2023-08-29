@@ -1,0 +1,17 @@
+{
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules"
+    ],
+    "verbose": true,
+    "watch": [
+      "./src/**/*",
+      "../../dist/**/*"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "ext": "ts,json",
+    "exec": "clear && npm run build && node ."
+  }
