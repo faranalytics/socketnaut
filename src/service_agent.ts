@@ -103,6 +103,6 @@ export function instantiateServiceAgent(options: ServiceAgentOptions): ServiceAg
         return serviceAgent;
     }
     else {
-        throw new Error(`A Service Agent has already been instantiated for this Worker thread ${threads.threadId}.`);
+        throw new Error(`A ServiceAgent has already been instantiated for this Worker thread ${threads.threadId}.`);
     }
 }
