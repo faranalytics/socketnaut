@@ -10,9 +10,14 @@ Please make sure your firewall is configured to allow connections on `0.0.0.0:30
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
+### Install Socketnaut.
+```bash
+cd socketnaut
+npm install
+```
 ### Change directory into the relevant example directory.
 ```bash
-cd socketnaut/examples/socketnaut_express
+cd examples/socketnaut_express
 ```
 ### Install the package dependencies.
 ```bash
