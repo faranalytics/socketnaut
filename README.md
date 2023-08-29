@@ -6,7 +6,7 @@ Scalable multithreaded Node.js servers made easy.
 
 Socketnaut makes scaling native Node.js servers (e.g., HTTP, HTTPS, TCP) easy.  Each Socketnaut **Service** consists of a TCP Proxy and a pool of HTTP servers.  When the server pool is exhausted, Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut!
 
-Socketnaut can be combined with performant single threaded HTTP servers (e.g., Fastify) in order to easily scale the main thread of otherwise single threaded servers.
+Socketnaut can be used in order to scale the *main thread* of performant Node.js HTTP servers (e.g., Fastify).
 
 ## Features
 - **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org.  
@@ -41,7 +41,7 @@ Socketnaut consists of the following 2 Service concepts.
 
 ### ServiceProxy
 
-A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly distributes TCP connections to `ServiceServer`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values assigned to the `minServers` and `maxServers` parameters.  
+A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly distributes TCP connections to `ServiceServer`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minServers` and `maxServers` parameters.  
 
 ### ServiceServer
 
@@ -54,9 +54,9 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 #### socketnaut.ServiceProxy(options)
 - options `<ServiceProxyOptions>`
 
-    - `maxServers` `<number>` Optional argument that specifies the maximum number of `ServiceServer` threads permitted.
+    - `maxServers` `<number>` Optional argument that specifies the maximum number of `ServiceServer` Worker threads permitted.
 
-    - `minServers` `<number>` Optional argument that specifies the minimum number of `ServiceServer` threads permitted. **Default**: `0`
+    - `minServers` `<number>` Optional argument that specifies the minimum number of `ServiceServer` Worker threads permitted. **Default**: `0`
 
     - `server` `<node:net.Server>` A `net.Server` configured however you choose.
 
@@ -130,7 +130,7 @@ Socketnaut scaling can be tuned by specifying a minimum and maximum number of al
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### **socketnaut.ServiceProxy(options)**
 - options `<ServiceProxyOptions>`
-    - `minServers` `<number>` An argument that specifies the minimum number of `ServiceServer` threads permitted.
+    - `minServers` `<number>` Optional argument that specifies the minimum number of `ServiceServer` Worker threads permitted. **Default**: `0`
 
     - `maxServers` `<number>` An argument that specifies the maximum number of `ServiceServer` threads permitted.
 

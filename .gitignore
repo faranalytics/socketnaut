@@ -12,3 +12,8 @@ CHANGELOG.md
 !/examples/*/src
 !/examples/*/src/*
 !/examples/*/*.*
+!/tests
+!/tests/*
+!/tests/*/src
+!/tests/*/src/*
+!/tests/*/*.*
