@@ -13,7 +13,7 @@ Socketnaut can be used in order to scale the *main thread* of performant Node.js
 Dependencies:
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
     - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC facility.
-- The Socketnaut `ServiceProxy` and `ServiceServer` constructors consume native Node [`net.Server`](https://nodejs.org/docs/latest-v18.x/api/net.html), [`http.Server`](https://nodejs.org/docs/latest-v18.x/api/http.html), and [`https.Server`](https://nodejs.org/docs/latest-v18.x/api/https.html) instances; *you can configure them however you choose*.
+- The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/docs/latest-v18.x/api/net.html), [`http.Server`](https://nodejs.org/docs/latest-v18.x/api/http.html), and [`https.Server`](https://nodejs.org/docs/latest-v18.x/api/https.html) instances; *you can configure them however you choose*.
 - The [`http.IncomingMessage`](https://nodejs.org/docs/latest-v18.x/api/http.html#class-httpincomingmessage) and [`http.ServerResponse`](https://nodejs.org/docs/latest-v18.x/api/http.html#class-httpserverresponse) objects passed to `request` listeners are unadulterated native Node objects - nothing added - nothing removed.
 - Import Socketnaut as a Node.js module (see the [Hello World!](#an-instance-of-hello-world-example) example) or take advantage of the packaged type definitions and import it into your TypeScript project. 
 
@@ -37,15 +37,15 @@ npm install socketnaut
 ``` 
 ## Concepts
 
-A Socketnaut **Service** consists of the following 2 concepts.
+A Socketnaut **Service** consists of a `ServiceProxy` and a `ServiceAgent`.
 
 ### ServiceProxy
 
-A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly distributes TCP connections to `ServiceServer`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minServers` and `maxServers` parameters.  
+A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly distributes TCP connections to `ServiceAgent`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters.  
 
-### ServiceServer
+### ServiceAgent
 
-A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server is used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
+A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and termination).  A `ServiceAgent` can be instantiated using the `instantiateServiceAgent` function.  It can consume a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server is used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
 
 ## API
 
@@ -54,28 +54,28 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 #### socketnaut.ServiceProxy(options)
 - options `<ServiceProxyOptions>`
 
-    - `maxServers` `<number>` Optional argument that specifies the maximum number of `ServiceServer` Worker threads permitted.
+    - `maxWorkers` `<number>` Optional argument that specifies the maximum number of `ServiceAgent` Worker threads permitted.
 
-    - `minServers` `<number>` Optional argument that specifies the minimum number of `ServiceServer` Worker threads permitted. **Default**: `0`
+    - `minWorkers` `<number>` Optional argument that specifies the minimum number of `ServiceAgent` Worker threads permitted. **Default**: `0`
 
     - `server` `<node:net.Server>` A `net.Server` configured however you choose.
 
-    - `serversCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceServer`s will be cleaned up. **Default**: `30000`
+    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up. **Default**: `30000`
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
-    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` file that contains the `ServiceServer` instance e.g., `require.resolve('./server.js')`.  This is the module that will be scaled according to the values specified for `minServers` and `maxServers`.  Please see the [Examples](#examples) section for how to reference a `ServiceServer` module. 
+    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance.  This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`.  Please see the [Examples](#examples) section for how to reference a `ServiceAgent` module. 
 
-### The `ServiceServer` Class
+### The `ServiceAgent` Class
 
-#### socketnaut.ServiceServer(options)
-- options `<ServiceServerOptions>`
+#### socketnaut.ServiceAgent(options)
+- options `<ServiceAgentOptions>`
 
     - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` A native Node.js `Server` configured however you choose.
 
 ## Usage
 
-Each Socketnaut Service consists of at least one `ServiceProxy` and a respective `ServiceServer`.  Please see the [examples](#examples) section for how to create a Socketnaut Service.
+Each Socketnaut Service consists of at least one `ServiceProxy` and a respective `ServiceAgent`.  Please see the [examples](#examples) section for how to create a Socketnaut Service.
 
 ## Examples
 
@@ -84,13 +84,13 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 `index.js`
 ```js
 import * as net from 'node:net';
-import { ServiceProxy } from 'socketnaut';
+import { createServiceProxy } from 'socketnaut';
 
-const proxy = new ServiceProxy({
+const proxy = new createServiceProxy({
     server: net.createServer(),
-    minServers: 42,
-    maxServers: 100,
-    serversCheckingInterval: 1e6,
+    minWorkers: 42,
+    maxWorkers: 100,
+    workersCheckingInterval: 1e6,
     workerURL: './http_server.js'
 });
 
@@ -100,9 +100,9 @@ proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 `http_server.js`
 ```js
 import * as http from 'node:http';
-import { ServiceServer } from 'socketnaut';
+import { instantiateServiceAgent } from 'socketnaut';
 
-const service = new ServiceServer({
+const service = new instantiateServiceAgent({
     server: http.createServer() // Configure this HTTP server however you choose.
 });
 
@@ -125,24 +125,24 @@ Please see the [Express](https://github.com/faranalytics/socketnaut/tree/main/ex
 
 ## Tuning Strategies
 
-Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceServer` threads.  The minimum and maximum number of `ServiceServer` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minServers` and `maxServers` parameters.  Further, the `serversCheckingInterval` can be used in order to set the frequency at which `ServiceServer`s are culled until the `minServers` threshold is reached.
+Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceAgent` Worker threads.  The minimum and maximum number of `ServiceAgent` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which `ServiceAgent`s are culled until the `minWorkers` threshold is reached.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### **socketnaut.ServiceProxy(options)**
 - options `<ServiceProxyOptions>`
-    - `minServers` `<number>` Optional argument that specifies the minimum number of `ServiceServer` Worker threads permitted. **Default**: `0`
+    - `minWorkers` `<number>` Optional argument that specifies the minimum number of `ServiceAgent` Worker threads permitted. **Default**: `0`
 
-    - `maxServers` `<number>` An argument that specifies the maximum number of `ServiceServer` threads permitted.
+    - `maxWorkers` `<number>` An argument that specifies the maximum number of `ServiceAgent` threads permitted.
 
-    - `serversCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceServer`s will be cleaned up. **Default**: `30000`
+    - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `30000`
 
-The `minServers` argument specifies the minimum number of Worker threads permitted.  `minServers` threads will be instantiated when the Socketnaut Server starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
+The `minWorkers` argument specifies the minimum number of Worker threads permitted.  `minWorkers` threads will be instantiated when the Socketnaut Server starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
 
-The `maxServers` argument is a hard limit. 
+The `maxWorkers` argument is a hard limit. 
 
-The `serversCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
+The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
 
-By variously specifying `minServers`, `maxServers`, `serversCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
+By variously specifying `minWorkers`, `maxWorkers`, `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
 ## Logging
 

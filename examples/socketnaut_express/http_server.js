@@ -1,6 +1,6 @@
 import * as http from 'node:http';
 import express from 'express';
-import { ServiceServer } from 'socketnaut';
+import { instantiateServiceAgent } from 'socketnaut';
 
 const app = express();
 
@@ -9,7 +9,7 @@ app.post('/', (req, res) => {
     res.send('Hello World!');
   });
 
-const service = new ServiceServer({
+const service = instantiateServiceAgent({
     server: http.createServer(app)
 });
 

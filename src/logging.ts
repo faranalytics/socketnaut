@@ -37,7 +37,7 @@ export const formatter = new MetaFormatter<string, string>(
 );
 
 try {
-    consoleHandler.setLevel(Level.DEBUG);
+    consoleHandler.setLevel(Level.INFO);
     consoleHandler.setFormatter(formatter);
     log.addHandler(consoleHandler);
 }

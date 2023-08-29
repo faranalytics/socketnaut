@@ -3,39 +3,39 @@ import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
 import { log } from './logging.js';
 
-export interface ServiceProxyOptions {
+interface ServiceProxyOptions {
     server: net.Server;
     workerURL: string | URL;
-    minServers: number;
-    maxServers?: number;
-    serversCheckingInterval?: number;
+    minWorkers: number;
+    maxWorkers?: number;
+    workersCheckingInterval?: number;
     workerOptions?: threads.WorkerOptions;
 }
 
-export class ServiceProxy {
+class ServiceProxy {
 
     public server: net.Server;
     public workerURL: string | URL;
-    public minServers: number;
-    public maxServers?: number;
-    public serversCheckingInterval?: number;
+    public minWorkers: number;
+    public maxWorkers?: number;
+    public workersCheckingInterval?: number;
     public workerOptions?: threads.WorkerOptions;
     public agents: Array<WorkerAgent>;
 
     constructor({
         server = net.createServer(),
         workerURL,
-        minServers = 0,
-        maxServers,
-        serversCheckingInterval = 30000,
+        minWorkers = 0,
+        maxWorkers,
+        workersCheckingInterval = 30000,
         workerOptions
     }: ServiceProxyOptions) {
 
         this.server = server;
         this.workerURL = workerURL;
-        this.minServers = minServers;
-        this.maxServers = maxServers;
-        this.serversCheckingInterval = serversCheckingInterval;
+        this.minWorkers = minWorkers;
+        this.maxWorkers = maxWorkers;
+        this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
 
         this.agents = [];
@@ -79,7 +79,7 @@ export class ServiceProxy {
                     this.reorderAgent(agent);
                     await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
                 }
-                else if (this.agents.length === this.maxServers) {
+                else if (this.agents.length === this.maxWorkers) {
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
@@ -177,7 +177,7 @@ export class ServiceProxy {
         try {
             log.debug(`Thread Count: ${this.agents.length}`);
 
-            if (this.agents.length > this.minServers) {
+            if (this.agents.length > this.minWorkers) {
                 for (const agent of [...this.agents]) {
                     if (agent.socketConnectOpts && agent.connections === 0) {
                         try {
@@ -188,7 +188,7 @@ export class ServiceProxy {
                             log.error(this.describeError(err));
                         }
 
-                        if (this.agents.length <= this.minServers) {
+                        if (this.agents.length <= this.minWorkers) {
                             break;
                         }
                     }
@@ -197,7 +197,7 @@ export class ServiceProxy {
         }
         finally {
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setTimeout(this.checkThreads.bind(this), this.serversCheckingInterval);
+            setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
         }
     }
 
@@ -238,7 +238,7 @@ export class ServiceProxy {
     protected async spawnMinWorkers(): Promise<void> {
 
         try {
-            while (this.agents.length < this.minServers) {
+            while (this.agents.length < this.minWorkers) {
                 const agent = this.spawnWorker();
                 this.agents.push(agent);
                 await agent.online;
@@ -279,4 +279,8 @@ export class ServiceProxy {
     protected describeError(err: unknown) {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
+}
+
+export function createServiceProxy(options: ServiceProxyOptions): ServiceProxy {
+    return new ServiceProxy(options);
 }

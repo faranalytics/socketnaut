@@ -1,7 +1,7 @@
 import * as http from 'node:http';
-import { ServiceServer } from 'socketnaut';
+import { instantiateServiceAgent } from 'socketnaut';
 
-const service = new ServiceServer({
+const service = new instantiateServiceAgent({
     server: http.createServer() // Configure this HTTP server however you choose.
 });
 

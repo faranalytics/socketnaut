@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as http from 'node:http';
-import { ServiceServer } from 'socketnaut';
+import { instantiateServiceAgent } from 'socketnaut';
 
-const service = new ServiceServer({
+const service = instantiateServiceAgent({
     server: http.createServer()
 });
 

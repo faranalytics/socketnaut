@@ -1,11 +1,13 @@
 import * as net from 'node:net';
-import { ServiceProxy } from 'socketnaut';
+import { createServiceProxy, consoleHandler} from 'socketnaut';
 
-const proxy = new ServiceProxy({
+consoleHandler.setLevel(Level['DEBUG']);
+
+const proxy = createServiceProxy({
     server: net.createServer(),
-    minServers: 42,
-    maxServers: 100,
-    serversCheckingInterval: 1e6,
+    minWorkers: 42,
+    maxWorkers: 100,
+    workersCheckingInterval: 1e6,
     workerURL: './http_server.js'
 });
 
