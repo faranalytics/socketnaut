@@ -7,8 +7,8 @@
 !/src/*
 !/*.*
 !CHANGELOG.md
-!/tests
-!/tests/*
-!/tests/*/src
-!/tests/*/src/*
-!/tests/*/*.*
+!/examples
+!/examples/*
+!/examples/*/src
+!/examples/*/src/*
+!/examples/*/*.*
