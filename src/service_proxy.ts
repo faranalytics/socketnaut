@@ -45,7 +45,7 @@ export class ServiceProxy {
         void this.spawnMinWorkers();
     }
 
-    protected async handleClientSocket(clientProxySocket: net.Socket): Promise<void> {
+    protected handleClientSocket(clientProxySocket: net.Socket): void {
 
         try {
 
@@ -53,6 +53,7 @@ export class ServiceProxy {
                 log.error(`Client socket error.  ${this.describeError(err)}.`);
             });
 
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             setImmediate(this.tryAllocateThread.bind(this, clientProxySocket));
         }
         catch (err) {
@@ -85,7 +86,7 @@ export class ServiceProxy {
                     await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
                 }
                 else {
-                    const agent = await this.spawnWorker();
+                    agent = this.spawnWorker();
                     agent.connections = agent.connections + 1;
                     this.reorderAgent(agent);
                     await agent.online;
@@ -105,6 +106,7 @@ export class ServiceProxy {
         }
         catch (err) {
             log.error(this.describeError(err));
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             setImmediate(this.tryAllocateThread.bind(this, clientProxySocket));
         }
     }
@@ -140,6 +142,7 @@ export class ServiceProxy {
                     clientProxySocket.end();
                 });
 
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 proxyServerSocket.once('close', (hadError: boolean) => {
                     log.debug(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
@@ -150,6 +153,7 @@ export class ServiceProxy {
                     proxyServerSocket.end();
                 });
 
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 clientProxySocket.once('close', (hadError: boolean) => {
                     log.debug(`Client socket close. ${message}.`);
                     proxyServerSocket.destroy();
@@ -192,6 +196,7 @@ export class ServiceProxy {
             }
         }
         finally {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             setTimeout(this.checkThreads.bind(this), this.serversCheckingInterval);
         }
     }
@@ -234,7 +239,7 @@ export class ServiceProxy {
 
         try {
             while (this.agents.length < this.minServers) {
-                const agent = await this.spawnWorker();
+                const agent = this.spawnWorker();
                 this.agents.push(agent);
                 await agent.online;
                 this.reorderAgent(agent);
@@ -245,7 +250,7 @@ export class ServiceProxy {
         }
     }
 
-    protected async spawnWorker(): Promise<WorkerAgent> {
+    protected spawnWorker(): WorkerAgent {
         const worker = new threads.Worker(this.workerURL, this.workerOptions);
         const agent = new WorkerAgent({ worker });
         agent.register('serviceLog', this.serviceLog.bind(this));

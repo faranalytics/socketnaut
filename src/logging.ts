@@ -21,7 +21,7 @@ export class ServiceMessageHandler<MessageT, FormatT> extends LevelHandler<Messa
 
             if (this.formatter) {
 
-                let formattedMessage = this.formatter.format(message, meta);
+                const formattedMessage = this.formatter.format(message, meta);
                 await this.agent.call<void>('serviceLog', { level: Level[meta.level], value: formattedMessage });
             }
         }
