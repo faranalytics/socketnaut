@@ -12,7 +12,7 @@ const serverFactory = (handler, opts) => {
 
 const fastify = Fastify({ serverFactory });
 
-fastify.post('/', (req, reply) => {
+fastify.get('/', (req, reply) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     void reply.send({ hello: 'world' });
 });

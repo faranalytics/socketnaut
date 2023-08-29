@@ -4,7 +4,7 @@ import { instantiateServiceAgent } from 'socketnaut';
 
 const app = express();
 
-app.post('/', (req, res) => {
+app.get('/', (req, res) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     res.send('Hello World!');
   });
