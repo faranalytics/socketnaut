@@ -64,7 +64,7 @@ A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP)
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
-    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` file that contains the `ServiceServer` instance e.g., `require.resolve('./server.js')`.  Please see the [Examples](#examples) section for how to reference a `ServiceServer` module. 
+    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` file that contains the `ServiceServer` instance e.g., `require.resolve('./server.js')`.  This is the module that will be scaled according to the values specified for `minServers` and `maxServers`.  Please see the [Examples](#examples) section for how to reference a `ServiceServer` module. 
 
 ### The `ServiceServer` Class
 
