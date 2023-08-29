@@ -10,7 +10,7 @@ Please make sure your firewall is configured to allow connections on `0.0.0.0:30
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
-### Install Socketnaut.
+### Install Socketnaut dependencies.
 ```bash
 cd socketnaut
 npm install
