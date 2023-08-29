@@ -68,7 +68,7 @@ A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and
 
 - Returns: `<socketnaut.ServiceProxy>`
 
-Creates a `ServiceProxy`.
+Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of `ServiceProxy`s created in each process should be considered carefully.
 
 ### The `ServiceAgent` Class
 
@@ -79,7 +79,7 @@ Creates a `ServiceProxy`.
 
 - Returns: `<socketnaut.ServiceAgent>`
 
-Instatiates a `ServiceAgent`; just one `ServiceAgent` may be instantiated for each Worker.
+Instatiates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an Error if it is called more than once in each Worker.
 
 ## Usage
 
