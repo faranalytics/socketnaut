@@ -68,7 +68,7 @@ A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and
 
 - Returns: `<socketnaut.ServiceProxy>`
 
-Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of `ServiceProxy`s created in each process should be considered carefully.
+Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
 ### The `ServiceAgent` Class
 
