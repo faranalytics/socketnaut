@@ -37,7 +37,7 @@ npm install socketnaut
 ``` 
 ## Concepts
 
-Socketnaut consists of the following 2 Service concepts.
+A Socketnaut **Service** consists of the following 2 concepts.
 
 ### ServiceProxy
 
@@ -45,7 +45,7 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 
 ### ServiceServer
 
-A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server is used the same way it is used natively; it can even be passed into an external routing facility. 
+A `ServiceServer` can consume any native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server is used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
 
 ## API
 
