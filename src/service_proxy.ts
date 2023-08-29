@@ -27,7 +27,7 @@ export class ServiceProxy {
         workerURL,
         minWorkers = 0,
         maxWorkers,
-        workersCheckingInterval = 30000,
+        workersCheckingInterval = 60000,
         workerOptions
     }: ServiceProxyOptions) {
 

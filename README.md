@@ -60,7 +60,7 @@ A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and
 
     - `server` `<node:net.Server>` A `net.Server` configured however you choose.
 
-    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up. **Default**: `30000`
+    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
@@ -142,7 +142,7 @@ Socketnaut scaling can be tuned by specifying a minimum and maximum number of al
 
     - `maxWorkers` `<number>` An argument that specifies the maximum number of `ServiceAgent` threads permitted.
 
-    - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `30000`
+    - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
 
 The `minWorkers` argument specifies the minimum number of Worker threads permitted.  `minWorkers` threads will be instantiated when the Socketnaut Proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
 
