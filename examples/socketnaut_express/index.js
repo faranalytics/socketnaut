@@ -1,5 +1,5 @@
 import * as net from 'node:net';
-import { createServiceProxy, consoleHandler} from 'socketnaut';
+import { createServiceProxy, consoleHandler, Level } from 'socketnaut';
 
 consoleHandler.setLevel(Level['DEBUG']);
 
