@@ -5,7 +5,7 @@
 import * as http from 'node:http';
 import { ServiceServer } from 'socketnaut';
 
-let service = new ServiceServer({
+const service = new ServiceServer({
     server: http.createServer()
 });
 

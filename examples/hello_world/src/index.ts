@@ -7,6 +7,6 @@ const proxy = new ServiceProxy({
     maxServers: 100,
     serversCheckingInterval: 1e6,
     workerURL: require.resolve('./http_server.js')
-})
+});
 
 proxy.server.listen({ port: 3000, host: '0.0.0.0' });
