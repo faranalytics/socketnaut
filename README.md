@@ -13,7 +13,7 @@ Socketnaut can be combined with performant single threaded HTTP server implement
 Dependencies:
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
     - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC facility.
-- The Socketnaut `ServiceProxy` and `ServiceServer` constructors consume native Node [`net.Server`](https://nodejs.org/docs/latest-v18.x/api/net.html) and [`http.Server`](https://nodejs.org/docs/latest-v18.x/api/http.html) instances; *you can configure them however you choose*.
+- The Socketnaut `ServiceProxy` and `ServiceServer` constructors consume native Node [`net.Server`](https://nodejs.org/docs/latest-v18.x/api/net.html), [`http.Server`](https://nodejs.org/docs/latest-v18.x/api/http.html), and [`https.Server`](https://nodejs.org/docs/latest-v18.x/api/https.html) instances; *you can configure them however you choose*.
 - The [`http.IncomingMessage`](https://nodejs.org/docs/latest-v18.x/api/http.html#class-httpincomingmessage) and [`http.ServerResponse`](https://nodejs.org/docs/latest-v18.x/api/http.html#class-httpserverresponse) objects passed to `request` listeners are unadulterated native Node objects - nothing added - nothing removed.
 - Import Socketnaut as a Node.js module (see the [Hello World!](#an-instance-of-hello-world-example) example) or take advantage of the packaged type definitions and import it into your TypeScript project. 
 
