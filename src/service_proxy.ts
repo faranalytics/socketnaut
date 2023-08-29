@@ -3,7 +3,7 @@ import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
 import { log } from './logging.js';
 
-interface ServiceProxyOptions {
+export interface ServiceProxyOptions {
     server: net.Server;
     workerURL: string | URL;
     minWorkers: number;
@@ -12,7 +12,7 @@ interface ServiceProxyOptions {
     workerOptions?: threads.WorkerOptions;
 }
 
-class ServiceProxy {
+export class ServiceProxy {
 
     public server: net.Server;
     public workerURL: string | URL;

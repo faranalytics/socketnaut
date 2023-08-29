@@ -15,7 +15,7 @@ threads.parentPort?.unref();
 
 const log = new LevelLogger<string, string>({ name: 'socketnaut' });
 
-interface ServiceAgentOptions {
+export interface ServiceAgentOptions {
     server: http.Server | https.Server | net.Server;
 }
 

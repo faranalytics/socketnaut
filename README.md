@@ -41,7 +41,7 @@ A Socketnaut **Service** consists of a `ServiceProxy` and a `ServiceAgent`.
 
 ### ServiceProxy
 
-A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  The `ServiceProxy` uniformly distributes TCP connections to `ServiceAgent`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters.  
+A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  A `ServiceProxy` can be instantiated using the `createServiceProxy` function.  The `ServiceProxy` uniformly distributes TCP connections to `ServiceAgent`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters.  
 
 ### ServiceAgent
 
@@ -51,7 +51,7 @@ A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and
 
 ### The `ServiceProxy` Class
 
-#### socketnaut.ServiceProxy(options)
+#### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
 
     - `maxWorkers` `<number>` Optional argument that specifies the maximum number of `ServiceAgent` Worker threads permitted.
@@ -66,12 +66,20 @@ A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and
 
     - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance.  This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`.  Please see the [Examples](#examples) section for how to reference a `ServiceAgent` module. 
 
+- Returns: `<socketnaut.ServiceProxy>`
+
+Creates a `ServiceProxy`.
+
 ### The `ServiceAgent` Class
 
-#### socketnaut.ServiceAgent(options)
+#### socketnaut.instantiateServiceAgent(options)
 - options `<ServiceAgentOptions>`
 
     - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` A native Node.js `Server` configured however you choose.
+
+- Returns: `<socketnaut.ServiceAgent>`
+
+Instatiates a `ServiceAgent`; just one `ServiceAgent` may be instantiated for each Worker.
 
 ## Usage
 
