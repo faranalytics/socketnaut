@@ -133,7 +133,7 @@ Please see the [Express](https://github.com/faranalytics/socketnaut/tree/main/ex
 
 ## Tuning Strategies
 
-Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceAgent` Worker threads.  The minimum and maximum number of `ServiceAgent` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which `ServiceAgent`s are culled until the `minWorkers` threshold is reached.
+Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceAgent` Worker threads.  The minimum and maximum number of `ServiceAgent` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which Worker threads are culled until the `minWorkers` threshold is reached.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### socketnaut.createServiceProxy(options)
@@ -148,13 +148,13 @@ The `minWorkers` argument specifies the minimum number of Worker threads permitt
 
 The `maxWorkers` argument is a hard limit. 
 
-The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
+The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `60000` milliseconds.
 
 By variously specifying `minWorkers`, `maxWorkers`, `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
 ## Logging
 
-Socketnaut uses the Node.js `memoir` logging facility.  You can set Socketnaut's log level in your `index.js` by importing the memoir `consoleHandler` and setting it's `logLevel` to `DEBUG` | `INFO` | `WARN` | `ERROR`.  The default is `DEBUG`.  For example:
+Socketnaut uses the Node.js `memoir` logging facility.  You can set Socketnaut's log level in your `index.js` by importing the memoir `consoleHandler` and setting it's `logLevel` to `DEBUG` | `INFO` | `WARN` | `ERROR`.  The default is `INFO`.  For example:
 
 `index.js`
 ```js
