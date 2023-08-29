@@ -136,7 +136,7 @@ Please see the [Express](https://github.com/faranalytics/socketnaut/tree/main/ex
 Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceAgent` Worker threads.  The minimum and maximum number of `ServiceAgent` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which `ServiceAgent`s are culled until the `minWorkers` threshold is reached.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
-#### **socketnaut.ServiceProxy(options)**
+#### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
     - `minWorkers` `<number>` Optional argument that specifies the minimum number of `ServiceAgent` Worker threads permitted. **Default**: `0`
 
@@ -144,11 +144,11 @@ Socketnaut scaling can be tuned by specifying a minimum and maximum number of al
 
     - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `30000`
 
-The `minWorkers` argument specifies the minimum number of Worker threads permitted.  `minWorkers` threads will be instantiated when the Socketnaut Server starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
+The `minWorkers` argument specifies the minimum number of Worker threads permitted.  `minWorkers` threads will be instantiated when the Socketnaut Proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
 
 The `maxWorkers` argument is a hard limit. 
 
-The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
+The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it close its server and exit.  The default interval is `30000` milliseconds.
 
 By variously specifying `minWorkers`, `maxWorkers`, `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
