@@ -27,3 +27,7 @@ npm install
 ```bash
 npm start
 ```
+### Send 1000 requests to the endpoint.
+```bash
+time seq 1000 | xargs -I{} echo "http://0.0.0.0:3000" | xargs -n1 -P1000 curl
+```
