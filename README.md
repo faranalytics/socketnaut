@@ -41,7 +41,7 @@ A Socketnaut **Service** consists of a `ServiceProxy` and a `ServiceAgent`.
 
 ### ServiceProxy
 
-A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  A `ServiceProxy` can be instantiated using the `createServiceProxy` function.  The `ServiceProxy` uniformly distributes TCP connections to `ServiceAgent`s (e.g., HTTP servers) in the thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters.  
+A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  A `ServiceProxy` can be instantiated using the `createServiceProxy` function.  The `ServiceProxy` uniformly distributes TCP connections to servers (e.g., HTTP servers) in the Worker thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters.  
 
 ### ServiceAgent
 
@@ -79,7 +79,7 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 
 - Returns: `<socketnaut.ServiceAgent>`
 
-Instatiates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an Error if it is called more than once in each Worker.
+Instatiates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an Error if it is called more than once.
 
 ## Usage
 
