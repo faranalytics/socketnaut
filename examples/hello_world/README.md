@@ -20,7 +20,7 @@ npm install
 ```bash
 cd examples/hello_world
 ```
-### Install the package dependencies.
+### Install the example dependencies.
 ```bash
 npm install
 ```
