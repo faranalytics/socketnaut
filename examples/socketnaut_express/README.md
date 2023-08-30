@@ -20,7 +20,7 @@ npm install
 ```bash
 cd examples/socketnaut_express
 ```
-### Install the package dependencies.
+### Install the example dependencies.
 ```bash
 npm install
 ```
