@@ -1,10 +1,11 @@
 # *An instance of Hello World!* <sup><sup>(example)</sup></sup>
 
-## Instructions
 In this example you will use Socketnaut to scale a Hello World! server.  The `ServiceProxy` is configured to start up 42 `http_server.js` Workers and scale up to 100 Workers as demand requires.
 
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3000` for this example to work.
+
+## Instructions
 
 ### Clone the Socketnaut repo.
 ```bash
