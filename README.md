@@ -26,7 +26,7 @@ Dependencies:
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
     - [*Use Socketnaut to scale the main thread of a Fastify server.*](#use-socketnaut-to-scale-the-main-thread-of-a-fastify-server-example)
     - [*Use Socketnaut to scale the main thread of an Express server.*](#use-socketnaut-to-scale-the-main-thread-of-an-express-server-example)
-    - [*Redirect connections to an HTTP Service to an HTTPS Service.*]
+    - [*Redirect connections to an HTTP Service to an HTTPS Service.*](#redirect-connections-to-an-http-service-to-an-https-service-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
 8. [FAQ](#faq)
