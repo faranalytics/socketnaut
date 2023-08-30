@@ -83,7 +83,7 @@ Instatiates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for ea
 
 ## Usage
 
-Each Socketnaut Service consists of at least one `ServiceProxy` and a respective `ServiceAgent`.  Please see the [examples](#examples) section for how to create a Socketnaut Service.
+Each Socketnaut Service consists of at least one `ServiceProxy` and a respective `ServiceAgent`.  Please see the [Examples](#examples) section for how to create a Socketnaut Service.
 
 ## Examples
 
