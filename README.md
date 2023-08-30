@@ -133,7 +133,7 @@ Please see the [Express](https://github.com/faranalytics/socketnaut/tree/main/ex
 
 ## Tuning Strategies
 
-Socketnaut scaling can be tuned by specifying a minimum and maximum number of allocated `ServiceAgent` Worker threads.  The minimum and maximum number of `ServiceAgent` threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which Worker threads are culled until the `minWorkers` threshold is reached.
+Scaling can be tuned by specifying a minimum and maximum number of allocated Worker threads.  The minimum and maximum number of Worker threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which inactive Worker threads are culled until the `minWorkers` threshold is reached.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### socketnaut.createServiceProxy(options)
