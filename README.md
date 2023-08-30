@@ -45,7 +45,7 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 
 ### ServiceAgent
 
-A `ServiceAgent` coordinates with its respective Proxy (e.g., module scaling and termination).  A `ServiceAgent` can be instantiated using the `instantiateServiceAgent` function.  It can consume a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server is used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
+A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `instantiateServiceAgent` function.  It can consume a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
 
 ## API
 
@@ -125,11 +125,11 @@ service.server.listen({ port: 0, host: '127.0.0.1' });
 ```
 ### *Use Socketnaut to scale the main thread of a Fastify server.* <sup><sup>(example)</sup></sup>
 
-Please see the [Fastify](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) example for a working implementation.
+Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
 ### *Use Socketnaut to scale the main thread of an Express server.* <sup><sup>(example)</sup></sup>
 
-Please see the [Express](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) example for a working implementation.
+Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
 ## Tuning Strategies
 
