@@ -150,7 +150,7 @@ The `maxWorkers` argument is a hard limit.
 
 The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.  The default interval is `60000` milliseconds.
 
-By variously specifying `minWorkers`, `maxWorkers`, `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
+By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
 ## Logging
 
