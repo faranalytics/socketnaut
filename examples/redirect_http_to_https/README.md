@@ -1,6 +1,6 @@
-# *An instance of Hello World!* <sup><sup>(example)</sup></sup>
+# *Redirect connections to an HTTP Service to an HTTPS Service.* <sup><sup>(example)</sup></sup>
 
-In this example you will use Socketnaut to scale a Hello World! server.  The `ServiceProxy` is configured to start up 42 `http_server.js` Workers and scale up to 100 Workers on demand.
+In this example you will create an HTTP Service and a HTTPS Service.
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
@@ -16,14 +16,9 @@ Please make sure your firewall is configured to allow connections on `0.0.0.0:30
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
-### Install Socketnaut dependencies.
-```bash
-cd socketnaut
-npm install
-```
 ### Change directory into the relevant example directory.
 ```bash
-cd examples/hello_world
+cd socketnaut/examples/redirect_http_to_https
 ```
 ### Install the example dependencies.
 ```bash
@@ -33,7 +28,7 @@ npm install
 ```bash
 npm start
 ```
-### Send 1000 requests to the endpoint.
+### Test the HTTP Service redirect using your browser.
 ```bash
-time seq 1000 | xargs -I{} echo "http://0.0.0.0:3000" | xargs -n1 -P1000 curl
+http://example.com:3000
 ```
