@@ -1,9 +1,9 @@
 import * as http from 'node:http';
 import Fastify from 'fastify';
-import { instantiateServiceAgent } from 'socketnaut';
+import { createServiceAgent } from 'socketnaut';
 
 const serverFactory = (handler, opts) => {
-    const service = instantiateServiceAgent({
+    const service = createServiceAgent({
         server: http.createServer(opts, handler)
     });
 

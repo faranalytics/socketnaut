@@ -19,4 +19,4 @@ export declare class ServiceAgent extends Agent {
     protected postListeningMessage(): void;
     protected describeError(err: unknown): string;
 }
-export declare function instantiateServiceAgent(options: ServiceAgentOptions): ServiceAgent;
+export declare function createServiceAgent(options: ServiceAgentOptions): ServiceAgent;

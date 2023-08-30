@@ -45,6 +45,7 @@ class ServiceProxy {
         this.workerOptions = workerOptions;
         this.agents = [];
         this.server.on('connection', this.handleClientSocket.bind(this));
+        this.server.on('listening', () => logging_js_1.log.info(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
         void this.spawnMinWorkers();
     }
     handleClientSocket(clientProxySocket) {

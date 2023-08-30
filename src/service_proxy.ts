@@ -41,6 +41,7 @@ export class ServiceProxy {
         this.agents = [];
 
         this.server.on('connection', this.handleClientSocket.bind(this));
+        this.server.on('listening', () => log.info(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
 
         void this.spawnMinWorkers();
     }
@@ -258,7 +259,7 @@ export class ServiceProxy {
         worker.once('exit', this.removeAgent.bind(this, agent));
         return agent;
     }
-    
+
     protected serviceLog(message: { level: string, value: string }) {
         switch (message.level) {
             case 'DEBUG':

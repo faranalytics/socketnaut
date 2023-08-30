@@ -27,7 +27,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.instantiateServiceAgent = exports.ServiceAgent = void 0;
+exports.createServiceAgent = exports.ServiceAgent = void 0;
 const threads = __importStar(require("node:worker_threads"));
 const port_agent_1 = require("port_agent");
 const logging_1 = require("./logging");
@@ -93,7 +93,7 @@ class ServiceAgent extends port_agent_1.Agent {
 }
 exports.ServiceAgent = ServiceAgent;
 let serviceAgent = null;
-function instantiateServiceAgent(options) {
+function createServiceAgent(options) {
     if (!serviceAgent) {
         if (threads.parentPort) {
             serviceAgent = new ServiceAgent(threads.parentPort, options);
@@ -107,4 +107,4 @@ function instantiateServiceAgent(options) {
         throw new Error(`A ServiceAgent has already been instantiated for this Worker thread ${threads.threadId}.`);
     }
 }
-exports.instantiateServiceAgent = instantiateServiceAgent;
+exports.createServiceAgent = createServiceAgent;

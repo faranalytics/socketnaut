@@ -3,13 +3,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as http from 'node:http';
-import { instantiateServiceAgent } from 'socketnaut';
+import { createServiceAgent } from 'socketnaut';
 
-const service = instantiateServiceAgent({
+const service = createServiceAgent({
     server: http.createServer()
 });
 
-service.server.on('request', (req, res) => {
+service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     res.end('Hello World!');
 });

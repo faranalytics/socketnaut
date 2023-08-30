@@ -93,7 +93,7 @@ export class ServiceAgent extends Agent {
 
 let serviceAgent: ServiceAgent | null = null;
 
-export function instantiateServiceAgent(options: ServiceAgentOptions): ServiceAgent {
+export function createServiceAgent(options: ServiceAgentOptions): ServiceAgent {
     if (!serviceAgent) {
         if (threads.parentPort) {
             serviceAgent = new ServiceAgent(threads.parentPort, options);

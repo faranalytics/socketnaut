@@ -23,12 +23,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Level = exports.formatter = exports.consoleHandler = exports.socketlog = exports.ServiceAgent = exports.instantiateServiceAgent = exports.ServiceProxy = exports.createServiceProxy = void 0;
+exports.Level = exports.formatter = exports.consoleHandler = exports.socketlog = exports.ServiceAgent = exports.createServiceAgent = exports.ServiceProxy = exports.createServiceProxy = void 0;
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const threads = __importStar(require("node:worker_threads"));
 const service_agent_js_1 = require("./service_agent.js");
-Object.defineProperty(exports, "instantiateServiceAgent", { enumerable: true, get: function () { return service_agent_js_1.instantiateServiceAgent; } });
+Object.defineProperty(exports, "createServiceAgent", { enumerable: true, get: function () { return service_agent_js_1.createServiceAgent; } });
 Object.defineProperty(exports, "ServiceAgent", { enumerable: true, get: function () { return service_agent_js_1.ServiceAgent; } });
 const service_proxy_js_1 = require("./service_proxy.js");
 Object.defineProperty(exports, "createServiceProxy", { enumerable: true, get: function () { return service_proxy_js_1.createServiceProxy; } });

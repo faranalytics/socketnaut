@@ -45,7 +45,7 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 
 ### ServiceAgent
 
-A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `instantiateServiceAgent` function.  It can consume a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
+A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It can consume a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
 
 ## API
 
@@ -72,14 +72,14 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 
 ### The `ServiceAgent` Class
 
-#### socketnaut.instantiateServiceAgent(options)
+#### socketnaut.createServiceAgent(options)
 - options `<ServiceAgentOptions>`
 
     - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` A native Node.js `Server` configured however you choose.
 
 - Returns: `<socketnaut.ServiceAgent>`
 
-Instatiates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an Error if it is called more than once.
+Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an Error if it is called more than once.
 
 ## Usage
 
@@ -108,9 +108,9 @@ proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 `http_server.js`
 ```js
 import * as http from 'node:http';
-import { instantiateServiceAgent } from 'socketnaut';
+import { createServiceAgent } from 'socketnaut';
 
-const service = instantiateServiceAgent({
+const service = createServiceAgent({
     server: http.createServer() // Configure this HTTP server however you choose.
 });
 
