@@ -94,7 +94,7 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 import * as net from 'node:net';
 import { createServiceProxy } from 'socketnaut';
 
-const proxy = new createServiceProxy({
+const proxy = createServiceProxy({
     server: net.createServer(),
     minWorkers: 42,
     maxWorkers: 100,

@@ -1,7 +1,7 @@
 import * as net from 'node:net';
 import { createServiceProxy } from 'socketnaut';
 
-const proxy = new createServiceProxy({
+const proxy = createServiceProxy({
     server: net.createServer(),
     minWorkers: 42,
     maxWorkers: 100,
