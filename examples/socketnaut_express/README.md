@@ -1,6 +1,6 @@
 # *Use Socketnaut to scale the main thread of an Express server.* <sup><sup>(example)</sup></sup>
 
-In this example you will use Socketnaut to scale the main thread of an Express server.  The `ServiceProxy` is configured to start up 42 `http_server.js` Workers and scale up to 100 Workers as demand requires.
+In this example you will use Socketnaut to scale the main thread of an Express server.  The `ServiceProxy` is configured to start up 42 `http_server.js` Workers and scale up to 100 Workers on demand.
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
