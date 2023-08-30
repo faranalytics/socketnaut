@@ -2,6 +2,12 @@
 
 In this example you will use Socketnaut to scale the main thread of a Fastify server.  The `ServiceProxy` is configured to start up 42 `http_server.js` Workers and scale up to 100 Workers as demand requires.
 
+The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
+
+```js
+for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+```
+
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3000` for this example to work.
 
