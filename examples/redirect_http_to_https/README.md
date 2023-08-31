@@ -1,6 +1,6 @@
 # *Redirect HTTP connections to an HTTPS Service.* <sup><sup>(example)</sup></sup>
 
-In this example you will create an HTTP Service and a HTTPS Service.
+In this example you will create an HTTP Service and a HTTPS Service.  The HTTP Service will redirect all requests to the HTTPS Service.
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request and returns the string "Hello World!".
 
