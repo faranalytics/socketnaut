@@ -1,4 +1,4 @@
-# *Redirect connections to an HTTP Service to an HTTPS Service.* <sup><sup>(example)</sup></sup>
+# *Redirect HTTP connections to an HTTPS Service.* <sup><sup>(example)</sup></sup>
 
 In this example you will create an HTTP Service and a HTTPS Service.
 
@@ -28,7 +28,7 @@ npm install
 ```bash
 npm start
 ```
-### Test the HTTP Service redirect using your browser.
+### Test the HTTP redirect using your browser.
 ```bash
 http://example.com:3000
 ```
