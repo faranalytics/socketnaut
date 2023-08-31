@@ -20,7 +20,7 @@ export declare class ServiceProxy {
     maxWorkers?: number;
     workersCheckingInterval?: number;
     workerOptions?: threads.WorkerOptions;
-    protected agents: Array<WorkerAgent>;
+    agents: Array<WorkerAgent>;
     log: LevelLogger<string, string>;
     logHandler: ConsoleHandler<string, string>;
     logFormatter: MetaFormatter<string, string>;

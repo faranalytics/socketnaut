@@ -21,7 +21,7 @@ export class ServiceProxy {
     public maxWorkers?: number;
     public workersCheckingInterval?: number;
     public workerOptions?: threads.WorkerOptions;
-    protected agents: Array<WorkerAgent>;
+    public agents: Array<WorkerAgent>;
     public log: LevelLogger<string, string>;
     public logHandler: ConsoleHandler<string, string>;
     public logFormatter: MetaFormatter<string, string>;
