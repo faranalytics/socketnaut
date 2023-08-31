@@ -90,6 +90,8 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 
 ### *An instance of Hello World!* <sup><sup>(example)</sup></sup>
 
+This is a simple Socketnaut Service that responds with the text "Hello World!".  Please see the [Hello World example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
+
 `index.js`
 ```js
 import * as net from 'node:net';
