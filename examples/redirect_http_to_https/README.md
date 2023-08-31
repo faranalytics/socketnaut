@@ -24,10 +24,6 @@ cd socketnaut/examples/redirect_http_to_https
 ```bash
 npm install
 ```
-### Build the TypeScript application.
-```bash
-npm run build
-```
 ### Edit https_server.ts in order to read your `key` and `cert` files.
 ```js
 const service = createServiceAgent({
@@ -37,6 +33,10 @@ const service = createServiceAgent({
             cert: fs.readFileSync('../../../secrets/crt.pem')
         }) // Configure this HTTPS server however you choose.
 });
+```
+### Build the TypeScript application.
+```bash
+npm run build
 ```
 ### Run the application.
 ```bash
