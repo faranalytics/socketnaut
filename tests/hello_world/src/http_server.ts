@@ -9,7 +9,7 @@ const service = createServiceAgent({
     server: http.createServer()
 });
 
-// service.logHandler.setLevel(Level['DEBUG']);
+service.logHandler.setLevel(Level.DEBUG);
 
 service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.

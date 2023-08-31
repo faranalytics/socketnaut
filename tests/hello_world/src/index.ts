@@ -11,7 +11,7 @@ const proxy = createServiceProxy({
     workerURL: require.resolve('./http_server.js')
 });
 
-// proxy.logHandler.setLevel(Level['DEBUG']);
+proxy.logHandler.setLevel(Level.DEBUG);
 
 proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 
