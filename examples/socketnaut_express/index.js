@@ -5,10 +5,9 @@ const proxy = createServiceProxy({
     server: net.createServer(),
     minWorkers: 4,
     maxWorkers: 42,
-    workersCheckingInterval: 1e6,
     workerURL: './http_server.js'
 });
 
-proxy.logHandler.setLevel(Level['DEBUG'])
+proxy.logHandler.setLevel(Level.DEBUG)
 
 proxy.server.listen({ port: 3000, host: '0.0.0.0' });

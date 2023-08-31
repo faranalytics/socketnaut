@@ -1,7 +1,7 @@
 import * as http from 'node:http';
 import * as https from 'node:https';
 import * as fs from 'fs';
-import { createServiceAgent } from 'socketnaut';
+import { Level, createServiceAgent } from 'socketnaut';
 
 const service = createServiceAgent({
     server: https.createServer(
@@ -10,6 +10,8 @@ const service = createServiceAgent({
             cert: fs.readFileSync('../../../secrets/crt.pem')
         }) // Configure this HTTPS server however you choose.
 });
+
+service.logHandler.setLevel(Level.DEBUG)
 
 service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.

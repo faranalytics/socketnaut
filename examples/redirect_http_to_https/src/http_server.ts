@@ -1,5 +1,5 @@
 import * as http from 'node:http';
-import { createServiceAgent } from 'socketnaut';
+import { Level, createServiceAgent } from 'socketnaut';
 
 const service = createServiceAgent({
     server: http.createServer() // Configure this HTTP server however you choose.
@@ -12,6 +12,8 @@ service.server.on('request', (req: http.IncomingMessage, res: http.ServerRespons
         console.log(`Request: ${url}`);
     }
 });
+
+service.logHandler.setLevel(Level.DEBUG)
 
 service.server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.

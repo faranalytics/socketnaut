@@ -1,11 +1,13 @@
 import * as http from 'node:http';
 import Fastify from 'fastify';
-import { createServiceAgent } from 'socketnaut';
+import { createServiceAgent, Level } from 'socketnaut';
 
 const serverFactory = (handler, opts) => {
     const service = createServiceAgent({
         server: http.createServer(opts, handler)
     });
+
+    service.logHandler.setLevel(Level.DEBUG)
 
     return service.server;
 };
