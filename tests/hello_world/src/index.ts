@@ -11,12 +11,11 @@ const proxy = createServiceProxy({
     workerURL: require.resolve('./http_server.js')
 });
 
-proxy.logHandler.setLevel(Level['DEBUG']);
+// proxy.logHandler.setLevel(Level['DEBUG']);
 
 proxy.server.listen({ port: 3000, host: '0.0.0.0' });
 
 setInterval(() => {
-    proxy.log.info(`Thread count: ${proxy.agents.length}`);
+    proxy.log.info(`Status: ${proxy.agents.length}, ${proxy.maxWorkers}, ${proxy.minWorkers}.`);
     console.log(JSON.stringify(proxy.agents.map((value: WorkerAgent) => value.connections)));
-    console.log(proxy.maxWorkers, proxy.minWorkers);
 }, 1000);
