@@ -160,17 +160,22 @@ By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval
 
 ## Logging
 
-Socketnaut uses the Node.js `memoir` logging facility.  You can set Socketnaut's log level in your `index.js` by importing the memoir `consoleHandler` and setting it's `logLevel` to `DEBUG` | `INFO` | `WARN` | `ERROR`.  The default is `INFO`.  For example:
+Socketnaut uses the Node.js `memoir` logging facility.  Each `ServiceProxy` and `ServiceAgent` has its own `memoir` Logger and Handler instances, which can be accessed by the public properties `log` and `logHandler` respectively.  You can set the log level on the handler to `DEBUG` | `INFO` | `WARN` | `ERROR` using the `setLevel` method.  The default is `INFO`.  For example:
 
 `index.js`
 ```js
-import { consoleHandler, Level } from 'socketnaut';
-
-consoleHandler.setLevel(Level['DEBUG']);
+import { Level } from 'socketnaut';
+...
+proxy.logHandler.setLevel(Level['DEBUG']);
 ```
+or
 
-Socketnaut exports its instance of a `memoir` logger, named `socketlog`, which can be consumed and reconfigured by another `memoir` logger; see the `memoir` documentation for how to do this - *or use the logger of your choice*.
-
+`http_server.js`
+```js
+import { Level } from 'socketnaut';
+...
+service.logHandler.setLevel(Level['DEBUG']);
+```
 ## FAQ
 
 ### What kind of scaling implementation is this?

@@ -24,10 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServiceProxy = exports.ServiceProxy = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const net = __importStar(require("node:net"));
 const threads = __importStar(require("node:worker_threads"));
 const worker_agent_js_1 = require("./worker_agent.js");
-const logging_js_1 = require("./logging.js");
+const memoir_1 = require("memoir");
 class ServiceProxy {
     server;
     workerURL;
@@ -36,6 +37,9 @@ class ServiceProxy {
     workersCheckingInterval;
     workerOptions;
     agents;
+    log;
+    logHandler;
+    logFormatter;
     constructor({ server = net.createServer(), workerURL, minWorkers = 0, maxWorkers, workersCheckingInterval = 60000, workerOptions }) {
         this.server = server;
         this.workerURL = workerURL;
@@ -44,20 +48,26 @@ class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
+        const levelLogger = this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}.` });
+        const consoleHandler = this.logHandler = new memoir_1.ConsoleHandler();
+        consoleHandler.setLevel(memoir_1.Level['INFO']);
+        const metaFormatter = this.logFormatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${memoir_1.Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`);
+        consoleHandler.setFormatter(metaFormatter);
+        levelLogger.addHandler(consoleHandler);
         this.server.on('connection', this.handleClientSocket.bind(this));
-        this.server.on('listening', () => logging_js_1.log.info(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
+        this.server.on('listening', () => this.log.info(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
         void this.spawnMinWorkers();
     }
     handleClientSocket(clientProxySocket) {
         try {
             clientProxySocket.on('error', (err) => {
-                logging_js_1.log.error(`Client socket error.  ${this.describeError(err)}.`);
+                this.log.error(`Client socket error.  ${this.describeError(err)}.`);
             });
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             setImmediate(this.tryAllocateThread.bind(this, clientProxySocket));
         }
         catch (err) {
-            logging_js_1.log.error(this.describeError(err));
+            this.log.error(this.describeError(err));
             clientProxySocket.destroy();
         }
     }
@@ -99,7 +109,7 @@ class ServiceProxy {
             });
         }
         catch (err) {
-            logging_js_1.log.error(this.describeError(err));
+            this.log.error(this.describeError(err));
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             setImmediate(this.tryAllocateThread.bind(this, clientProxySocket));
         }
@@ -112,30 +122,30 @@ class ServiceProxy {
             proxyServerSocket.on('connect', () => {
                 proxyServerSocket.removeListener('error', j);
                 proxyServerSocket.on('error', (err) => {
-                    logging_js_1.log.error(`Server socket error.  ${this.describeError(err)}  ${message}.`);
+                    this.log.error(`Server socket error.  ${this.describeError(err)}  ${message}.`);
                 });
                 proxyServerSocket.on('timeout', () => {
-                    logging_js_1.log.debug(`Server timeout. ${message}.`);
+                    this.log.debug(`Server timeout. ${message}.`);
                 });
                 clientProxySocket.on('timeout', () => {
-                    logging_js_1.log.debug(`Client timeout. ${message}.`);
+                    this.log.debug(`Client timeout. ${message}.`);
                 });
                 proxyServerSocket.once('end', () => {
-                    logging_js_1.log.debug(`Server socket end. ${message}.`);
+                    this.log.debug(`Server socket end. ${message}.`);
                     clientProxySocket.end();
                 });
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 proxyServerSocket.once('close', (hadError) => {
-                    logging_js_1.log.debug(`Server socket close. ${message}.`);
+                    this.log.debug(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
                 });
                 clientProxySocket.once('end', () => {
-                    logging_js_1.log.debug(`Client socket end.  ${message}.`);
+                    this.log.debug(`Client socket end.  ${message}.`);
                     proxyServerSocket.end();
                 });
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 clientProxySocket.once('close', (hadError) => {
-                    logging_js_1.log.debug(`Client socket close. ${message}.`);
+                    this.log.debug(`Client socket close. ${message}.`);
                     proxyServerSocket.destroy();
                 });
                 clientProxySocket.on('data', (data) => {
@@ -150,7 +160,7 @@ class ServiceProxy {
     }
     async checkThreads() {
         try {
-            logging_js_1.log.debug(`Thread Count: ${this.agents.length}`);
+            this.log.debug(`Thread Count: ${this.agents.length}`);
             if (this.agents.length > this.minWorkers) {
                 for (const agent of [...this.agents]) {
                     if (agent.socketConnectOpts && agent.connections === 0) {
@@ -159,7 +169,7 @@ class ServiceProxy {
                             await agent.call('tryTerminate');
                         }
                         catch (err) {
-                            logging_js_1.log.error(this.describeError(err));
+                            this.log.error(this.describeError(err));
                         }
                         if (this.agents.length <= this.minWorkers) {
                             break;
@@ -224,16 +234,16 @@ class ServiceProxy {
     serviceLog(message) {
         switch (message.level) {
             case 'DEBUG':
-                logging_js_1.log.debug(message.value);
+                this.log.debug(message.value);
                 break;
             case 'INFO':
-                logging_js_1.log.info(message.value);
+                this.log.info(message.value);
                 break;
             case 'WARN':
-                logging_js_1.log.warn(message.value);
+                this.log.warn(message.value);
                 break;
             case 'ERROR':
-                logging_js_1.log.error(message.value);
+                this.log.error(message.value);
                 break;
         }
     }

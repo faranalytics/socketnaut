@@ -23,7 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Level = exports.formatter = exports.consoleHandler = exports.socketlog = exports.ServiceAgent = exports.createServiceAgent = exports.ServiceProxy = exports.createServiceProxy = void 0;
+exports.Level = exports.ServiceAgent = exports.createServiceAgent = exports.ServiceProxy = exports.createServiceProxy = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const threads = __importStar(require("node:worker_threads"));
@@ -33,13 +34,21 @@ Object.defineProperty(exports, "ServiceAgent", { enumerable: true, get: function
 const service_proxy_js_1 = require("./service_proxy.js");
 Object.defineProperty(exports, "createServiceProxy", { enumerable: true, get: function () { return service_proxy_js_1.createServiceProxy; } });
 Object.defineProperty(exports, "ServiceProxy", { enumerable: true, get: function () { return service_proxy_js_1.ServiceProxy; } });
-const logging_js_1 = require("./logging.js");
-Object.defineProperty(exports, "socketlog", { enumerable: true, get: function () { return logging_js_1.log; } });
-Object.defineProperty(exports, "consoleHandler", { enumerable: true, get: function () { return logging_js_1.consoleHandler; } });
-Object.defineProperty(exports, "formatter", { enumerable: true, get: function () { return logging_js_1.formatter; } });
-Object.defineProperty(exports, "Level", { enumerable: true, get: function () { return logging_js_1.Level; } });
+const memoir_1 = require("memoir");
+Object.defineProperty(exports, "Level", { enumerable: true, get: function () { return memoir_1.Level; } });
 if (threads.isMainThread) {
+    const log = new memoir_1.LevelLogger({ name: 'socketnaut' });
+    const consoleHandler = new memoir_1.ConsoleHandler();
+    const formatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${memoir_1.Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`);
+    try {
+        consoleHandler.setLevel(memoir_1.Level.INFO);
+        consoleHandler.setFormatter(formatter);
+        log.addHandler(consoleHandler);
+    }
+    catch (err) {
+        console.error(err);
+    }
     const { version } = require('../package.json');
-    logging_js_1.log.info(`socketnaut v${version}`);
-    logging_js_1.log.info(`pid ${process.pid}`);
+    log.info(`socketnaut v${version}`);
+    log.info(`pid ${process.pid}`);
 }
