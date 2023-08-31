@@ -57,6 +57,8 @@ class ServiceProxy {
         this.server.on('connection', this.handleClientSocket.bind(this));
         this.server.on('listening', () => this.log.info(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
         void this.spawnMinWorkers();
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
     }
     handleClientSocket(clientProxySocket) {
         try {
