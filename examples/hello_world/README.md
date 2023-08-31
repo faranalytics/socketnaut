@@ -16,14 +16,9 @@ Please make sure your firewall is configured to allow connections on `0.0.0.0:30
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
-### Install Socketnaut dependencies.
-```bash
-cd socketnaut
-npm install
-```
 ### Change directory into the relevant example directory.
 ```bash
-cd examples/hello_world
+cd socketnaut/examples/hello_world
 ```
 ### Install the example dependencies.
 ```bash
@@ -35,5 +30,5 @@ npm start
 ```
 ### Send 1000 requests to the endpoint.
 ```bash
-time seq 1000 | xargs -I{} echo "http://0.0.0.0:3000" | xargs -n1 -P1000 curl
+time for i in {1..1000}; do echo "http://0.0.0.0:3000"; done | xargs -n1 -P1000 curl
 ```
