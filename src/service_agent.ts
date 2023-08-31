@@ -58,13 +58,13 @@ export class ServiceAgent extends Agent {
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
 
-        this.log = new LevelLogger<string, string>({ name: `Proxy ${threads.threadId}.` });
+        this.log = new LevelLogger<string, string>({ name: `Agent ${threads.threadId}` });
         const messageHandler = this.logHandler = new ServiceMessageHandler<string, string>(this);
         const formatter = this.logFormatter = new MetaFormatter<string, string>(
             (message: string, { name, level, func, url, line, col }: IMeta): string =>
                 `${func}:${line}:${col}:${message}`
         );
-        messageHandler.setLevel(Level.DEBUG);
+        messageHandler.setLevel(Level.INFO);
         messageHandler.setFormatter(formatter);
         this.log.addHandler(messageHandler);
     }

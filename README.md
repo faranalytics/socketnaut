@@ -166,7 +166,7 @@ Socketnaut uses the Node.js `memoir` logging facility.  Each `ServiceProxy` and 
 ```js
 import { Level } from 'socketnaut';
 ...
-proxy.logHandler.setLevel(Level['DEBUG']);
+proxy.logHandler.setLevel(Level.DEBUG)
 ```
 or
 
@@ -174,7 +174,7 @@ or
 ```js
 import { Level } from 'socketnaut';
 ...
-service.logHandler.setLevel(Level['DEBUG']);
+service.logHandler.setLevel(Level.DEBUG)
 ```
 ## FAQ
 

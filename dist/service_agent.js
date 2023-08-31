@@ -65,10 +65,10 @@ class ServiceAgent extends port_agent_1.Agent {
         this.register('tryTerminate', this.tryTerminate.bind(this));
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
-        this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}.` });
+        this.log = new memoir_1.LevelLogger({ name: `Agent ${threads.threadId}` });
         const messageHandler = this.logHandler = new ServiceMessageHandler(this);
         const formatter = this.logFormatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${func}:${line}:${col}:${message}`);
-        messageHandler.setLevel(memoir_1.Level.DEBUG);
+        messageHandler.setLevel(memoir_1.Level.INFO);
         messageHandler.setFormatter(formatter);
         this.log.addHandler(messageHandler);
     }

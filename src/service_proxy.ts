@@ -43,9 +43,9 @@ export class ServiceProxy {
         this.workerOptions = workerOptions;
         this.agents = [];
 
-        const levelLogger = this.log = new LevelLogger<string, string>({ name: `Proxy ${threads.threadId}.` });
+        const levelLogger = this.log = new LevelLogger<string, string>({ name: `Proxy ${threads.threadId}` });
         const consoleHandler = this.logHandler = new ConsoleHandler<string, string>();
-        consoleHandler.setLevel(Level['INFO']);
+        consoleHandler.setLevel(Level.INFO);
         const metaFormatter = this.logFormatter = new MetaFormatter<string, string>(
             (message: string, { name, level, func, url, line, col }: IMeta): string =>
                 `${Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`

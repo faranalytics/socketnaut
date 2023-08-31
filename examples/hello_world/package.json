@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "socketnaut": "file:../.."
+    "socketnaut": "^0.3.2"
   },
   "type": "module"
 }

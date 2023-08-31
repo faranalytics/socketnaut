@@ -48,9 +48,9 @@ class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
-        const levelLogger = this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}.` });
+        const levelLogger = this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}` });
         const consoleHandler = this.logHandler = new memoir_1.ConsoleHandler();
-        consoleHandler.setLevel(memoir_1.Level['INFO']);
+        consoleHandler.setLevel(memoir_1.Level.INFO);
         const metaFormatter = this.logFormatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${memoir_1.Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`);
         consoleHandler.setFormatter(metaFormatter);
         levelLogger.addHandler(consoleHandler);
