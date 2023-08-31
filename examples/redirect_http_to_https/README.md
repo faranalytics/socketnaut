@@ -28,6 +28,16 @@ npm install
 ```bash
 npm run build
 ```
+### Edit https_server.ts in order to read your key and cert files.
+```js
+const service = createServiceAgent({
+    server: https.createServer(
+        {
+            key: fs.readFileSync('../../../secrets/key.pem'),
+            cert: fs.readFileSync('../../../secrets/crt.pem')
+        }) // Configure this HTTPS server however you choose.
+});
+```
 ### Run the application.
 ```bash
 npm start
