@@ -103,6 +103,7 @@ class ServiceProxy {
             catch (err) {
                 agent.connections = agent.connections - 1;
                 this.reorderAgent(agent);
+                clientProxySocket.destroy();
                 throw (err);
             }
             clientProxySocket.once('close', () => {
@@ -112,8 +113,6 @@ class ServiceProxy {
         }
         catch (err) {
             this.log.error(this.describeError(err));
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setImmediate(this.tryAllocateThread.bind(this, clientProxySocket));
         }
     }
     async createServerConnection(clientProxySocket, socketConnectOpts) {
@@ -190,14 +189,6 @@ class ServiceProxy {
         if (index != -1) {
             this.agents.splice(index, 1);
         }
-        void (async () => {
-            try {
-                await this.spawnMinWorkers();
-            }
-            catch (err) {
-                this.describeError(err);
-            }
-        })();
     }
     reorderAgent(agent) {
         const index = this.agents.indexOf(agent);
@@ -228,9 +219,12 @@ class ServiceProxy {
     spawnWorker() {
         const worker = new threads.Worker(this.workerURL, this.workerOptions);
         const agent = new worker_agent_js_1.WorkerAgent({ worker });
-        agent.register('serviceLog', this.serviceLog.bind(this));
-        worker.once('error', this.removeAgent.bind(this, agent));
+        worker.once('error', (err) => {
+            this.log.error(this.describeError(err));
+            this.removeAgent.bind(this, agent);
+        });
         worker.once('exit', this.removeAgent.bind(this, agent));
+        agent.register('serviceLog', this.serviceLog.bind(this));
         return agent;
     }
     serviceLog(message) {
