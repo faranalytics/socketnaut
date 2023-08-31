@@ -28,7 +28,7 @@ npm install
 ```bash
 npm run build
 ```
-### Edit https_server.ts in order to read your key and cert files.
+### Edit https_server.ts in order to read your `key` and `cert` files.
 ```js
 const service = createServiceAgent({
     server: https.createServer(
