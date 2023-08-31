@@ -2,13 +2,13 @@
 
 In this example you will create an HTTP Service and a HTTPS Service.
 
-The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
+The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request and returns the string "Hello World!".
 
 ```js
 for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
 ```
 ## Requirements
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3000` for this example to work.
+Please make sure your firewall is configured to allow connections on `0.0.0.0:3000` and `0.0.0.0:3443` for this example to work.
 
 ## Instructions
 
