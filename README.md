@@ -26,7 +26,7 @@ Dependencies:
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
     - [*Use Socketnaut to scale the main thread of a Fastify server.*](#use-socketnaut-to-scale-the-main-thread-of-a-fastify-server-example)
     - [*Use Socketnaut to scale the main thread of an Express server.*](#use-socketnaut-to-scale-the-main-thread-of-an-express-server-example)
-    - [*Redirect HTTP connections to an HTTPS Service.*](#redirect-http-connections-to-an-https-service-example)
+    - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
 8. [FAQ](#faq)
@@ -134,7 +134,7 @@ Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
-### *Redirect HTTP connections to an HTTPS Service.* <sup><sup>(example)</sup></sup>
+### *Redirect HTTP connections to an HTTPS server.* <sup><sup>(example)</sup></sup>
 Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/socketnaut/tree/main/examples/redirect_http_to_https) for a working implementation.
 
 ## Tuning Strategies
