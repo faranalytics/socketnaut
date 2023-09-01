@@ -29,8 +29,8 @@ npm install
 const service = createServiceAgent({
     server: https.createServer(
         {
-            key: fs.readFileSync('../../../secrets/key.pem'),
-            cert: fs.readFileSync('../../../secrets/crt.pem')
+            key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
+            cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
         }) // Configure this HTTPS server however you choose.
 });
 ```
