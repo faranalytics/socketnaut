@@ -23,15 +23,11 @@ if (threads.isMainThread) {
         (message: string, { name, level, func, url, line, col }: IMeta): string =>
             `${Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`
     );
+    
+    consoleHandler.setLevel(Level.INFO);
+    consoleHandler.setFormatter(formatter);
+    log.addHandler(consoleHandler);
 
-    try {
-        consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(formatter);
-        log.addHandler(consoleHandler);
-    }
-    catch (err) {
-        console.error(err);
-    }
     const { version } = require('../package.json');
     log.info(`socketnaut v${version}`);
     log.info(`pid ${process.pid}`);
