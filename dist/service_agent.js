@@ -76,7 +76,7 @@ class ServiceAgent extends port_agent_1.Agent {
         try {
             if (this.server) {
                 this.server.unref();
-                this.log.debug(`Process exit.  ${this.agentDescription}.`);
+                this.log.debug(`Process exit. ${this.agentDescription}.`);
                 setImmediate(() => {
                     process.exit(0);
                 });

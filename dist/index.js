@@ -40,14 +40,9 @@ if (threads.isMainThread) {
     const log = new memoir_1.LevelLogger({ name: 'socketnaut' });
     const consoleHandler = new memoir_1.ConsoleHandler();
     const formatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${memoir_1.Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`);
-    try {
-        consoleHandler.setLevel(memoir_1.Level.INFO);
-        consoleHandler.setFormatter(formatter);
-        log.addHandler(consoleHandler);
-    }
-    catch (err) {
-        console.error(err);
-    }
+    consoleHandler.setLevel(memoir_1.Level.INFO);
+    consoleHandler.setFormatter(formatter);
+    log.addHandler(consoleHandler);
     const { version } = require('../package.json');
     log.info(`socketnaut v${version}`);
     log.info(`pid ${process.pid}`);
