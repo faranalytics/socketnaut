@@ -74,37 +74,29 @@ class ServiceProxy {
         }
     }
     async tryAllocateThread(clientProxySocket) {
+        if (clientProxySocket.closed) {
+            clientProxySocket.destroy();
+            return;
+        }
+        let agent = this.agents[0];
         try {
-            if (clientProxySocket.closed) {
-                clientProxySocket.destroy();
-                return;
-            }
-            let agent = this.agents[0];
-            try {
-                if (agent.socketConnectOpts && agent.connections === 0) {
-                    agent.connections = agent.connections + 1;
-                    this.reorderAgent(agent);
-                    await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
-                }
-                else if (this.agents.length === this.maxWorkers) {
-                    agent.connections = agent.connections + 1;
-                    this.reorderAgent(agent);
-                    await agent.online;
-                    await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
-                }
-                else {
-                    agent = this.spawnWorker();
-                    agent.connections = agent.connections + 1;
-                    this.reorderAgent(agent);
-                    await agent.online;
-                    await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
-                }
-            }
-            catch (err) {
-                agent.connections = agent.connections - 1;
+            if (agent.socketConnectOpts && agent.connections === 0) {
+                agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
-                clientProxySocket.destroy();
-                throw (err);
+                await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
+            }
+            else if (this.agents.length === this.maxWorkers) {
+                agent.connections = agent.connections + 1;
+                this.reorderAgent(agent);
+                await agent.online;
+                await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
+            }
+            else {
+                agent = this.spawnWorker();
+                agent.connections = agent.connections + 1;
+                this.reorderAgent(agent);
+                await agent.online;
+                await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
             }
             clientProxySocket.once('close', () => {
                 agent.connections = agent.connections - 1;
@@ -112,6 +104,11 @@ class ServiceProxy {
             });
         }
         catch (err) {
+            // agent.connections = agent.connections - 1;
+            // this.reorderAgent(agent);
+            clientProxySocket.destroy();
+            this.removeAgent(agent);
+            await agent.call('tryTerminate');
             this.log.error(this.describeError(err));
         }
     }
@@ -221,7 +218,7 @@ class ServiceProxy {
         const agent = new worker_agent_js_1.WorkerAgent({ worker });
         worker.once('error', (err) => {
             this.log.error(this.describeError(err));
-            this.removeAgent.bind(this, agent);
+            this.removeAgent(agent);
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
         agent.register('serviceLog', this.serviceLog.bind(this));

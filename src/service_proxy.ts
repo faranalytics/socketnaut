@@ -114,9 +114,11 @@ export class ServiceProxy {
             });
         }
         catch (err) {
-            agent.connections = agent.connections - 1;
-            this.reorderAgent(agent);
+            // agent.connections = agent.connections - 1;
+            // this.reorderAgent(agent);
             clientProxySocket.destroy();
+            this.removeAgent(agent);
+            await agent.call('tryTerminate');
             this.log.error(this.describeError(err));
         }
     }
@@ -256,7 +258,7 @@ export class ServiceProxy {
         const agent = new WorkerAgent({ worker });
         worker.once('error', (err: Error) => {
             this.log.error(this.describeError(err));
-            this.removeAgent.bind(this, agent);
+            this.removeAgent(agent);
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
         agent.register('serviceLog', this.serviceLog.bind(this));
