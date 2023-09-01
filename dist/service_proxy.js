@@ -119,7 +119,7 @@ class ServiceProxy {
         const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}.`;
         const proxyServerSocket = net.createConnection(socketConnectOpts);
         return new Promise((r, j) => {
-            proxyServerSocket.on('error', j);
+            proxyServerSocket.once('error', j);
             proxyServerSocket.on('connect', () => {
                 proxyServerSocket.removeListener('error', j);
                 proxyServerSocket.on('error', (err) => {

@@ -134,7 +134,7 @@ export class ServiceProxy {
 
         return new Promise((r, j) => {
 
-            proxyServerSocket.on('error', j);
+            proxyServerSocket.once('error', j);
 
             proxyServerSocket.on('connect', () => {
 
