@@ -98,7 +98,7 @@ class ServiceProxy {
                 await agent.online;
                 await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
             }
-            clientProxySocket.once('close', () => {
+            clientProxySocket.once('close', (hadError) => {
                 agent.connections = agent.connections - 1;
                 this.reorderAgent(agent);
             });
@@ -107,8 +107,10 @@ class ServiceProxy {
             // agent.connections = agent.connections - 1;
             // this.reorderAgent(agent);
             clientProxySocket.destroy();
-            this.removeAgent(agent);
-            await agent.call('tryTerminate');
+            if (agent) {
+                this.removeAgent(agent);
+                await agent.call('tryTerminate');
+            }
             this.log.error(this.describeError(err));
         }
     }
@@ -191,6 +193,9 @@ class ServiceProxy {
         const index = this.agents.indexOf(agent);
         if (index != -1) {
             this.agents.splice(index, 1);
+        }
+        else {
+            return;
         }
         for (let i = 0; i < this.agents.length; i = i + 1) {
             if (agent.connections <= this.agents[i].connections) {
