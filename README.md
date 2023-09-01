@@ -149,9 +149,9 @@ Scaling can be tuned by specifying a minimum and maximum number of allocated Wor
 
     - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
 
-The `minWorkers` argument specifies the minimum number of Worker threads permitted.  `minWorkers` threads will be instantiated when the Socketnaut Proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.
+The `minWorkers` argument specifies the minimum number of Worker threads to be permitted in the thread pool.  `minWorkers` Worker threads will be instantiated when the Socketnaut Proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.  However, if a Worker thread throws an uncaught exception, Socketnaut will not attempt to automatically restart it, which could result in a thread pool below the specified threshold.
 
-The `maxWorkers` argument is a hard limit. 
+The `maxWorkers` argument is a hard limit on online threads; however, because thread termination is asynchronous it is possible for the combined count of online and liminal threads to briefly exceed this limit.
 
 The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.  The default interval is `60000` milliseconds.
 

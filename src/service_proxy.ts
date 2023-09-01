@@ -233,7 +233,7 @@ export class ServiceProxy {
             this.agents.splice(index, 1);
         }
         else {
-            return;
+            return;  // The agent isn't in the list; hence, there is nothing to reorder.
         }
 
         for (let i = 0; i < this.agents.length; i = i + 1) {
