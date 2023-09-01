@@ -46,7 +46,7 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 
 ### ServiceAgent
 
-A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It can consume a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
+A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It consumes a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
 
 ## API
 
