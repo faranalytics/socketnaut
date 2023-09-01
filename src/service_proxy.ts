@@ -114,12 +114,15 @@ export class ServiceProxy {
             });
         }
         catch (err) {
-            // agent.connections = agent.connections - 1;
-            // this.reorderAgent(agent);
             clientProxySocket.destroy();
             if (agent) {
                 this.removeAgent(agent);
-                await agent.call('tryTerminate');
+                try {
+                    await agent.call('tryTerminate');
+                }
+                catch(err) {
+                    this.log.error(this.describeError(err));
+                }
             }
             this.log.error(this.describeError(err));
         }
