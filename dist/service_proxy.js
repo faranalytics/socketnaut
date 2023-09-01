@@ -94,6 +94,7 @@ class ServiceProxy {
             else {
                 agent = this.spawnWorker();
                 agent.connections = agent.connections + 1;
+                this.agents.push(agent);
                 this.reorderAgent(agent);
                 await agent.online;
                 await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
@@ -104,6 +105,7 @@ class ServiceProxy {
             });
         }
         catch (err) {
+            process.exit(1);
             clientProxySocket.destroy();
             if (agent) {
                 this.removeAgent(agent);
