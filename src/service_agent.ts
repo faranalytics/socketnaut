@@ -8,7 +8,7 @@ import * as http from 'node:http';
 import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
-import { BaseFormatter, ConsoleHandler, IMeta, Level, LevelHandler, LevelLogger, Meta, MetaFormatter } from 'memoir';
+import { BaseFormatter, IMeta, Level, LevelHandler, LevelLogger, Meta, MetaFormatter } from 'memoir';
 
 threads.parentPort?.unref();
 
@@ -125,6 +125,6 @@ export function createServiceAgent(options: ServiceAgentOptions): ServiceAgent {
         return serviceAgent;
     }
     else {
-        throw new Error(`A ServiceAgent has already been instantiated for this Worker thread ${threads.threadId}.`);
+        throw new Error(`A ServiceAgent has already been instantiated for Worker thread ${threads.threadId}.`);
     }
 }

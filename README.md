@@ -55,9 +55,9 @@ A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker s
 #### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
 
-    - `maxWorkers` `<number>` Optional argument that specifies the maximum number of `ServiceAgent` Worker threads permitted.
+    - `maxWorkers` `<number>` Optional argument that specifies the maximum number of Worker threads permitted.
 
-    - `minWorkers` `<number>` Optional argument that specifies the minimum number of `ServiceAgent` Worker threads permitted. **Default**: `0`
+    - `minWorkers` `<number>` Optional argument that specifies the minimum number of Worker threads permitted. **Default**: `0`
 
     - `server` `<node:net.Server>` A `net.Server` configured however you choose.
 
@@ -80,7 +80,7 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 
 - Returns: `<socketnaut.ServiceAgent>`
 
-Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an Error if it is called more than once.
+Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once.
 
 ## Usage
 
@@ -143,9 +143,9 @@ Scaling can be tuned by specifying a minimum and maximum number of allocated Wor
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
-    - `minWorkers` `<number>` Optional argument that specifies the minimum number of `ServiceAgent` Worker threads permitted. **Default**: `0`
+    - `minWorkers` `<number>` Optional argument that specifies the minimum number of Worker threads permitted. **Default**: `0`
 
-    - `maxWorkers` `<number>` An argument that specifies the maximum number of `ServiceAgent` threads permitted.
+    - `maxWorkers` `<number>` An argument that specifies the maximum number of Worker threads permitted.
 
     - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
 

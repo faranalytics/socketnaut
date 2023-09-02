@@ -7,7 +7,7 @@ const proxy = createServiceProxy({
     server: net.createServer(),
     minWorkers: 4,
     maxWorkers: 100,
-    workersCheckingInterval: 1e6,
+    workersCheckingInterval: 1e4,
     workerURL: require.resolve('./http_server.js')
 });
 
