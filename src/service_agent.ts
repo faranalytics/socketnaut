@@ -22,15 +22,12 @@ export class ServiceMessageHandler<MessageT, FormatT> extends LevelHandler<Messa
         this.handle = this.handle.bind(this);
         this.setFormatter = this.setFormatter.bind(this);
         this.setLevel = this.setLevel.bind(this);
-
         this.agent = agent;
     }
 
     async handle(message: MessageT, meta: Meta): Promise<void> {
         if (meta.level && meta.level >= this.level) {
-
             if (this.formatter) {
-
                 const formattedMessage = this.formatter.format(message, meta);
                 await this.agent.call<void>('serviceLog', { level: Level[meta.level], value: formattedMessage });
             }
