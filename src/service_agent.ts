@@ -120,7 +120,7 @@ export function createServiceAgent(options: ServiceAgentOptions): ServiceAgent {
         if (threads.parentPort) {
             serviceAgent = new ServiceAgent(threads.parentPort, options);
         } else {
-            throw new Error(`The ParentPort for thread ${threads.threadId} is null.`);
+            throw new Error(`The MessagePort for thread ${threads.threadId} is null.`);
         }
         return serviceAgent;
     }
