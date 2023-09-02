@@ -14,6 +14,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "socketnaut": "^0.3.2"
+    "socketnaut": "^1.0.0"
   }
 }
