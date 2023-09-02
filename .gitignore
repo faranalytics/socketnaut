@@ -8,7 +8,7 @@
 !/src
 !/src/*
 !/*.*
-CHANGELOG.md
+!CHANGELOG.md
 !/examples
 !/examples/*
 !/examples/*/src

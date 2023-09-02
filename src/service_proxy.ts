@@ -74,7 +74,6 @@ export class ServiceProxy {
             if (agent.socketConnectOpts && agent.connections === 0) {
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
-                await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
             }
             else if (this.agents.length === this.maxWorkers) {
                 agent.connections = agent.connections + 1;
@@ -82,7 +81,6 @@ export class ServiceProxy {
                 if (!agent.socketConnectOpts) {
                     await agent.online;
                 }
-                await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
             }
             else {
                 agent = this.spawnWorker();
@@ -90,7 +88,13 @@ export class ServiceProxy {
                 this.agents.push(agent);
                 this.reorderAgent(agent);
                 await agent.online;
+            }
+
+            try {
                 await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
+            }
+            catch (err) {
+                clientProxySocket.destroy();
             }
 
             clientProxySocket.once('close', (hadError: boolean) => {
@@ -99,15 +103,15 @@ export class ServiceProxy {
             });
         }
         catch (err) {
-            clientProxySocket.destroy();
-            if (agent) {
-                this.removeAgent(agent);
-                try {
+            try {
+                clientProxySocket.destroy();
+                if (agent) {
+                    this.removeAgent(agent);
                     await agent.call('tryTerminate');
                 }
-                catch (err) {
-                    this.log.error(this.describeError(err));
-                }
+            }
+            catch (err) {
+                this.log.error(this.describeError(err));
             }
             this.log.error(this.describeError(err));
         }
