@@ -88,7 +88,9 @@ class ServiceProxy {
             else if (this.agents.length === this.maxWorkers) {
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
-                await agent.online;
+                if (!agent.socketConnectOpts) {
+                    await agent.online;
+                }
                 await this.createServerConnection(clientProxySocket, agent.socketConnectOpts);
             }
             else {
@@ -105,7 +107,6 @@ class ServiceProxy {
             });
         }
         catch (err) {
-            process.exit(1);
             clientProxySocket.destroy();
             if (agent) {
                 this.removeAgent(agent);

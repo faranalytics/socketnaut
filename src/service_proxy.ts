@@ -88,7 +88,6 @@ export class ServiceProxy {
         let agent = this.agents[0];
 
         try {
-
             if (agent.socketConnectOpts && agent.connections === 0) {
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
@@ -97,7 +96,9 @@ export class ServiceProxy {
             else if (this.agents.length === this.maxWorkers) {
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
-                await agent.online;
+                if (!agent.socketConnectOpts) {
+                    await agent.online;
+                }
                 await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
             }
             else {
@@ -115,7 +116,6 @@ export class ServiceProxy {
             });
         }
         catch (err) {
-            process.exit(1);
             clientProxySocket.destroy();
             if (agent) {
                 this.removeAgent(agent);
