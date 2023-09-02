@@ -53,7 +53,8 @@ export class ServiceProxy {
         consoleHandler.setFormatter(metaFormatter);
         levelLogger.addHandler(consoleHandler);
 
-        this.server.on('connection', this.handleClientSocket.bind(this));
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        this.server.on('connection', this.tryAllocateThread.bind(this));
         this.server.on('listening', () => this.log.info(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
 
         void this.spawnMinWorkers();
@@ -61,29 +62,11 @@ export class ServiceProxy {
         setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
     }
 
-    protected handleClientSocket(clientProxySocket: net.Socket): void {
-
-        try {
-
-            clientProxySocket.on('error', (err: Error) => {
-                this.log.error(`Client socket error.  ${this.describeError(err)}.`);
-            });
-
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setImmediate(this.tryAllocateThread.bind(this, clientProxySocket));
-        }
-        catch (err) {
-            this.log.error(this.describeError(err));
-            clientProxySocket.destroy();
-        }
-    }
-
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {
 
-        if (clientProxySocket.closed) {
-            clientProxySocket.destroy();
-            return;
-        }
+        clientProxySocket.on('error', (err: Error) => {
+            this.log.error(`Client socket error.  ${this.describeError(err)}.`);
+        });
 
         let agent = this.agents[0];
 
@@ -122,7 +105,7 @@ export class ServiceProxy {
                 try {
                     await agent.call('tryTerminate');
                 }
-                catch(err) {
+                catch (err) {
                     this.log.error(this.describeError(err));
                 }
             }

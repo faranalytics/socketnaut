@@ -25,7 +25,6 @@ export declare class ServiceProxy {
     logHandler: ConsoleHandler<string, string>;
     logFormatter: MetaFormatter<string, string>;
     constructor({ server, workerURL, minWorkers, maxWorkers, workersCheckingInterval, workerOptions }: ServiceProxyOptions);
-    protected handleClientSocket(clientProxySocket: net.Socket): void;
     protected tryAllocateThread(clientProxySocket: net.Socket): Promise<void>;
     protected createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void>;
     protected checkThreads(): Promise<void>;

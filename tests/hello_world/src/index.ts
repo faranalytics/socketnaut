@@ -5,8 +5,8 @@ import { WorkerAgent } from '../../../dist/worker_agent';
 
 const proxy = createServiceProxy({
     server: net.createServer(),
-    minWorkers: 500,
-    maxWorkers: 500,
+    minWorkers: 4,
+    maxWorkers: 100,
     workersCheckingInterval: 1e4,
     workerURL: require.resolve('./http_server.js')
 });
