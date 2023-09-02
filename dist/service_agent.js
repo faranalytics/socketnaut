@@ -116,7 +116,7 @@ function createServiceAgent(options) {
             serviceAgent = new ServiceAgent(threads.parentPort, options);
         }
         else {
-            throw new Error(`The ParentPort for thread ${threads.threadId} is null.`);
+            throw new Error(`The MessagePort for Worker thread ${threads.threadId} is null.`);
         }
         return serviceAgent;
     }
