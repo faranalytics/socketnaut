@@ -90,6 +90,7 @@ class ServiceProxy {
             }
             catch (err) {
                 clientProxySocket.destroy();
+                return;
             }
             clientProxySocket.once('close', (hadError) => {
                 agent.connections = agent.connections - 1;

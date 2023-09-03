@@ -90,17 +90,17 @@ export class ServiceProxy {
                 await agent.online;
             }
 
+            clientProxySocket.once('close', (hadError: boolean) => {
+                agent.connections = agent.connections - 1;
+                this.reorderAgent(agent);
+            });
+
             try {
                 await this.createServerConnection(clientProxySocket, agent.socketConnectOpts as net.SocketConnectOpts);
             }
             catch (err) {
                 clientProxySocket.destroy();
             }
-
-            clientProxySocket.once('close', (hadError: boolean) => {
-                agent.connections = agent.connections - 1;
-                this.reorderAgent(agent);
-            });
         }
         catch (err) {
             try {
