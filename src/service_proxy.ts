@@ -207,14 +207,14 @@ export class ServiceProxy {
         }
     }
 
-    protected removeAgent(agent: WorkerAgent) {
+    protected removeAgent(agent: WorkerAgent): void {
         const index = this.agents.indexOf(agent);
         if (index != -1) {
             this.agents.splice(index, 1);
         }
     }
 
-    protected reorderAgent(agent: WorkerAgent) {
+    protected reorderAgent(agent: WorkerAgent): void {
 
         const index = this.agents.indexOf(agent);
 
@@ -262,7 +262,7 @@ export class ServiceProxy {
         return agent;
     }
 
-    protected serviceLog(message: { level: string, value: string }) {
+    protected serviceLog(message: { level: string, value: string }): void {
         switch (message.level) {
             case 'DEBUG':
                 this.log.debug(message.value);

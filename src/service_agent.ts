@@ -66,7 +66,7 @@ export class ServiceAgent extends Agent {
         this.log.addHandler(messageHandler);
     }
 
-    protected tryTerminate() {
+    protected tryTerminate(): void {
         try {
             if (this.server) {
                 this.server.unref();
