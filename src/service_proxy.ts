@@ -100,6 +100,7 @@ export class ServiceProxy {
             }
             catch (err) {
                 clientProxySocket.destroy();
+                this.log.error(this.describeError(err));
             }
         }
         catch (err) {
