@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import * as net from 'node:net';
 import * as http from 'node:http';
 import * as https from 'node:https';
@@ -51,6 +46,7 @@ export class ServiceAgent extends Agent {
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
             `${func}:${line}:${col}:${message}`;
 

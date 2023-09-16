@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as net from 'node:net';
 import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
@@ -42,6 +41,7 @@ export class ServiceProxy {
         this.workerOptions = workerOptions;
         this.agents = [];
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
             `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
 
@@ -89,6 +89,7 @@ export class ServiceProxy {
                 await agent.online;
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             clientProxySocket.once('close', (hadError: boolean) => {
                 agent.connections = agent.connections - 1;
                 this.reorderAgent(agent);

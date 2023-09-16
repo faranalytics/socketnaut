@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable no-empty */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as threads from 'node:worker_threads';
 import * as net from 'node:net';
 import { Agent } from 'port_agent';
@@ -31,6 +26,7 @@ export class WorkerAgent extends Agent {
 
             worker.once('error', j);
 
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             worker.once('online', async () => {
                 const socketConnectOpts = await this.call<net.SocketConnectOpts>('socketConnectOpts');
                 if (socketConnectOpts) {

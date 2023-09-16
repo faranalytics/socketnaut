@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as net from 'node:net';
 import { Level, createServiceProxy } from 'socketnaut';
 import { WorkerAgent } from '../../../dist/worker_agent';
