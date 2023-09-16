@@ -6,7 +6,7 @@ Scalable multithreaded Node.js servers made easy.
 
 Socketnaut makes scaling native Node.js servers (e.g., HTTP, HTTPS, TCP) easy.  A Socketnaut **Service** consists of a TCP Proxy and a pool of HTTP servers.  When the server pool is exhausted, Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut!
 
-Socketnaut can be used in order to scale the *main thread* of performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/)).
+Socketnaut can be used in order to scale the *main module* of performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/)).
 
 ## Features
 - **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org.  
@@ -24,8 +24,8 @@ Dependencies:
 4. [Usage](#usage)
 5. [Examples](#examples)
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
-    - [*Use Socketnaut to scale the main thread of a Fastify server.*](#use-socketnaut-to-scale-the-main-thread-of-a-fastify-server-example)
-    - [*Use Socketnaut to scale the main thread of an Express server.*](#use-socketnaut-to-scale-the-main-thread-of-an-express-server-example)
+    - [*Use Socketnaut to scale the main module of a Fastify server.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-server-example)
+    - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Logging](#logging)
@@ -125,11 +125,11 @@ service.server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.
 // Socketnaut will communicate the random port number to the ServiceProxy.
 ```
-### *Use Socketnaut to scale the main thread of a Fastify server.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of a Fastify server.* <sup><sup>(example)</sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
-### *Use Socketnaut to scale the main thread of an Express server.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of an Express server.* <sup><sup>(example)</sup></sup>
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
