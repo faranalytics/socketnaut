@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "fastify": "^4.22.0",
-    "socketnaut": "^1.0.0"
+    "socketnaut": "^1.1.0"
   },
   "type": "module"
 }
