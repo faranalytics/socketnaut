@@ -8,28 +8,25 @@ import * as http from 'node:http';
 import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
-import { BaseFormatter, IMeta, Level, LevelHandler, LevelLogger, Meta, MetaFormatter } from 'memoir';
+import { Metadata, Level, MetadataHandler, LevelLogger, MetadataFormatter } from 'memoir';
 
 threads.parentPort?.unref();
 
-export class ServiceMessageHandler<MessageT, FormatT> extends LevelHandler<MessageT, FormatT, Meta> {
+export class ServiceMessageHandler<MessageT, FormatT> extends MetadataHandler<MessageT, FormatT> {
 
-    protected formatter?: BaseFormatter<MessageT, FormatT, Meta>;
     private agent: Agent;
 
     constructor(agent: Agent) {
         super();
         this.handle = this.handle.bind(this);
-        this.setFormatter = this.setFormatter.bind(this);
-        this.setLevel = this.setLevel.bind(this);
         this.agent = agent;
     }
 
-    async handle(message: MessageT, meta: Meta): Promise<void> {
-        if (meta.level && meta.level >= this.level) {
+    async handle(message: MessageT, meta: Metadata): Promise<void> {
+        if (meta.level && Level[meta.level] >= this.level) {
             if (this.formatter) {
                 const formattedMessage = this.formatter.format(message, meta);
-                await this.agent.call<void>('serviceLog', { level: Level[meta.level], value: formattedMessage });
+                await this.agent.call<void>('serviceLog', { level: meta.level, value: formattedMessage });
             }
         }
     }
@@ -46,7 +43,6 @@ export class ServiceAgent extends Agent {
     public agentDescription: string;
     public log: LevelLogger<string, string>;
     public logHandler: ServiceMessageHandler<string, string>;
-    public logFormatter: MetaFormatter<string, string>;
 
     constructor(port: threads.MessagePort, options: ServiceAgentOptions) {
         super(port);
@@ -55,29 +51,29 @@ export class ServiceAgent extends Agent {
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
 
-        this.log = new LevelLogger<string, string>({ name: `Agent ${threads.threadId}` });
-        const messageHandler = this.logHandler = new ServiceMessageHandler<string, string>(this);
-        const formatter = this.logFormatter = new MetaFormatter<string, string>(
-            (message: string, { name, level, func, url, line, col }: IMeta): string =>
-                `${func}:${line}:${col}:${message}`
-        );
-        messageHandler.setLevel(Level.INFO);
-        messageHandler.setFormatter(formatter);
-        this.log.addHandler(messageHandler);
+        const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
+            `${func}:${line}:${col}:${message}`;
+
+        this.log = new LevelLogger<string, string>({ name: `Agent ${threads.threadId}`, level: Level.INFO });
+        this.logHandler = new ServiceMessageHandler<string, string>(this);
+        const metadataFormatter = new MetadataFormatter<string, string>({ formatter });
+        this.logHandler.setLevel(Level.DEBUG);
+        this.logHandler.setFormatter(metadataFormatter);
+        this.log.addHandler(this.logHandler);
     }
 
     protected tryTerminate(): void {
         try {
             if (this.server) {
                 this.server.unref();
-                this.log.debug(`Process exit. ${this.agentDescription}.`);
+                this.log.debug?.(`Process exit. ${this.agentDescription}.`);
                 setImmediate(() => {
                     process.exit(0);
                 });
             }
         }
         catch (err) {
-            this.log.error(this.describeError(err));
+            this.log.error?.(this.describeError(err));
         }
         finally {
             setTimeout(this.tryTerminate.bind(this), 4).unref();
@@ -100,7 +96,7 @@ export class ServiceAgent extends Agent {
             socketConnectOpts = null;
         }
 
-        this.log.debug(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
+        this.log.debug?.(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
 
         this.register('socketConnectOpts', () => socketConnectOpts);
     }

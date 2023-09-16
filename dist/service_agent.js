@@ -32,21 +32,18 @@ const threads = __importStar(require("node:worker_threads"));
 const port_agent_1 = require("port_agent");
 const memoir_1 = require("memoir");
 threads.parentPort?.unref();
-class ServiceMessageHandler extends memoir_1.LevelHandler {
-    formatter;
+class ServiceMessageHandler extends memoir_1.MetadataHandler {
     agent;
     constructor(agent) {
         super();
         this.handle = this.handle.bind(this);
-        this.setFormatter = this.setFormatter.bind(this);
-        this.setLevel = this.setLevel.bind(this);
         this.agent = agent;
     }
     async handle(message, meta) {
-        if (meta.level && meta.level >= this.level) {
+        if (meta.level && memoir_1.Level[meta.level] >= this.level) {
             if (this.formatter) {
                 const formattedMessage = this.formatter.format(message, meta);
-                await this.agent.call('serviceLog', { level: memoir_1.Level[meta.level], value: formattedMessage });
+                await this.agent.call('serviceLog', { level: meta.level, value: formattedMessage });
             }
         }
     }
@@ -58,32 +55,32 @@ class ServiceAgent extends port_agent_1.Agent {
     agentDescription;
     log;
     logHandler;
-    logFormatter;
     constructor(port, options) {
         super(port);
         this.agentDescription = `Thread: ${threads.threadId}`;
         this.register('tryTerminate', this.tryTerminate.bind(this));
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
-        this.log = new memoir_1.LevelLogger({ name: `Agent ${threads.threadId}` });
-        const messageHandler = this.logHandler = new ServiceMessageHandler(this);
-        const formatter = this.logFormatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${func}:${line}:${col}:${message}`);
-        messageHandler.setLevel(memoir_1.Level.INFO);
-        messageHandler.setFormatter(formatter);
-        this.log.addHandler(messageHandler);
+        const formatter = (message, { name, level, func, url, line, col }) => `${func}:${line}:${col}:${message}`;
+        this.log = new memoir_1.LevelLogger({ name: `Agent ${threads.threadId}`, level: memoir_1.Level.INFO });
+        this.logHandler = new ServiceMessageHandler(this);
+        const metadataFormatter = new memoir_1.MetadataFormatter({ formatter });
+        this.logHandler.setLevel(memoir_1.Level.DEBUG);
+        this.logHandler.setFormatter(metadataFormatter);
+        this.log.addHandler(this.logHandler);
     }
     tryTerminate() {
         try {
             if (this.server) {
                 this.server.unref();
-                this.log.debug(`Process exit. ${this.agentDescription}.`);
+                this.log.debug?.(`Process exit. ${this.agentDescription}.`);
                 setImmediate(() => {
                     process.exit(0);
                 });
             }
         }
         catch (err) {
-            this.log.error(this.describeError(err));
+            this.log.error?.(this.describeError(err));
         }
         finally {
             setTimeout(this.tryTerminate.bind(this), 4).unref();
@@ -101,7 +98,7 @@ class ServiceAgent extends port_agent_1.Agent {
         else {
             socketConnectOpts = null;
         }
-        this.log.debug(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
+        this.log.debug?.(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
         this.register('socketConnectOpts', () => socketConnectOpts);
     }
     describeError(err) {

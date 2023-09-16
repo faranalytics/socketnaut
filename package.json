@@ -27,7 +27,7 @@
     "eslint": "^8.44.0"
   },
   "dependencies": {
-    "memoir": "^1.0.0",
+    "memoir": "^2.0.0",
     "port_agent": "^1.0.0"
   },
   "engines": {

@@ -4,7 +4,7 @@
 import * as net from 'node:net';
 import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
-import { ConsoleHandler, LevelLogger, MetaFormatter } from 'memoir';
+import { ConsoleHandler, LevelLogger } from 'memoir';
 export interface ServiceProxyOptions {
     server: net.Server;
     workerURL: string | URL;
@@ -23,7 +23,6 @@ export declare class ServiceProxy {
     agents: Array<WorkerAgent>;
     log: LevelLogger<string, string>;
     logHandler: ConsoleHandler<string, string>;
-    logFormatter: MetaFormatter<string, string>;
     constructor({ server, workerURL, minWorkers, maxWorkers, workersCheckingInterval, workerOptions }: ServiceProxyOptions);
     protected tryAllocateThread(clientProxySocket: net.Socket): Promise<void>;
     protected createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void>;

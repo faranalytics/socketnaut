@@ -159,13 +159,13 @@ By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval
 
 ## Logging
 
-Socketnaut uses the Node.js `memoir` logging facility.  Each `ServiceProxy` and `ServiceAgent` has its own `memoir` Logger and Handler instances, which can be accessed by the public properties `log` and `logHandler` respectively.  You can set the log level on the handler to `DEBUG` | `INFO` | `WARN` | `ERROR` using the `setLevel` method.  The default is `INFO`.  For example:
+Socketnaut uses the Node.js `memoir` logging facility.  Each `ServiceProxy` and `ServiceAgent` has its own `memoir` Logger and Handler instances, which can be accessed by the public properties `log` and `logHandler` respectively.  You can set the log level on the Logger itself to `DEBUG` | `INFO` | `WARN` | `ERROR` using the `setLevel` method.  The default is `INFO`.  For example:
 
 `index.js`
 ```js
 import { Level } from 'socketnaut';
 ...
-proxy.logHandler.setLevel(Level.DEBUG)
+proxy.log.setLevel(Level.DEBUG)
 ```
 or
 
@@ -173,7 +173,7 @@ or
 ```js
 import { Level } from 'socketnaut';
 ...
-service.logHandler.setLevel(Level.DEBUG)
+service.log.setLevel(Level.DEBUG)
 ```
 ## FAQ
 

@@ -37,13 +37,14 @@ Object.defineProperty(exports, "ServiceProxy", { enumerable: true, get: function
 const memoir_1 = require("memoir");
 Object.defineProperty(exports, "Level", { enumerable: true, get: function () { return memoir_1.Level; } });
 if (threads.isMainThread) {
-    const log = new memoir_1.LevelLogger({ name: 'socketnaut' });
+    const formatter = (message, { name, level, func, url, line, col }) => `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
+    const log = new memoir_1.LevelLogger({ name: 'socketnaut', level: memoir_1.Level.INFO });
     const consoleHandler = new memoir_1.ConsoleHandler();
-    const formatter = new memoir_1.MetaFormatter((message, { name, level, func, url, line, col }) => `${memoir_1.Level[level]}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`);
-    consoleHandler.setLevel(memoir_1.Level.INFO);
-    consoleHandler.setFormatter(formatter);
+    const metadataFormatter = new memoir_1.MetadataFormatter({ formatter });
+    consoleHandler.setLevel(memoir_1.Level.DEBUG);
+    consoleHandler.setFormatter(metadataFormatter);
     log.addHandler(consoleHandler);
     const { version } = require('../package.json');
-    log.info(`socketnaut v${version}`);
-    log.info(`pid ${process.pid}`);
+    log.info?.(`socketnaut v${version}`);
+    log.info?.(`pid ${process.pid}`);
 }
