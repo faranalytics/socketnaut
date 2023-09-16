@@ -24,7 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServiceProxy = exports.ServiceProxy = void 0;
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const net = __importStar(require("node:net"));
 const threads = __importStar(require("node:worker_threads"));
 const worker_agent_js_1 = require("./worker_agent.js");
@@ -47,6 +46,7 @@ class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message, { name, level, func, url, line, col }) => `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
         this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}`, level: memoir_1.Level.INFO });
         this.logHandler = new memoir_1.ConsoleHandler();
@@ -85,6 +85,7 @@ class ServiceProxy {
                 this.reorderAgent(agent);
                 await agent.online;
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             clientProxySocket.once('close', (hadError) => {
                 agent.connections = agent.connections - 1;
                 this.reorderAgent(agent);

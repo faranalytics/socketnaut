@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.1] - 2023-09-16
+### Fixed
+- Improve documentation.
+- Make linting more specific.
+
 ## [1.1.0] - 2023-09-16
 ### Changed
 - Socketnaut depends on Memoir ^2.0.0.  This change can improve Socketnaut's performance, depending on how the log Level is set.  Please see the documentation for how to use Memoir's 2.0.0 LevelLogger.

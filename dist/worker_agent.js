@@ -14,6 +14,7 @@ class WorkerAgent extends port_agent_1.Agent {
         this.online = new Promise((r, j) => {
             worker.once('exit', j);
             worker.once('error', j);
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             worker.once('online', async () => {
                 const socketConnectOpts = await this.call('socketConnectOpts');
                 if (socketConnectOpts) {

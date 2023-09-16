@@ -1,8 +1,4 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -61,6 +57,7 @@ class ServiceAgent extends port_agent_1.Agent {
         this.register('tryTerminate', this.tryTerminate.bind(this));
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message, { name, level, func, url, line, col }) => `${func}:${line}:${col}:${message}`;
         this.log = new memoir_1.LevelLogger({ name: `Agent ${threads.threadId}`, level: memoir_1.Level.INFO });
         this.logHandler = new ServiceMessageHandler(this);

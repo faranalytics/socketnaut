@@ -24,9 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Level = exports.ServiceAgent = exports.createServiceAgent = exports.ServiceProxy = exports.createServiceProxy = void 0;
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const threads = __importStar(require("node:worker_threads"));
 const service_agent_js_1 = require("./service_agent.js");
 Object.defineProperty(exports, "createServiceAgent", { enumerable: true, get: function () { return service_agent_js_1.createServiceAgent; } });
@@ -37,6 +34,7 @@ Object.defineProperty(exports, "ServiceProxy", { enumerable: true, get: function
 const memoir_1 = require("memoir");
 Object.defineProperty(exports, "Level", { enumerable: true, get: function () { return memoir_1.Level; } });
 if (threads.isMainThread) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const formatter = (message, { name, level, func, url, line, col }) => `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
     const log = new memoir_1.LevelLogger({ name: 'socketnaut', level: memoir_1.Level.INFO });
     const consoleHandler = new memoir_1.ConsoleHandler();
@@ -44,6 +42,7 @@ if (threads.isMainThread) {
     consoleHandler.setLevel(memoir_1.Level.DEBUG);
     consoleHandler.setFormatter(metadataFormatter);
     log.addHandler(consoleHandler);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const { version } = require('../package.json');
     log.info?.(`socketnaut v${version}`);
     log.info?.(`pid ${process.pid}`);
