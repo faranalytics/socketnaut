@@ -1,4 +1,4 @@
-# *Use Socketnaut to scale the main thread of a Fastify server.* <sup><sup>(example)</sup></sup>
+# *Use Socketnaut to scale the main module of a Fastify server.* <sup><sup>(example)</sup></sup>
 
 In this example you will use Socketnaut to scale the main thread of a Fastify server.  The `ServiceProxy` is configured to start up 4 `http_server.js` Workers and scale up to 42 Workers on demand.
 
