@@ -120,7 +120,7 @@ export class ServiceProxy {
 
     protected async createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void> {
 
-        const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}.`;
+        const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}`;
 
         const proxyServerSocket = net.createConnection(socketConnectOpts);
 
