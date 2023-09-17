@@ -47,7 +47,13 @@ npm install
 ```bash
 npm start
 ```
-### Send 1000 requests to the endpoint.
+### In another shell send 1000 requests to the endpoint.
 ```bash
-time for i in {1..1000}; do echo "http://0.0.0.0:3000"; done | xargs -n1 -P1000 curl
+time for fun in {1..1000}; do echo "http://0.0.0.0:3000"; done | xargs -n1 -P1000 curl
+```
+#### Output
+```bash
+real    0m10.947s
+user    0m6.572s
+sys     0m7.151s
 ```
