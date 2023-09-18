@@ -28,7 +28,7 @@ Dependencies:
     - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
 6. [Tuning Strategies](#tuning-strategies)
-7. [Remote Proxy Address](#remote-proxy-address)
+7. [Proxy Socket Remote Address](#proxy-socket-remote-address)
 8. [Logging](#logging)
 9. [FAQ](#faq)
 
@@ -158,7 +158,7 @@ The `workersCheckingInterval` specifies the approximate interval at which Socket
 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
-## Remote Proxy Address
+## Proxy Socket Remote Address
 
 In the HTTP server `request` handler, `http.IncomingMessage.socket.remoteAddress` will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` may or may not be a TLS endpoint; hence, it isn't always possible to inject an HTTP Header into the message.
 
