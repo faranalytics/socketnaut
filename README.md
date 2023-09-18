@@ -160,9 +160,9 @@ By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval
 
 ## Proxy Socket Remote Address
 
-In the HTTP server `request` handler, `http.IncomingMessage.socket.remoteAddress` will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` may or may not be a TLS endpoint; hence, it isn't always possible to inject an HTTP Header into the message.
+When a request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the Socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` is a Layer 4 proxy, and the payload may or may not contain encrypted data; hence, it isn't always possible to inject an HTTP header into the message - the payload may not even be HTTP.
 
-Socketnaut solves this problem by providing a facility for requesting this information from the Proxy. Call the `ServiceAgent.requestProxyAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `net.AddressInfo` object that contains the desired information.
+Socketnaut solves this problem by providing a `MessageChannel` facility for requesting this information from the Proxy. Call the `ServiceAgent.requestProxyAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `net.AddressInfo` object that contains the desired information.
 
 ### Example
 
@@ -173,7 +173,7 @@ const service = createServiceAgent({
 
 service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
     const proxyAddressInfo: net.AddressInfo = await service.requestProxyAddressInfo(req.socket);
-    console.log(proxyAddressInfo);
+    console.log(proxyAddressInfo); // e.g., { address: '93.184.216.34', family: 'IPv4', port: 3443 }
     res.end();
 });
 ```
