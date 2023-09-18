@@ -8,7 +8,10 @@ const service = createServiceAgent({
 service.log.setLevel(Level.INFO);
 
 service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
-    res.end('Test HTTP');
+    if (req.url) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        res.writeHead(301, { 'location': `https://${url.hostname}:3443${url.pathname}` }).end();
+    }
 });
 
 service.server.listen({ port: 0, host: '127.0.0.1' });

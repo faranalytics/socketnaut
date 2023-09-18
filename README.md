@@ -13,7 +13,7 @@ Socketnaut can be used in order to scale the *main module* of performant Node.js
 Dependencies:
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
     - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC facility.
-- The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/docs/latest-v18.x/api/net.html), [`http.Server`](https://nodejs.org/docs/latest-v18.x/api/http.html), and [`https.Server`](https://nodejs.org/docs/latest-v18.x/api/https.html) instances; *you can configure them however you choose*.
+- The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), and [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; *you can configure them however you choose*.
 - The [`http.IncomingMessage`](https://nodejs.org/docs/latest-v18.x/api/http.html#class-httpincomingmessage) and [`http.ServerResponse`](https://nodejs.org/docs/latest-v18.x/api/http.html#class-httpserverresponse) objects passed to `request` listeners are unadulterated native Node objects - nothing added - nothing removed.
 - Import Socketnaut as a Node.js module (see the [Hello World!](#an-instance-of-hello-world-example) example) or take advantage of the packaged type definitions and import it into your TypeScript project. 
 
@@ -81,7 +81,7 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 
 - Returns: `<socketnaut.ServiceAgent>`
 
-Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once.
+Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
 ## Usage
 
