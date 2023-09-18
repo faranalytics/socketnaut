@@ -10,4 +10,4 @@ const proxy = createServiceProxy({
 
 proxy.logHandler.setLevel(Level.DEBUG)
 
-proxy.server.listen({ port: 3000, host: '0.0.0.0' });
+proxy.server.listen({ port: 3080, host: '0.0.0.0' });

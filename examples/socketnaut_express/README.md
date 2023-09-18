@@ -22,7 +22,7 @@ service.server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will instruct the Server to listen on a random port.  Socketnaut will communicate the randomly selected port to the ServiceProxy.
 ```
 ## Requirements
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3000` for this example to work.
+Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.
 
 ## Instructions
 
@@ -44,7 +44,7 @@ npm start
 ```
 ### In another shell send 1000 requests to the endpoint.
 ```bash
-time for fun in {1..1000}; do echo "http://0.0.0.0:3000"; done | xargs -n1 -P1000 curl
+time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl
 ```
 #### Output
 ```bash
