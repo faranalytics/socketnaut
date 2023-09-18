@@ -17,7 +17,7 @@ export interface ServiceAgentOptions {
     server: http.Server | https.Server | net.Server;
 }
 export declare class ServiceAgent extends Agent {
-    server: http.Server | https.Server | net.Server;
+    server: net.Server;
     addressInfo?: string | net.AddressInfo | null;
     agentDescription: string;
     log: LevelLogger<string, string>;

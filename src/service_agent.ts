@@ -33,7 +33,7 @@ export interface ServiceAgentOptions {
 
 export class ServiceAgent extends Agent {
 
-    public server: http.Server | https.Server | net.Server;
+    public server: net.Server;
     public addressInfo?: string | net.AddressInfo | null;
     public agentDescription: string;
     public log: LevelLogger<string, string>;

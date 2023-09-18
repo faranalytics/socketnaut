@@ -28,8 +28,9 @@ Dependencies:
     - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
 6. [Tuning Strategies](#tuning-strategies)
-7. [Logging](#logging)
-8. [FAQ](#faq)
+7. [Remote Proxy Address]
+8. [Logging](#logging)
+9. [FAQ](#faq)
 
 ## Installation
 
@@ -59,7 +60,7 @@ A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker s
 
     - `minWorkers` `<number>` Optional argument that specifies the minimum number of Worker threads permitted. **Default**: `0`
 
-    - `server` `<node:net.Server>` A `net.Server` configured however you choose.
+    - `server` `<node:net.Server>` or `<node:tls.Server>` A `net.Server` configured however you choose.
 
     - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
 
@@ -76,7 +77,7 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 #### socketnaut.createServiceAgent(options)
 - options `<ServiceAgentOptions>`
 
-    - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` A native Node.js `Server` configured however you choose.
+    - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` or `<node:tls.Server>` A native Node.js `Server` configured however you choose.
 
 - Returns: `<socketnaut.ServiceAgent>`
 
@@ -156,6 +157,28 @@ The `maxWorkers` argument is a hard limit on *online* threads; however, because 
 The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.  The default interval is `60000` milliseconds.
 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
+
+## Remote Proxy Address
+
+In the HTTP server `request` handler, `http.IncomingMessage.socket.remoteAddress` will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` may or may not be a TLS endpoint; hence, it isn't always possible to inject an HTTP Header into the message.
+
+Socketnaut solves this problem by providing a facility for requesting this information from the Proxy. Call the `ServiceAgent.requestProxyAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The Service method will return a `net.AddressInfo` that contains the desired information.
+
+### Example
+
+```ts
+const service = createServiceAgent({
+    server: http.createServer()
+});
+
+service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
+    const proxyAddressInfo: net.AddressInfo = await service.requestProxyAddressInfo(req.socket);
+    console.log(proxyAddressInfo);
+    res.end();
+});
+```
+
+The information returned by the `ServiceAgent.requestProxyAddressInfo` method can be used for associating the remote client address and port with each request e.g., for logging purposes.
 
 ## Logging
 
