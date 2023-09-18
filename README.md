@@ -83,6 +83,11 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
+#### serviceAgent.requestProxyAddressInfo(socket)
+- socket `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value will contain the Proxy socket's remote address and port (i.e., in most cases this will be the client's IP address). 
+
+- Returns: `<net.AddressInfo>`
+
 ## Usage
 
 Each Socketnaut Service consists of at least one `ServiceProxy` and a respective Worker module that has a `ServiceAgent` instance.  Please see the [Examples](#examples) section for how to create a Socketnaut Service.
