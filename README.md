@@ -4,7 +4,7 @@ Scalable multithreaded Node.js servers made easy.
 
 ![Socketnaut](./transport.svg)
 
-Socketnaut makes scaling native Node.js servers (e.g., HTTP, HTTPS, TCP) easy.  A Socketnaut **Service** consists of a TCP Proxy and a pool of HTTP servers.  When the server pool is exhausted, Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut!
+Socketnaut makes scaling native Node.js servers (e.g., HTTP, HTTPS, TCP) easy.  A Socketnaut **Service** consists of a TCP proxy and a pool of HTTP servers.  When the server pool is exhausted, Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut exposes the same API for HTTP requests provided by Node's `http.Server` and `https.Server`; hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut!
 
 Socketnaut can be used in order to scale the *main module* of performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/)).
 
@@ -47,7 +47,7 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 
 ### ServiceAgent
 
-A `ServiceAgent` coordinates its state with its respective Proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It consumes a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
+A `ServiceAgent` coordinates its state with its respective proxy (e.g., Worker scaling and termination).  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It consumes a native Node.js server (e.g., HTTP, HTTPS, TCP).  The "wrapped" Node.js server may be used the same way it is used natively; it can even be passed into an external routing facility or provided to a web application framework; please see the [Examples](#examples) section for instruction on how to do this. 
 
 ## API
 
@@ -84,7 +84,7 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
 #### serviceAgent.requestProxySocketAddressInfo(socket)
-- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The awaited return value will contain the tuple that describes the Proxy's socket (i.e., in most cases this will contain the client's IP address and port). 
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value is a `Promise` that will resolve to an object that contains the tuple that describes the Proxy's socket (i.e., in most cases this will contain the client's IP address and port). 
 
 - Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
@@ -155,11 +155,11 @@ Scaling can be tuned by specifying a minimum and maximum number of allocated Wor
 
     - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
 
-The `minWorkers` argument specifies the minimum number of Worker threads to be permitted in the thread pool.  `minWorkers` Worker threads will be instantiated when the Socketnaut Proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.  However, if a Worker thread throws an uncaught exception, Socketnaut will not attempt to automatically restart it, which could result in a thread pool below the specified threshold.
+The `minWorkers` argument specifies the minimum number of Worker threads to be permitted in the thread pool.  `minWorkers` Worker threads will be instantiated when the Socketnaut proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.  However, if a Worker thread throws an uncaught exception, Socketnaut will not attempt to automatically restart it, which could result in a thread pool below the specified threshold.
 
 The `maxWorkers` argument is a hard limit on *online* threads; however, because thread termination is asynchronous it is possible for the combined count of online and liminal threads to briefly exceed this limit.
 
-The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's Proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.  The default interval is `60000` milliseconds.
+The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive Worker threads.  If Socketnaut's proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.  The default interval is `60000` milliseconds.
 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
@@ -167,7 +167,7 @@ By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval
 
 When a request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the Socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` is a Layer 4 proxy, and the payload may or may not contain encrypted data; hence, it isn't always possible to inject an HTTP header into the message - the payload may not even be HTTP.
 
-Socketnaut solves this problem by providing a `MessageChannel` facility for requesting this information from the Proxy. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `socketnaut.ProxySocketAddressInfo` object that contains the desired information.
+Socketnaut solves this problem by providing a `MessageChannel` facility for requesting this information from the proxy. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `Promise` that resolves to a `socketnaut.ProxySocketAddressInfo` object that contains the tuple that describes the proxy's socket.
 
 ### Example
 
