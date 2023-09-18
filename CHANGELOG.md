@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0] - 2023-09-18
+### Added
+- Add support for TLS Proxy Servers.
+- Add `ProxySocketAddressInfo` interface.
+- Add `requestProxySocketAddressInfo` method to the `ServiceAgent` class.  This method will return a `Promise` that will resolve to a `socketnaut.ProxySocketAddressInfo` object that describes the proxy socket tuple.  Please see the README.md for detail on how to call the method and its return value.
+- Add documentation relevant to the additions to the API.
+
 ## [1.1.1] - 2023-09-16
 ### Fixed
 - Improve documentation.

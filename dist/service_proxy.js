@@ -24,7 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServiceProxy = exports.ServiceProxy = void 0;
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const net = __importStar(require("node:net"));
 const tls = __importStar(require("node:tls"));
 const threads = __importStar(require("node:worker_threads"));

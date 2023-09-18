@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as net from 'node:net';
 import * as tls from 'node:tls';
 import * as threads from 'node:worker_threads';
