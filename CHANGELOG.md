@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.1] - 2023-09-18
+### Fixed
+- Add the "A TLS Proxy and an HTTP Redirect" example.
+- Improve documentation.
+
 ## [1.2.0] - 2023-09-18
 ### Added
 - Add support for TLS Proxy Servers.
