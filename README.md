@@ -84,9 +84,9 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
 #### serviceAgent.requestProxySocketAddressInfo(socket)
-- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value will contain the tuple that describes the Proxy's socket (i.e., in most cases this will contain the client's IP address and port). 
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The awaited return value will contain the tuple that describes the Proxy's socket (i.e., in most cases this will contain the client's IP address and port). 
 
-- Returns: `<socketnaut.ProxySocketAddressInfo>`
+- Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
 ## Usage
 
