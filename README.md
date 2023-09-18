@@ -27,6 +27,7 @@ Dependencies:
     - [*Use Socketnaut to scale the main module of a Fastify server.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-server-example)
     - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
+    - [*A TLS Proxy and an HTTP Redirect.*]
 6. [Tuning Strategies](#tuning-strategies)
 7. [Proxy Socket Remote Address](#proxy-socket-remote-address)
 8. [Logging](#logging)
@@ -141,6 +142,9 @@ Please see the [Express example](https://github.com/faranalytics/socketnaut/tree
 
 ### *Redirect HTTP connections to an HTTPS server.* <sup><sup>(example)</sup></sup>
 Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/socketnaut/tree/main/examples/redirect_http_to_https) for a working implementation.
+
+### *A TLS Proxy and an HTTP Redirect.* <sup><sup>(example)</sup></sup>
+In the previous example, the TLS endpoint was in the Worker thread; however, it doesn't need to be. Alternatively, TLS can end at the `ServiceProxy'. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
 
 ## Tuning Strategies
 
