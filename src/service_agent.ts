@@ -100,6 +100,17 @@ export class ServiceAgent extends Agent {
     protected describeError(err: unknown) {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
+
+    public async requestProxyAddressInfo(socket: net.Socket): Promise<net.AddressInfo> {
+
+        const proxyServerAddress = {"address":socket.remoteAddress,"family":socket.remoteFamily,"port":socket.remotePort};
+
+        const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
+
+        const clientProxyAddressInfo: net.AddressInfo = await this.call<net.AddressInfo >('requestProxyAddressInfo', proxyServerAddressInfo);
+
+        return clientProxyAddressInfo;
+    }
 }
 
 let serviceAgent: ServiceAgent | null = null;

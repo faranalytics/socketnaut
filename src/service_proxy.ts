@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as net from 'node:net';
+import * as tls from 'node:tls';
 import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
 import { ConsoleHandler, Metadata, Level, LevelLogger, MetadataFormatter } from 'memoir';
@@ -23,6 +25,7 @@ export class ServiceProxy {
     public agents: Array<WorkerAgent>;
     public log: LevelLogger<string, string>;
     public logHandler: ConsoleHandler<string, string>;
+    public proxyAddressInfo: Map<string, object>;
 
     constructor({
         server = net.createServer(),
@@ -32,7 +35,6 @@ export class ServiceProxy {
         workersCheckingInterval = 60000,
         workerOptions
     }: ServiceProxyOptions) {
-
         this.server = server;
         this.workerURL = workerURL;
         this.minWorkers = minWorkers;
@@ -40,6 +42,8 @@ export class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
+        this.proxyAddressInfo = new Map<string, object>();
+
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
@@ -52,8 +56,18 @@ export class ServiceProxy {
         this.logHandler.setFormatter(metadataFormatter);
         this.log.addHandler(this.logHandler);
 
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        this.server.on('connection', this.tryAllocateThread.bind(this));
+        if (this.server instanceof tls.Server) {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            this.server.on('secureConnection', this.tryAllocateThread.bind(this));
+        }
+        else if (this.server instanceof net.Server) {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            this.server.on('connection', this.tryAllocateThread.bind(this));
+        }
+        else {
+            this.log.error?.(`The Service Proxy Server must be of type tls.Server or net.Server.`);
+        }
+
         this.server.on('listening', () => this.log.info?.(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
 
         void this.spawnMinWorkers();
@@ -130,6 +144,10 @@ export class ServiceProxy {
 
             proxyServerSocket.on('connect', () => {
 
+                const proxyServerAddress = proxyServerSocket.address();
+                const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
+                this.proxyAddressInfo.set(proxyServerAddressInfo, clientProxySocket.address());
+
                 proxyServerSocket.removeListener('error', j);
 
                 proxyServerSocket.on('error', (err: Error) => {
@@ -153,6 +171,7 @@ export class ServiceProxy {
                 proxyServerSocket.once('close', (hadError: boolean) => {
                     this.log.debug?.(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
+                    this.proxyAddressInfo.delete(proxyServerAddressInfo);
                 });
 
                 clientProxySocket.once('end', () => {
@@ -176,7 +195,6 @@ export class ServiceProxy {
 
                 r();
             });
-
         });
     }
 
@@ -260,6 +278,7 @@ export class ServiceProxy {
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
         agent.register('serviceLog', this.serviceLog.bind(this));
+        agent.register('requestProxyAddressInfo', this.requestProxyAddressInfo.bind(this));
         return agent;
     }
 
@@ -278,6 +297,11 @@ export class ServiceProxy {
                 this.log.error?.(message.value);
                 break;
         }
+    }
+
+    protected requestProxyAddressInfo(proxyServerAddressInfo: string) {
+        const clientProxyAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
+        return clientProxyAddressInfo;
     }
 
     protected describeError(err: unknown) {

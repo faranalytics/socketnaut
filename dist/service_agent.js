@@ -101,6 +101,12 @@ class ServiceAgent extends port_agent_1.Agent {
     describeError(err) {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
+    async requestProxyAddressInfo(socket) {
+        const proxyServerAddress = { "address": socket.remoteAddress, "family": socket.remoteFamily, "port": socket.remotePort };
+        const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
+        const clientProxyAddressInfo = await this.call('requestProxyAddressInfo', proxyServerAddressInfo);
+        return clientProxyAddressInfo;
+    }
 }
 exports.ServiceAgent = ServiceAgent;
 let serviceAgent = null;

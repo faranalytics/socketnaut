@@ -8,8 +8,7 @@ const service = createServiceAgent({
 service.log.setLevel(Level.INFO);
 
 service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
-    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    res.end('Hello World!');
+    res.end('Test HTTP');
 });
 
 service.server.listen({ port: 0, host: '127.0.0.1' });

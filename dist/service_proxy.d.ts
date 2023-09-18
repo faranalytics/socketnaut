@@ -23,6 +23,7 @@ export declare class ServiceProxy {
     agents: Array<WorkerAgent>;
     log: LevelLogger<string, string>;
     logHandler: ConsoleHandler<string, string>;
+    proxyAddressInfo: Map<string, object>;
     constructor({ server, workerURL, minWorkers, maxWorkers, workersCheckingInterval, workerOptions }: ServiceProxyOptions);
     protected tryAllocateThread(clientProxySocket: net.Socket): Promise<void>;
     protected createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void>;
@@ -35,6 +36,7 @@ export declare class ServiceProxy {
         level: string;
         value: string;
     }): void;
+    protected requestProxyAddressInfo(proxyServerAddressInfo: string): object | undefined;
     protected describeError(err: unknown): string;
 }
 export declare function createServiceProxy(options: ServiceProxyOptions): ServiceProxy;

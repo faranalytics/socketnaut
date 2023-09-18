@@ -24,7 +24,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServiceProxy = exports.ServiceProxy = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const net = __importStar(require("node:net"));
+const tls = __importStar(require("node:tls"));
 const threads = __importStar(require("node:worker_threads"));
 const worker_agent_js_1 = require("./worker_agent.js");
 const memoir_1 = require("memoir");
@@ -38,6 +40,7 @@ class ServiceProxy {
     agents;
     log;
     logHandler;
+    proxyAddressInfo;
     constructor({ server = net.createServer(), workerURL, minWorkers = 0, maxWorkers, workersCheckingInterval = 60000, workerOptions }) {
         this.server = server;
         this.workerURL = workerURL;
@@ -46,6 +49,7 @@ class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
+        this.proxyAddressInfo = new Map();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message, { name, level, func, url, line, col }) => `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
         this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}`, level: memoir_1.Level.INFO });
@@ -54,8 +58,17 @@ class ServiceProxy {
         const metadataFormatter = new memoir_1.MetadataFormatter({ formatter });
         this.logHandler.setFormatter(metadataFormatter);
         this.log.addHandler(this.logHandler);
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        this.server.on('connection', this.tryAllocateThread.bind(this));
+        if (this.server instanceof tls.Server) {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            this.server.on('secureConnection', this.tryAllocateThread.bind(this));
+        }
+        else if (this.server instanceof net.Server) {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            this.server.on('connection', this.tryAllocateThread.bind(this));
+        }
+        else {
+            this.log.error?.(`The Service Proxy Server must be of type tls.Server or net.Server.`);
+        }
         this.server.on('listening', () => this.log.info?.(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
         void this.spawnMinWorkers();
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -113,11 +126,14 @@ class ServiceProxy {
         }
     }
     async createServerConnection(clientProxySocket, socketConnectOpts) {
-        const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}.`;
+        const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}`;
         const proxyServerSocket = net.createConnection(socketConnectOpts);
         return new Promise((r, j) => {
             proxyServerSocket.once('error', j);
             proxyServerSocket.on('connect', () => {
+                const proxyServerAddress = proxyServerSocket.address();
+                const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
+                this.proxyAddressInfo.set(proxyServerAddressInfo, clientProxySocket.address());
                 proxyServerSocket.removeListener('error', j);
                 proxyServerSocket.on('error', (err) => {
                     this.log.error?.(`Server socket error.  ${this.describeError(err)}  ${message}.`);
@@ -136,6 +152,7 @@ class ServiceProxy {
                 proxyServerSocket.once('close', (hadError) => {
                     this.log.debug?.(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
+                    this.proxyAddressInfo.delete(proxyServerAddressInfo);
                 });
                 clientProxySocket.once('end', () => {
                     this.log.debug?.(`Client socket end.  ${message}.`);
@@ -225,6 +242,7 @@ class ServiceProxy {
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
         agent.register('serviceLog', this.serviceLog.bind(this));
+        agent.register('requestProxyAddressInfo', this.requestProxyAddressInfo.bind(this));
         return agent;
     }
     serviceLog(message) {
@@ -242,6 +260,10 @@ class ServiceProxy {
                 this.log.error?.(message.value);
                 break;
         }
+    }
+    requestProxyAddressInfo(proxyServerAddressInfo) {
+        const clientProxyAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
+        return clientProxyAddressInfo;
     }
     describeError(err) {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;

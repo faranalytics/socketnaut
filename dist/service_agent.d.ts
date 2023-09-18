@@ -26,5 +26,6 @@ export declare class ServiceAgent extends Agent {
     protected tryTerminate(): void;
     protected postListeningMessage(): void;
     protected describeError(err: unknown): string;
+    requestProxyAddressInfo(socket: net.Socket): Promise<net.AddressInfo>;
 }
 export declare function createServiceAgent(options: ServiceAgentOptions): ServiceAgent;

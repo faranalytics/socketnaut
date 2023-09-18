@@ -15,5 +15,6 @@
   },
   "dependencies": {
     "socketnaut": "^1.1.0"
-  }
+  },
+  "type":"module"
 }
