@@ -27,7 +27,7 @@ Dependencies:
     - [*Use Socketnaut to scale the main module of a Fastify server.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-server-example)
     - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
-    - [*A TLS Proxy and an HTTP Redirect.*]
+    - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-example)
 6. [Tuning Strategies](#tuning-strategies)
 7. [Proxy Socket Remote Address](#proxy-socket-remote-address)
 8. [Logging](#logging)
