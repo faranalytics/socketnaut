@@ -8,6 +8,7 @@ import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
 import { Metadata, MetadataHandler, LevelLogger } from 'memoir';
+import { ProxySocketAddressInfo } from './types';
 export declare class ServiceMessageHandler<MessageT, FormatT> extends MetadataHandler<MessageT, FormatT> {
     private agent;
     constructor(agent: Agent);
@@ -26,6 +27,6 @@ export declare class ServiceAgent extends Agent {
     protected tryTerminate(): void;
     protected postListeningMessage(): void;
     protected describeError(err: unknown): string;
-    requestProxyAddressInfo(socket: net.Socket): Promise<net.AddressInfo>;
+    requestProxySocketAddressInfo(socket: net.Socket): Promise<ProxySocketAddressInfo>;
 }
 export declare function createServiceAgent(options: ServiceAgentOptions): ServiceAgent;

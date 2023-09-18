@@ -133,7 +133,14 @@ class ServiceProxy {
             proxyServerSocket.on('connect', () => {
                 const proxyServerAddress = proxyServerSocket.address();
                 const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
-                this.proxyAddressInfo.set(proxyServerAddressInfo, clientProxySocket.address());
+                this.proxyAddressInfo.set(proxyServerAddressInfo, {
+                    local: clientProxySocket.address(),
+                    remote: {
+                        "address": clientProxySocket.remoteAddress,
+                        "family": clientProxySocket.remoteFamily,
+                        "port": clientProxySocket.remotePort
+                    }
+                });
                 proxyServerSocket.removeListener('error', j);
                 proxyServerSocket.on('error', (err) => {
                     this.log.error?.(`Server socket error.  ${this.describeError(err)}  ${message}.`);
@@ -242,7 +249,7 @@ class ServiceProxy {
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
         agent.register('serviceLog', this.serviceLog.bind(this));
-        agent.register('requestProxyAddressInfo', this.requestProxyAddressInfo.bind(this));
+        agent.register('requestProxyAddressInfo', this.requestProxySocketAddressInfo.bind(this));
         return agent;
     }
     serviceLog(message) {
@@ -261,9 +268,9 @@ class ServiceProxy {
                 break;
         }
     }
-    requestProxyAddressInfo(proxyServerAddressInfo) {
-        const clientProxyAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
-        return clientProxyAddressInfo;
+    requestProxySocketAddressInfo(proxyServerAddressInfo) {
+        const proxySocketAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
+        return proxySocketAddressInfo;
     }
     describeError(err) {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;

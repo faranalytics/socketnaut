@@ -1,17 +1,16 @@
 import * as http from 'node:http';
-import * as net from 'node:net';
-import { Level, createServiceAgent } from 'socketnaut';
+import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 
 const service = createServiceAgent({
     server: http.createServer()
 });
 
-service.log.setLevel(Level.DEBUG);
+service.log.setLevel(Level.INFO);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    const proxyAddressInfo: net.AddressInfo = await service.requestProxyAddressInfo(req.socket);
+    const proxyAddressInfo: ProxySocketAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
     console.log(proxyAddressInfo);
     req.pipe(res);
 });

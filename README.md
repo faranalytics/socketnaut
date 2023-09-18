@@ -84,9 +84,9 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
 #### serviceAgent.requestProxyAddressInfo(socket)
-- socket `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value will contain the Proxy socket's remote address and port (i.e., in most cases this will be the client's IP address). 
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value will contain the tuple that describes the Proxy's socket (i.e., in most cases this will contain client's IP address and port). 
 
-- Returns: `<net.AddressInfo>`
+- Returns: `<socketnaut.ProxySocketAddressInfo>`
 
 ## Usage
 
@@ -167,7 +167,7 @@ By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval
 
 When a request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the Socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` is a Layer 4 proxy, and the payload may or may not contain encrypted data; hence, it isn't always possible to inject an HTTP header into the message - the payload may not even be HTTP.
 
-Socketnaut solves this problem by providing a `MessageChannel` facility for requesting this information from the Proxy. Call the `ServiceAgent.requestProxyAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `net.AddressInfo` object that contains the desired information.
+Socketnaut solves this problem by providing a `MessageChannel` facility for requesting this information from the Proxy. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `socketnaut.ProxySocketAddressInfo` object that contains the desired information.
 
 ### Example
 
@@ -177,13 +177,19 @@ const service = createServiceAgent({
 });
 
 service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const proxyAddressInfo: net.AddressInfo = await service.requestProxyAddressInfo(req.socket);
-    console.log(proxyAddressInfo); // e.g., { address: '93.184.216.34', family: 'IPv4', port: 3443 }
+    const proxySocketAddressInfo: ProxySocketAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
+    console.log(proxySocketAddressInfo);
+    /* Output
+    {
+        local: { address: '192.0.2.1', family: 'IPv4', port: 3443 },
+        remote: { address: '198.51.100.1', family: 'IPv4', port: 35798 }
+    }
+    */
     res.end();
 });
 ```
 
-The information returned by the `ServiceAgent.requestProxyAddressInfo` method can be used for associating the remote client address and port with each request e.g., for logging purposes.
+The information returned by the `ServiceAgent.requestProxySocketAddressInfo` method can be used in order to associate the remote client address and port with each request e.g., for logging purposes.
 
 ## Logging
 

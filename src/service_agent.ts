@@ -4,6 +4,7 @@ import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
 import { Metadata, Level, MetadataHandler, LevelLogger, MetadataFormatter } from 'memoir';
+import { ProxySocketAddressInfo } from './types';
 
 threads.parentPort?.unref();
 
@@ -101,13 +102,13 @@ export class ServiceAgent extends Agent {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
 
-    public async requestProxyAddressInfo(socket: net.Socket): Promise<net.AddressInfo> {
+    public async requestProxySocketAddressInfo(socket: net.Socket): Promise<ProxySocketAddressInfo> {
 
         const proxyServerAddress = {"address":socket.remoteAddress,"family":socket.remoteFamily,"port":socket.remotePort};
 
         const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
 
-        const clientProxyAddressInfo: net.AddressInfo = await this.call<net.AddressInfo >('requestProxyAddressInfo', proxyServerAddressInfo);
+        const clientProxyAddressInfo: ProxySocketAddressInfo = await this.call<ProxySocketAddressInfo >('requestProxyAddressInfo', proxyServerAddressInfo);
 
         return clientProxyAddressInfo;
     }

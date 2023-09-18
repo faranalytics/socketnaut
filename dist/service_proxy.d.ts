@@ -36,7 +36,7 @@ export declare class ServiceProxy {
         level: string;
         value: string;
     }): void;
-    protected requestProxyAddressInfo(proxyServerAddressInfo: string): object | undefined;
+    protected requestProxySocketAddressInfo(proxyServerAddressInfo: string): object | undefined;
     protected describeError(err: unknown): string;
 }
 export declare function createServiceProxy(options: ServiceProxyOptions): ServiceProxy;

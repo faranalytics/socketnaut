@@ -146,7 +146,14 @@ export class ServiceProxy {
 
                 const proxyServerAddress = proxyServerSocket.address();
                 const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
-                this.proxyAddressInfo.set(proxyServerAddressInfo, clientProxySocket.address());
+                this.proxyAddressInfo.set(proxyServerAddressInfo, {
+                    local: clientProxySocket.address(),
+                    remote: {
+                        "address": clientProxySocket.remoteAddress,
+                        "family": clientProxySocket.remoteFamily,
+                        "port": clientProxySocket.remotePort
+                    }
+                });
 
                 proxyServerSocket.removeListener('error', j);
 
@@ -278,7 +285,7 @@ export class ServiceProxy {
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
         agent.register('serviceLog', this.serviceLog.bind(this));
-        agent.register('requestProxyAddressInfo', this.requestProxyAddressInfo.bind(this));
+        agent.register('requestProxyAddressInfo', this.requestProxySocketAddressInfo.bind(this));
         return agent;
     }
 
@@ -299,9 +306,9 @@ export class ServiceProxy {
         }
     }
 
-    protected requestProxyAddressInfo(proxyServerAddressInfo: string) {
-        const clientProxyAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
-        return clientProxyAddressInfo;
+    protected requestProxySocketAddressInfo(proxyServerAddressInfo: string) {
+        const proxySocketAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
+        return proxySocketAddressInfo;
     }
 
     protected describeError(err: unknown) {
