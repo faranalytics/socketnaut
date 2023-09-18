@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as pth from 'path';
 import { Level, createServiceProxy } from 'socketnaut';
-import { WorkerAgent } from '../../../dist/worker_agent.js';
+import { WorkerAgent } from 'socketnaut/dist/worker_agent.js';
 
 const httpProxy = createServiceProxy({
     server: net.createServer(),
@@ -15,7 +15,7 @@ const httpProxy = createServiceProxy({
     workerURL: new URL('./http_redirect_service.js', import.meta.url)
 });
 
-httpProxy.log.setLevel(Level.INFO);
+httpProxy.log.setLevel(Level.DEBUG);
 
 httpProxy.server.listen({ port: 3080, host: '0.0.0.0' });
 
@@ -31,11 +31,11 @@ const tlsProxy = createServiceProxy({
     workerURL: new URL('./service.js', import.meta.url)
 });
 
-tlsProxy.log.setLevel(Level.INFO);
+tlsProxy.log.setLevel(Level.DEBUG);
 
 tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
 
 setInterval(() => {
     tlsProxy.log.info?.(`Status: ${tlsProxy.agents.length}, ${tlsProxy.maxWorkers}, ${tlsProxy.minWorkers}.`);
-    console.log(JSON.stringify(tlsProxy.agents.map((value: WorkerAgent) => value.connections)));
+    console.log(`Server pool connections: ${JSON.stringify(tlsProxy.agents.map((value: WorkerAgent) => value.connections))}`);
 }, 1000);

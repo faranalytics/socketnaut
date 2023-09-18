@@ -25,7 +25,7 @@ service.server.listen({ port: 0, host: '127.0.0.1' });
 // Socketnaut will communicate the random port number to the ServiceProxy.   
 ```
 ## Requirements
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3000` and `0.0.0.0:3443` for this example to work.
+Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.
 
 ## Instructions
 
@@ -61,5 +61,5 @@ npm start
 ```
 ### Test the HTTP redirect using your browser.
 ```bash
-http://example.com:3000
+http://example.com:3080
 ```

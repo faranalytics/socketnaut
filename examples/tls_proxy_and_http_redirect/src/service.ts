@@ -5,7 +5,7 @@ const service = createServiceAgent({
     server: http.createServer()
 });
 
-service.log.setLevel(Level.INFO);
+service.log.setLevel(Level.DEBUG);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
