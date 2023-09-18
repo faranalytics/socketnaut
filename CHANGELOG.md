@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.2] - 2023-09-18
+### Fixed
+- Improve documentation.
+
 ## [1.2.1] - 2023-09-18
 ### Fixed
 - Add the "A TLS Proxy and an HTTP Redirect" example.
