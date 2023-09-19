@@ -4,6 +4,7 @@ In this example you will create an HTTP Service and a HTTPS Service.  The HTTP s
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request and returns the string "Hello World!".
 
+`https_server.ts`
 ```js
 const service = createServiceAgent({
     server: https.createServer(
@@ -22,7 +23,7 @@ service.server.on('request', (req: http.IncomingMessage, res: http.ServerRespons
 
 service.server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.
-// Socketnaut will communicate the random port number to the ServiceProxy.   
+// Socketnaut will communicate the random port number to the ServiceProxy.  
 ```
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.
