@@ -108,7 +108,7 @@ export class ServiceAgent extends Agent {
 
         const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
 
-        const clientProxyAddressInfo: ProxySocketAddressInfo = await this.call<ProxySocketAddressInfo >('requestProxyAddressInfo', proxyServerAddressInfo);
+        const clientProxyAddressInfo = await this.call<ProxySocketAddressInfo >('requestProxyAddressInfo', proxyServerAddressInfo);
 
         return clientProxyAddressInfo;
     }
