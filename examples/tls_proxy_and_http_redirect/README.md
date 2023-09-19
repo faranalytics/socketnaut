@@ -2,8 +2,9 @@
 
 In this example you will create an HTTP Service that redirects to a Service that consists of a TLS proxy that manages a pool of HTTP servers.
 
-The proxy is configured to be a TLS server.
+The proxy is a TLS server.
 
+`index.ts`
 ```ts
 
 ...
@@ -35,17 +36,16 @@ const service = createServiceAgent({
 
 service.log.setLevel(Level.DEBUG);
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    const proxyAddressInfo: ProxySocketAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
+    const proxyAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
     console.log(proxyAddressInfo);
     req.pipe(res);
 });
 
 service.server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.
-// Socketnaut will communicate the random port number to the ServiceProxy. 
+// Socketnaut will communicate the random port number to the ServiceProxy.
 ```
 
 ## Requirements

@@ -4,6 +4,7 @@ In this example you will use Socketnaut to scale the main thread of a Fastify se
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
+`http_server.js`
 ```js
 const serverFactory = (handler, opts) => {
     const service = createServiceAgent({
@@ -23,7 +24,8 @@ fastify.get('/', (req, reply) => {
 });
 
 void fastify.listen({ port: 0, host: '127.0.0.1' }); 
-// Specifying port 0 here will instruct the Server to listen on a random port.  Socketnaut will communicate the randomly selected port to the ServiceProxy.
+// Specifying port 0 here will instruct the Server to listen on a random port.  
+// Socketnaut will communicate the randomly selected port to the ServiceProxy.
 ```
 
 ## Requirements
