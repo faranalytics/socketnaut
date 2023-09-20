@@ -9,19 +9,17 @@ The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 const app = express();
 
 app.get('/', (req, res) => {
-    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    res.send('Hello World!');
-  });
-
-const service = createServiceAgent({
-    server: http.createServer(app)
+  for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+  res.send('Hello World!');
 });
 
-service.logHandler.setLevel(Level.DEBUG)
+const server = http.createServer(app);
 
-service.server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will instruct the Server to listen on a random port.  
 // Socketnaut will communicate the randomly selected port to the ServiceProxy.
+
+const agent = createServiceAgent({ server });
 ```
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.

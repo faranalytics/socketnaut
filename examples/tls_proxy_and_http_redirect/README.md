@@ -30,22 +30,20 @@ The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request, l
 
 `service.ts`
 ```js
-const service = createServiceAgent({
-    server: http.createServer()
-});
+const server = http.createServer(); // Configure this HTTP Server however you choose.
 
-service.log.setLevel(Level.DEBUG);
+server.listen({ port: 0, host: '127.0.0.1' });
+// Specifying port 0 here will cause the Server to listen on a random port.
+// The Socketnaut Agent will communicate the randomly selected port to the ServiceProxy.
 
-service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
+const agent = createServiceAgent({ server });
+
+server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    const proxyAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
+    const proxyAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
     console.log(proxyAddressInfo);
     req.pipe(res);
 });
-
-service.server.listen({ port: 0, host: '127.0.0.1' });
-// Specifying port 0 here will cause the Server to listen on a random port.
-// Socketnaut will communicate the random port number to the ServiceProxy.
 ```
 
 ## Requirements

@@ -6,24 +6,22 @@ The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request an
 
 `https_server.ts`
 ```js
-const service = createServiceAgent({
-    server: https.createServer(
-        {
-            key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-            cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
-        }) // Configure this HTTPS server however you choose.
-});
+const server = https.createServer(
+    {
+        key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
+        cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
+    }); // Configure this HTTPS server however you choose.
 
-service.logHandler.setLevel(Level.DEBUG)
-
-service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
+server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     res.end('Hello World!');
 });
 
-service.server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.
-// Socketnaut will communicate the random port number to the ServiceProxy.  
+// The Socketnaut Agent will communicate the randomly selected port to the ServiceProxy.
+
+const service = createServiceAgent({ server }); 
 ```
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.

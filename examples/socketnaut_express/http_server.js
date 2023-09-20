@@ -5,16 +5,16 @@ import { createServiceAgent, Level } from 'socketnaut';
 const app = express();
 
 app.get('/', (req, res) => {
-    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    res.send('Hello World!');
-  });
-
-const service = createServiceAgent({
-    server: http.createServer(app)
+  for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+  res.send('Hello World!');
 });
 
-service.logHandler.setLevel(Level.DEBUG)
+const server = http.createServer(app); // Configure this HTTP Server however you choose.
 
-service.server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will instruct the Server to listen on a random port.  
-// Socketnaut will communicate the randomly selected port to the ServiceProxy.
+// The Socketnaut Agent will communicate the randomly selected port to the ServiceProxy.
+
+const agent = createServiceAgent({ server });
+
+agent.log.setLevel(Level.DEBUG);

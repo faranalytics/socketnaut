@@ -1,7 +1,7 @@
 import * as net from 'node:net';
 import { createServiceProxy, Level } from 'socketnaut';
 
-const server = net.createServer() // Configure this TCP server however you choose.
+const server = net.createServer() // Configure this TCP Server however you choose.
 
 server.listen({ port: 3080, host: '0.0.0.0' });
 

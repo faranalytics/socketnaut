@@ -3,13 +3,13 @@ import Fastify from 'fastify';
 import { createServiceAgent, Level } from 'socketnaut';
 
 const serverFactory = (handler, opts) => {
-    const service = createServiceAgent({
-        server: http.createServer(opts, handler)
+    const agent = createServiceAgent({
+        server: http.createServer(opts, handler) // Configure this HTTP Server however you choose.
     });
 
-    service.logHandler.setLevel(Level.DEBUG)
+    agent.log.setLevel(Level.DEBUG)
 
-    return service.server;
+    return agent.server;
 };
 
 const fastify = Fastify({ serverFactory });
@@ -21,4 +21,4 @@ fastify.get('/', (req, reply) => {
 
 void fastify.listen({ port: 0, host: '127.0.0.1' }); 
 // Specifying port 0 here will instruct the Server to listen on a random port.  
-// Socketnaut will communicate the randomly selected port to the ServiceProxy.
+// The Socketnaut Agent will communicate the randomly selected port to the ServiceProxy.
