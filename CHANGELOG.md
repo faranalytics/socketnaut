@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.4] - 2023-09-20
+### Fixed
+- Improve documentation.
+- Improve examples.
+
 ## [1.2.3] - 2023-09-20
 ### Fixed
 - Discard closed sockets.
