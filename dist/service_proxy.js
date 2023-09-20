@@ -39,6 +39,8 @@ class ServiceProxy {
     agents;
     log;
     logHandler;
+    proxySocketAddressInfo;
+    proxyAddressInfoRepr;
     proxyAddressInfo;
     constructor({ server = net.createServer(), workerURL, minWorkers = 0, maxWorkers, workersCheckingInterval = 60000, workerOptions }) {
         this.server = server;
@@ -48,7 +50,7 @@ class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
-        this.proxyAddressInfo = new Map();
+        this.proxySocketAddressInfo = new Map();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message, { name, level, func, url, line, col }) => `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
         this.log = new memoir_1.LevelLogger({ name: `Proxy ${threads.threadId}`, level: memoir_1.Level.INFO });
@@ -68,12 +70,21 @@ class ServiceProxy {
         else {
             this.log.error?.(`The Service Proxy Server must be of type tls.Server or net.Server.`);
         }
-        this.server.on('listening', () => this.log.info?.(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
+        this.server.on('listening', () => {
+            this.proxyAddressInfo = this.server?.address();
+            this.proxyAddressInfoRepr = JSON.stringify(this.proxyAddressInfo);
+            this.log.info?.(`Service Proxy listening on ${this.proxyAddressInfoRepr}`);
+        });
         void this.spawnMinWorkers();
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
     }
     async tryAllocateThread(clientProxySocket) {
+        if (clientProxySocket.closed) {
+            const tuple = `${clientProxySocket.remoteAddress}:${clientProxySocket.remotePort}, ${clientProxySocket.localAddress}:${clientProxySocket.localPort}, ${clientProxySocket.localFamily}`;
+            this.log.debug?.(`The client-proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
+            return;
+        }
         clientProxySocket.on('error', (err) => {
             this.log.error?.(`Client socket error.  ${this.describeError(err)}.`);
         });
@@ -130,9 +141,9 @@ class ServiceProxy {
         return new Promise((r, j) => {
             proxyServerSocket.once('error', j);
             proxyServerSocket.on('connect', () => {
-                const proxyServerAddress = proxyServerSocket.address();
-                const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
-                this.proxyAddressInfo.set(proxyServerAddressInfo, {
+                const proxyServerSocketAddressInfo = proxyServerSocket.address();
+                const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
+                this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
                     local: clientProxySocket.address(),
                     remote: {
                         "address": clientProxySocket.remoteAddress,
@@ -158,7 +169,7 @@ class ServiceProxy {
                 proxyServerSocket.once('close', (hadError) => {
                     this.log.debug?.(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
-                    this.proxyAddressInfo.delete(proxyServerAddressInfo);
+                    this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
                 });
                 clientProxySocket.once('end', () => {
                     this.log.debug?.(`Client socket end.  ${message}.`);
@@ -268,7 +279,7 @@ class ServiceProxy {
         }
     }
     requestProxySocketAddressInfo(proxyServerAddressInfo) {
-        const proxySocketAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
+        const proxySocketAddressInfo = this.proxySocketAddressInfo.get(proxyServerAddressInfo);
         return proxySocketAddressInfo;
     }
     describeError(err) {

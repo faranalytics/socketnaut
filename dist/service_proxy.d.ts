@@ -23,7 +23,9 @@ export declare class ServiceProxy {
     agents: Array<WorkerAgent>;
     log: LevelLogger<string, string>;
     logHandler: ConsoleHandler<string, string>;
-    proxyAddressInfo: Map<string, object>;
+    proxySocketAddressInfo: Map<string, object>;
+    proxyAddressInfoRepr?: string;
+    proxyAddressInfo?: net.AddressInfo | string | null;
     constructor({ server, workerURL, minWorkers, maxWorkers, workersCheckingInterval, workerOptions }: ServiceProxyOptions);
     protected tryAllocateThread(clientProxySocket: net.Socket): Promise<void>;
     protected createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void>;
