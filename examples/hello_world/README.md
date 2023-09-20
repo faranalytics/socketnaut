@@ -5,20 +5,18 @@ In this example you will use Socketnaut to scale a Hello World! server.  The `Se
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 ```js
-const service = createServiceAgent({
-    server: http.createServer() // Configure this HTTP server however you choose.
-});
+const server = http.createServer() // Configure this HTTP server however you choose.
 
-service.server.on('request', (req, res) => {
+server.on('request', (req, res) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     res.end('Hello World!');
 });
 
-service.logHandler.setLevel(Level.DEBUG)
-
-service.server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.
 // Socketnaut will communicate the random port number to the ServiceProxy.
+
+const agent = createServiceAgent({ server });
 ```
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.

@@ -1,13 +1,15 @@
 import * as net from 'node:net';
 import { createServiceProxy, Level } from 'socketnaut';
 
+const server = net.createServer() // Configure this TCP server however you choose.
+
+server.listen({ port: 3080, host: '0.0.0.0' });
+
 const proxy = createServiceProxy({
-    server: net.createServer(),
+    server,
     minWorkers: 4,
     maxWorkers: 42,
     workerURL: './http_server.js'
 });
 
-proxy.logHandler.setLevel(Level.DEBUG)
-
-proxy.server.listen({ port: 3080, host: '0.0.0.0' });
+proxy.log.setLevel(Level.DEBUG)

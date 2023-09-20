@@ -104,33 +104,35 @@ This is a simple Socketnaut Service that responds with the text "Hello World!". 
 import * as net from 'node:net';
 import { createServiceProxy, Level } from 'socketnaut';
 
+const server = net.createServer() // Configure this TCP server however you choose.
+
+server.listen({ port: 3080, host: '0.0.0.0' });
+
 const proxy = createServiceProxy({
-    server: net.createServer(),
+    server,
     minWorkers: 4,
     maxWorkers: 42,
     workerURL: './http_server.js'
 });
-
-proxy.server.listen({ port: 3080, host: '0.0.0.0' });
 ```
 
 `http_server.js`
 ```js
 import * as http from 'node:http';
-import { createServiceAgent, Level} from 'socketnaut';
+import { createServiceAgent, Level } from 'socketnaut';
 
-const service = createServiceAgent({
-    server: http.createServer() // Configure this HTTP server however you choose.
-});
+const server = http.createServer() // Configure this HTTP server however you choose.
 
-service.server.on('request', (req, res) => {
+server.on('request', (req, res) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     res.end('Hello World!');
 });
 
-service.server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will cause the Server to listen on a random port.
 // Socketnaut will communicate the random port number to the ServiceProxy.
+
+const agent = createServiceAgent({ server });
 ```
 ### *Use Socketnaut to scale the main module of a Fastify server.* <sup><sup>(example)</sup></sup>
 
