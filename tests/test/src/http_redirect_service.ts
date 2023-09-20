@@ -5,7 +5,7 @@ const service = createServiceAgent({
     server: http.createServer()
 });
 
-service.log.setLevel(Level.INFO);
+service.log.setLevel(Level.DEBUG);
 
 service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
     if (req.url) {

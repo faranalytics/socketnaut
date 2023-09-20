@@ -24,7 +24,9 @@ export class ServiceProxy {
     public agents: Array<WorkerAgent>;
     public log: LevelLogger<string, string>;
     public logHandler: ConsoleHandler<string, string>;
-    public proxyAddressInfo: Map<string, object>;
+    public proxySocketAddressInfo: Map<string, object>;
+    public proxyAddressInfoRepr?: string;
+    public proxyAddressInfo?: net.AddressInfo | string | null;
 
     constructor({
         server = net.createServer(),
@@ -41,7 +43,7 @@ export class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
-        this.proxyAddressInfo = new Map<string, object>();
+        this.proxySocketAddressInfo = new Map<string, object>();
 
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -67,7 +69,11 @@ export class ServiceProxy {
             this.log.error?.(`The Service Proxy Server must be of type tls.Server or net.Server.`);
         }
 
-        this.server.on('listening', () => this.log.info?.(`Service Proxy listening on ${JSON.stringify(this.server?.address())}`));
+        this.server.on('listening', () => {
+            this.proxyAddressInfo = this.server?.address();
+            this.proxyAddressInfoRepr = JSON.stringify(this.proxyAddressInfo);
+            this.log.info?.(`Service Proxy listening on ${this.proxyAddressInfoRepr}`);
+        });
 
         void this.spawnMinWorkers();
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -75,6 +81,12 @@ export class ServiceProxy {
     }
 
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {
+
+        if (clientProxySocket.closed) {
+            const tuple = `${clientProxySocket.remoteAddress}:${clientProxySocket.remotePort}, ${clientProxySocket.localAddress}:${clientProxySocket.localPort}, ${clientProxySocket.localFamily}`;
+            this.log.debug?.(`The client-proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
+            return;
+        }
 
         clientProxySocket.on('error', (err: Error) => {
             this.log.error?.(`Client socket error.  ${this.describeError(err)}.`);
@@ -143,9 +155,9 @@ export class ServiceProxy {
 
             proxyServerSocket.on('connect', () => {
 
-                const proxyServerAddress = proxyServerSocket.address();
-                const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
-                this.proxyAddressInfo.set(proxyServerAddressInfo, {
+                const proxyServerSocketAddressInfo = proxyServerSocket.address();
+                const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
+                this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
                     local: clientProxySocket.address(),
                     remote: {
                         "address": clientProxySocket.remoteAddress,
@@ -177,7 +189,7 @@ export class ServiceProxy {
                 proxyServerSocket.once('close', (hadError: boolean) => {
                     this.log.debug?.(`Server socket close. ${message}.`);
                     clientProxySocket.destroy();
-                    this.proxyAddressInfo.delete(proxyServerAddressInfo);
+                    this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
                 });
 
                 clientProxySocket.once('end', () => {
@@ -306,7 +318,7 @@ export class ServiceProxy {
     }
 
     protected requestProxySocketAddressInfo(proxyServerAddressInfo: string) {
-        const proxySocketAddressInfo = this.proxyAddressInfo.get(proxyServerAddressInfo);
+        const proxySocketAddressInfo = this.proxySocketAddressInfo.get(proxyServerAddressInfo);
         return proxySocketAddressInfo;
     }
 

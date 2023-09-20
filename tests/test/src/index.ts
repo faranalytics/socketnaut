@@ -31,7 +31,7 @@ const tlsProxy = createServiceProxy({
     workerURL: new URL('./service.js', import.meta.url)
 });
 
-tlsProxy.log.setLevel(Level.INFO);
+tlsProxy.log.setLevel(Level.DEBUG);
 
 tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
 
