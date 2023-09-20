@@ -175,12 +175,12 @@ Socketnaut solves this problem by providing a `MessageChannel` facility for requ
 ### Example
 
 ```ts
-const service = createServiceAgent({
-    server: http.createServer()
-});
+const server = http.createServer();
 
-service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const proxySocketAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
+const agent = createServiceAgent({ server });
+
+server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
+    const proxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
     console.log(proxySocketAddressInfo);
     /* Output
     {
