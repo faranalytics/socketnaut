@@ -22,14 +22,14 @@ const httpProxy = createServiceProxy({
 
 httpProxy.log.setLevel(Level.DEBUG);
 
-// Create a Service Proxy for handling HTTP requests.
 const tlsServer = tls.createServer({
     key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
     cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
-});
+}); // Configure this TLS Server however you choose.
 
 tlsServer.listen({ port: 3443, host: '0.0.0.0' });
 
+// Create a Service Proxy for handling HTTP requests.
 const tlsProxy = createServiceProxy({
     server: tlsServer,
     minWorkers: 4,

@@ -12,18 +12,17 @@ The proxy is a TLS server.
 const tlsServer = tls.createServer({
     key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
     cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
-});
+}); // Configure this TLS Server however you choose.
 
+tlsServer.listen({ port: 3443, host: '0.0.0.0' });
+
+// Create a Service Proxy for handling HTTP requests.
 const tlsProxy = createServiceProxy({
     server: tlsServer,
     minWorkers: 4,
     maxWorkers: 42,
     workerURL: new URL('./service.js', import.meta.url)
 });
-
-tlsProxy.log.setLevel(Level.DEBUG);
-
-tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
 ```
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request, logs the proxy socket tuple, and echoes the message body.
