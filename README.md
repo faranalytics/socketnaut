@@ -29,7 +29,7 @@ Dependencies:
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
     - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-example)
 6. [Tuning Strategies](#tuning-strategies)
-7. [Proxy Socket Remote Address](#proxy-socket-remote-address)
+7. [The Client-Proxy Socket's Remote Address and Port](#the-client-proxy-sockets-remote-address-and-port)
 8. [Logging](#logging)
 9. [FAQ](#faq)
 
@@ -85,7 +85,7 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each Worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
 #### serviceAgent.requestProxySocketAddressInfo(socket)
-- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value is a `Promise` that will resolve to an object that contains the tuple that describes the Proxy's socket (i.e., in most cases this will contain the client's IP address and port). 
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value is a `Promise` that will resolve to an object that contains information that describes the Proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
 
 - Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
@@ -102,7 +102,7 @@ This is a simple Socketnaut Service that responds with the text "Hello World!". 
 `index.js`
 ```js
 import * as net from 'node:net';
-import { createServiceProxy } from 'socketnaut';
+import { createServiceProxy, Level } from 'socketnaut';
 
 const proxy = createServiceProxy({
     server: net.createServer(),
@@ -111,13 +111,13 @@ const proxy = createServiceProxy({
     workerURL: './http_server.js'
 });
 
-proxy.server.listen({ port: 3000, host: '0.0.0.0' });
+proxy.server.listen({ port: 3080, host: '0.0.0.0' });
 ```
 
 `http_server.js`
 ```js
 import * as http from 'node:http';
-import { createServiceAgent } from 'socketnaut';
+import { createServiceAgent, Level} from 'socketnaut';
 
 const service = createServiceAgent({
     server: http.createServer() // Configure this HTTP server however you choose.
@@ -144,7 +144,7 @@ Please see the [Express example](https://github.com/faranalytics/socketnaut/tree
 Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/socketnaut/tree/main/examples/redirect_http_to_https) for a working implementation.
 
 ### *A TLS Proxy and an HTTP Redirect.* <sup><sup>(example)</sup></sup>
-In the previous example, the TLS endpoint was in the Worker thread; however, it doesn't need to be. Alternatively, TLS can be handled by the proxy server. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
+In the previous example, the TLS endpoint was in the `Worker` thread; however, it doesn't need to be. Alternatively, TLS can be handled by the proxy server. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
 
 ## Tuning Strategies
 
@@ -167,11 +167,11 @@ The `workersCheckingInterval` specifies the approximate interval at which Socket
 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
 
-## Proxy Socket Remote Address
+## The Client-Proxy Socket's Remote Address and Port
 
-When a request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the Socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the Proxy (usu. 127.0.0.1) - not the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` is a Layer 4 proxy, and the payload may or may not contain encrypted data; hence, it isn't always possible to inject an HTTP header into the message - the payload may not even be HTTP.
+Socketnaut provides a facility for obtaining information about the client-proxy socket.  When a proxied request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the Socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the Proxy (usu. 127.0.0.1) - not remote address of the Client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.  However, Socketnaut's `ServiceProxy` is a Layer 4 proxy, and the payload may or may not contain encrypted data; hence, it isn't always possible to inject an HTTP header into the message - *the payload may not even be HTTP*.
 
-Socketnaut solves this problem by providing a `MessageChannel` facility for requesting this information from the proxy. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `Promise` that resolves to a `socketnaut.ProxySocketAddressInfo` object that contains the tuple that describes the proxy's socket.
+Socketnaut solves this problem by providing a `MessageChannel` facility for requesting information about the client-proxy socket. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `Promise` that resolves to a `socketnaut.ProxySocketAddressInfo` object that contains information that describes the proxy's socket tuple.
 
 ### Example
 
@@ -181,7 +181,7 @@ const service = createServiceAgent({
 });
 
 service.server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const proxySocketAddressInfo: ProxySocketAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
+    const proxySocketAddressInfo = await service.requestProxySocketAddressInfo(req.socket);
     console.log(proxySocketAddressInfo);
     /* Output
     {
@@ -193,7 +193,7 @@ service.server.on('request', async (req: http.IncomingMessage, res: http.ServerR
 });
 ```
 
-The information returned by the `ServiceAgent.requestProxySocketAddressInfo` method can be used in order to associate the remote client address and port with each request e.g., for logging purposes.
+The information returned by the `ServiceAgent.requestProxySocketAddressInfo` method can be used in order to associate the remote client address and port with each HTTP request e.g., for logging purposes.
 
 ## Logging
 
