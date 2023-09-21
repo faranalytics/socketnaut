@@ -3,8 +3,6 @@
 !.npmignore
 !tsconfig.json
 !LICENSE
-!/dist
-!/dist/*
 !/src
 !/src/*
 !/*.*
