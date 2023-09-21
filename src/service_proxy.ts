@@ -3,6 +3,7 @@ import * as tls from 'node:tls';
 import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
 import { ConsoleHandler, Metadata, Level, LevelLogger, MetadataFormatter } from 'memoir';
+import { ProxySocketAddressInfo } from './types.js';
 
 export interface ServiceProxyOptions {
     server: net.Server;
@@ -24,7 +25,7 @@ export class ServiceProxy {
     public agents: Array<WorkerAgent>;
     public log: LevelLogger<string, string>;
     public logHandler: ConsoleHandler<string, string>;
-    public proxySocketAddressInfo: Map<string, object>;
+    public proxySocketAddressInfo: Map<string, ProxySocketAddressInfo>;
     public proxyAddressInfoRepr?: string;
     public proxyAddressInfo?: net.AddressInfo | string | null;
 
@@ -43,7 +44,7 @@ export class ServiceProxy {
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
-        this.proxySocketAddressInfo = new Map<string, object>();
+        this.proxySocketAddressInfo = new Map<string, ProxySocketAddressInfo>();
 
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -158,11 +159,15 @@ export class ServiceProxy {
                 const proxyServerSocketAddressInfo = proxyServerSocket.address();
                 const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
                 this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
-                    local: clientProxySocket.address(),
+                    local: {
+                        address: clientProxySocket.localAddress ?? '',
+                        family: clientProxySocket.localFamily ?? '',
+                        port: clientProxySocket.localPort ?? NaN
+                    },
                     remote: {
-                        "address": clientProxySocket.remoteAddress,
-                        "family": clientProxySocket.remoteFamily,
-                        "port": clientProxySocket.remotePort
+                        address: clientProxySocket.remoteAddress ?? '',
+                        family: clientProxySocket.remoteFamily ?? '',
+                        port: clientProxySocket.remotePort ?? NaN
                     }
                 });
 
@@ -317,7 +322,7 @@ export class ServiceProxy {
         }
     }
 
-    protected requestProxySocketAddressInfo(proxyServerAddressInfo: string) {
+    protected requestProxySocketAddressInfo(proxyServerAddressInfo: string): ProxySocketAddressInfo | undefined {
         const proxySocketAddressInfo = this.proxySocketAddressInfo.get(proxyServerAddressInfo);
         return proxySocketAddressInfo;
     }

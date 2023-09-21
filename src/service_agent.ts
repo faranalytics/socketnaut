@@ -98,7 +98,7 @@ export class ServiceAgent extends Agent {
         this.register('socketConnectOpts', () => socketConnectOpts);
     }
 
-    protected describeError(err: unknown) {
+    protected describeError(err: unknown): string {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
 
