@@ -13,11 +13,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-const server = http.createServer(app);
+const server = http.createServer(app); // Configure this HTTP Server however you choose.
 
 server.listen({ port: 0, host: '127.0.0.1' });
 // Specifying port 0 here will instruct the Server to listen on a random port.  
-// Socketnaut will communicate the randomly selected port to the ServiceProxy.
+// The Socketnaut Agent will communicate the randomly selected port to the ServiceProxy.
 
 const agent = createServiceAgent({ server });
 ```
