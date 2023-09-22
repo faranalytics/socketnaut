@@ -5,6 +5,9 @@ In this example you will use Socketnaut to scale a Hello World! server.  The `Se
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 ```js
+import * as http from 'node:http';
+import { createServiceAgent } from 'socketnaut';
+
 const server = http.createServer() // Configure this HTTP Server however you choose.
 
 server.on('request', (req, res) => {
