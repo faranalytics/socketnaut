@@ -24,9 +24,9 @@ Dependencies:
 4. [Usage](#usage)
 5. [Examples](#examples)
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
-    - [*Use Socketnaut to scale the main module of a Fastify server.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-server-example)
-    - [*Use Socketnaut to scale the main module of a Koa server.*](#use-socketnaut-to-scale-the-main-module-of-a-koa-server-example)
-    - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
+    - [*Use Socketnaut to scale the main module of a Fastify web application.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-web-application-example)
+    - [*Use Socketnaut to scale the main module of a Koa web application.*](#use-socketnaut-to-scale-the-main-module-of-a-koa-web-application-example)
+    - [*Use Socketnaut to scale the main module of an Express web application.*](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
     - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-example)
 6. [Tuning Strategies](#tuning-strategies)
@@ -135,15 +135,15 @@ server.listen({ port: 0, host: '127.0.0.1' });
 
 const agent = createServiceAgent({ server });
 ```
-### *Use Socketnaut to scale the main module of a Fastify server.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>(example)</sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
-### *Use Socketnaut to scale the main module of a Koa server.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of a Koa web application.* <sup><sup>(example)</sup></sup>
 
 Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
-### *Use Socketnaut to scale the main module of an Express server.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of an Express web application.* <sup><sup>(example)</sup></sup>
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
