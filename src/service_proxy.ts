@@ -96,11 +96,11 @@ export class ServiceProxy {
         let agent = this.agents[0];
 
         try {
-            if (agent.socketConnectOpts && agent.connections === 0) {
+            if (agent && agent.socketConnectOpts && agent.connections === 0) {
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
             }
-            else if (this.agents.length === this.maxWorkers) {
+            else if (agent && this.agents.length === this.maxWorkers) {
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
                 if (!agent.socketConnectOpts) {

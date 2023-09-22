@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.8] - 2023-09-22
+### Fixed
+- Check for nullish agent. This fixes the case where minWorkers is set to 0.
+
 ## [1.2.7] - 2023-09-22
 ### Added
 - Add Koa example.
