@@ -97,7 +97,7 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 
 ### *An instance of Hello World!* <sup><sup>(example)</sup></sup>
 
-This is a complete and simple Socketnaut Service that responds with the text "Hello World!".  **You're looking at an ordinary Node.js web application** except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled module (i.e., `http_server.js`) - that is all it takes to scall this web application. Please see the [Hello World example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
+This is a complete and simple Socketnaut Service that responds with the text "Hello World!".  **You're looking at an ordinary Node.js web application** except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled module (i.e., `http_server.js`) - *that is all it takes to scale this web application*. Please see the [Hello World example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
 `index.js`
 ```js
