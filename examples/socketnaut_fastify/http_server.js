@@ -5,7 +5,7 @@ const fastify = Fastify();
 
 const agent = createServiceAgent({ server: fastify.server });
 
-agent.log.setLevel(Level.DEBUG)
+agent.log.setLevel(Level.DEBUG);
 
 fastify.get('/', (req, reply) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
