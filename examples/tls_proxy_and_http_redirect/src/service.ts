@@ -1,5 +1,5 @@
 import * as http from 'node:http';
-import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
+import { createServiceAgent, Level } from 'socketnaut';
 
 const server = http.createServer(); // Configure this HTTP Server however you choose.
 

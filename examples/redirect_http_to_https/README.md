@@ -6,6 +6,13 @@ The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request an
 
 `https_server.ts`
 ```js
+import * as http from 'node:http';
+import * as https from 'node:https';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as pth from 'path';
+import { createServiceAgent } from 'socketnaut';
+
 const server = https.createServer(
     {
         key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),

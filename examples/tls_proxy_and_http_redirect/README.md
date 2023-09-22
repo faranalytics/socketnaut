@@ -23,12 +23,17 @@ const tlsProxy = createServiceProxy({
     maxWorkers: 42,
     workerURL: new URL('./service.js', import.meta.url)
 });
+
+...
 ```
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request, logs the proxy socket tuple, and echoes the message body.
 
 `service.ts`
 ```js
+import * as http from 'node:http';
+import { createServiceAgent } from 'socketnaut';
+
 const server = http.createServer(); // Configure this HTTP Server however you choose.
 
 server.listen({ port: 0, host: '127.0.0.1' });

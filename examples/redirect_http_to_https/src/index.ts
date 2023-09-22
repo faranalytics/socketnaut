@@ -1,5 +1,5 @@
 import * as net from 'node:net';
-import { Level, createServiceProxy } from 'socketnaut';
+import { createServiceProxy, Level } from 'socketnaut';
 
 const http_proxy = createServiceProxy({
     server: net.createServer(), // Configure this TCP Server however you choose.
