@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.7] - 2023-09-22
+### Added
+- Add Koa example.
+
 ## [1.2.6] - 2023-09-22
 ### Fixed
 - Improve documentation.
