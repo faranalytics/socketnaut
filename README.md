@@ -102,7 +102,7 @@ This is a complete and simple Socketnaut Service that responds with the text "He
 `index.js`
 ```js
 import * as net from 'node:net';
-import { createServiceProxy, Level } from 'socketnaut';
+import { createServiceProxy } from 'socketnaut';
 
 const server = net.createServer() // Configure this TCP server however you choose.
 
@@ -119,7 +119,7 @@ const proxy = createServiceProxy({
 `http_server.js`
 ```js
 import * as http from 'node:http';
-import { createServiceAgent, Level } from 'socketnaut';
+import { createServiceAgent } from 'socketnaut';
 
 const server = http.createServer() // Configure this HTTP Server however you choose.
 
