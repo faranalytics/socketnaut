@@ -1,6 +1,6 @@
-# *Use Socketnaut to scale the main module of a Fastify server.*
+# *Use Socketnaut to scale the main module of a Fastify web application.*
 
-In this example you will use Socketnaut to scale the main module of a Fastify server.  The `ServiceProxy` is configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
+In this example you will use Socketnaut to scale the main module of a Fastify web application.  The `ServiceProxy` is configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
