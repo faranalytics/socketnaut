@@ -67,3 +67,13 @@ npm start
 ```bash
 http://example.com:3080
 ```
+### In another shell send 1000 requests to the endpoint.
+```bash
+time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl -k -L 
+```
+#### Output
+```bash
+real    0m12.281s
+user    0m16.016s
+sys     0m6.832s
+```
