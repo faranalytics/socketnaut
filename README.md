@@ -6,7 +6,7 @@ Scalable multithreaded Node.js servers made easy.
 
 Socketnaut makes scaling native Node.js servers easy.  A Socketnaut **Service** consists of a TCP proxy and a pool of HTTP servers.  Socketnaut will uniformly distribute incoming TCP sockets across the pool of allocated servers.  This strategy allows for both distribution and parallel processing of incoming requests.  Socketnaut consumes native Node.js servers (e.g., `http.Server`, `https.Server`, `net.Server`, `tls.Server`); hence, if you know the [Node API](https://nodejs.org/docs/latest-v18.x/api/http.html), you already know how to build applications on Socketnaut.
 
-*Socketnaut can be used in order to scale the **main module** of performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/), [Express](https://expressjs.com/)).*  Please see the [Examples](#examples) section for instructions on how to do this.
+*Socketnaut can be used in order to scale the **main module** of performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/), [Koa](https://koajs.com/), [Express](https://expressjs.com/)).*  Please see the [Examples](#examples) section for instructions on how to do this.
 
 ## Features
 - **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org.  
@@ -25,6 +25,7 @@ Dependencies:
 5. [Examples](#examples)
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
     - [*Use Socketnaut to scale the main module of a Fastify server.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-server-example)
+    - [*Use Socketnaut to scale the main module of a Koa server.*](#use-socketnaut-to-scale-the-main-module-of-an-koa-server-example)
     - [*Use Socketnaut to scale the main module of an Express server.*](#use-socketnaut-to-scale-the-main-module-of-an-express-server-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
     - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-example)
@@ -137,6 +138,10 @@ const agent = createServiceAgent({ server });
 ### *Use Socketnaut to scale the main module of a Fastify server.* <sup><sup>(example)</sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
+
+### *Use Socketnaut to scale the main module of a Koa server.* <sup><sup>(example)</sup></sup>
+
+Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
 ### *Use Socketnaut to scale the main module of an Express server.* <sup><sup>(example)</sup></sup>
 

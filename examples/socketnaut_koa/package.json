@@ -1,0 +1,16 @@
+{
+  "name": "socketnaut_koa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.14.2",
+    "socketnaut": "^1.1.0"
+  },
+  "type": "module"
+}
