@@ -1,18 +1,11 @@
-import * as http from 'node:http';
 import Fastify from 'fastify';
 import { createServiceAgent, Level } from 'socketnaut';
 
-const serverFactory = (handler, opts) => {
-    const agent = createServiceAgent({
-        server: http.createServer(opts, handler) // Configure this HTTP Server however you choose.
-    });
+const fastify = Fastify();
 
-    agent.log.setLevel(Level.DEBUG)
+const agent = createServiceAgent({server:fastify.server});
 
-    return agent.server;
-};
-
-const fastify = Fastify({ serverFactory });
+agent.log.setLevel(Level.DEBUG)
 
 fastify.get('/', (req, reply) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.

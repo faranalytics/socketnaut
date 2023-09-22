@@ -6,17 +6,12 @@ The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 `http_server.js`
 ```js
-const serverFactory = (handler, opts) => {
-    const agent = createServiceAgent({
-        server: http.createServer(opts, handler) // Configure this HTTP Server however you choose.
-    });
+import Fastify from 'fastify';
+import { createServiceAgent } from 'socketnaut';
 
-    agent.log.setLevel(Level.DEBUG)
+const fastify = Fastify();
 
-    return agent.server;
-};
-
-const fastify = Fastify({ serverFactory });
+const agent = createServiceAgent({server:fastify.server});
 
 fastify.get('/', (req, reply) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
