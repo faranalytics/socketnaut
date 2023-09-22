@@ -6,6 +6,10 @@ The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 `http_server.js`
 ```js
+import * as http from 'node:http';
+import express from 'express';
+import { createServiceAgent } from 'socketnaut';
+
 const app = express();
 
 app.get('/', (req, res) => {
