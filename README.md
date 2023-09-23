@@ -62,9 +62,11 @@ A `ServiceAgent` coordinates the state of its worker thread and server with its 
 
     - `server` `<node:net.Server>` or `<node:tls.Server>` A `net.Server` configured however you choose.
 
-    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
+    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up.
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
+
+    - `workerCount` `<number>` Optional argument that specifies the number of worker threads.  This setting will override `minWorkers` and `maxWorkers`.
 
     - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance.  This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`.  Please see the [Examples](#examples) section for how to specify the proxy's `ServiceAgent` module. 
 
