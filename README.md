@@ -9,7 +9,7 @@ Socketnaut makes scaling native Node.js servers easy.  A Socketnaut **Service** 
 ## Features
 - **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org:  
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
-    - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC facility.
+    - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC-like facility for making inter-thread function calls..
 - The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), and [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; *you can configure them however you choose*.
 - Import Socketnaut as a Node.js module (see the [Hello World!](#an-instance-of-hello-world-example) example) or take advantage of the packaged type definitions and import it into your TypeScript project. 
 
