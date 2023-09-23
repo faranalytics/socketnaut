@@ -218,7 +218,3 @@ import { Level } from 'socketnaut';
 ...
 service.log.setLevel(Level.DEBUG)
 ```
-## FAQ
-
-### What kind of scaling implementation is this?
-Socketnaut is a multithreaded *vertical* scaling implementation. However, Socketnaut could be containerized and scaled horizontally.
