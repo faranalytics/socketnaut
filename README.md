@@ -221,5 +221,5 @@ or
 ```js
 import { Level } from 'socketnaut';
 ...
-service.log.setLevel(Level.DEBUG)
+server.log.setLevel(Level.DEBUG)
 ```
