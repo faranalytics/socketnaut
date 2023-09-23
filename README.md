@@ -154,7 +154,7 @@ In the previous example, the TLS endpoint was in the worker thread; however, it 
 
 ## Tuning Strategies
 
-Scaling can be tuned by specifying either minimum and maximum range, or a specific number, of allocated worker threads to be spawned.
+Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### socketnaut.createServiceProxy(options)
