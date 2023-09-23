@@ -7,8 +7,9 @@ import { ProxySocketAddressInfo } from './types.js';
 
 export interface ServiceProxyOptions {
     server: net.Server;
+    workerCount?: number;
     workerURL: string | URL;
-    minWorkers: number;
+    minWorkers?: number;
     maxWorkers?: number;
     workersCheckingInterval?: number;
     workerOptions?: threads.WorkerOptions;
@@ -17,6 +18,7 @@ export interface ServiceProxyOptions {
 export class ServiceProxy {
 
     public server: net.Server;
+    public workerCount?: number;
     public workerURL: string | URL;
     public minWorkers: number;
     public maxWorkers?: number;
@@ -31,16 +33,18 @@ export class ServiceProxy {
 
     constructor({
         server = net.createServer(),
+        workerCount,
         workerURL,
         minWorkers = 0,
         maxWorkers,
-        workersCheckingInterval = 60000,
+        workersCheckingInterval,
         workerOptions
     }: ServiceProxyOptions) {
         this.server = server;
+        this.workerCount = workerCount;
         this.workerURL = workerURL;
-        this.minWorkers = minWorkers;
-        this.maxWorkers = maxWorkers;
+        this.minWorkers = workerCount ?? minWorkers;
+        this.maxWorkers = workerCount ?? maxWorkers;
         this.workersCheckingInterval = workersCheckingInterval;
         this.workerOptions = workerOptions;
         this.agents = [];
@@ -77,8 +81,11 @@ export class ServiceProxy {
         });
 
         void this.spawnMinWorkers();
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
+
+        if (this.workersCheckingInterval) {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
+        }
     }
 
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {

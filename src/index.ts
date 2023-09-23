@@ -1,6 +1,7 @@
 import * as threads from 'node:worker_threads';
 import { createServiceAgent, ServiceAgent, ServiceAgentOptions } from './service_agent.js';
 import { createServiceProxy, ServiceProxy, ServiceProxyOptions } from './service_proxy.js';
+import { WorkerAgent } from './worker_agent.js';
 import { ConsoleHandler, Metadata, LevelLogger, MetadataFormatter, Level } from 'memoir';
 import { ProxySocketAddressInfo } from './types.js';
 
@@ -12,6 +13,7 @@ export {
     ServiceAgent,
     ServiceAgentOptions,
     ProxySocketAddressInfo,
+    WorkerAgent,
     Level
 };
 
