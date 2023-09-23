@@ -8,8 +8,7 @@ import { Level, createServiceProxy, WorkerAgent } from 'socketnaut';
 
 const httpProxy = createServiceProxy({
     server: net.createServer(),
-    minWorkers: 2,
-    maxWorkers: 2,
+    workerCount: 2,
     workersCheckingInterval: 1e4,
     workerURL: new URL('./http_redirect_service.js', import.meta.url)
 });
