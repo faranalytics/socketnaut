@@ -29,7 +29,6 @@ Socketnaut can be used in order to scale the **main module** of web applications
 6. [Tuning Strategies](#tuning-strategies)
 7. [The Client-Proxy Socket's Remote Address and Port](#the-client-proxy-sockets-remote-address-and-port)
 8. [Logging](#logging)
-9. [FAQ](#faq)
 
 ## Installation
 
