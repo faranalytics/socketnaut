@@ -1,6 +1,6 @@
 # **Socketnaut** 
 
-*Scalable multithreaded Node.js servers made easy.*
+Scalable multithreaded Node.js servers made easy.
 
 ## Introduction
 <img align="right" src="./transport.png">
