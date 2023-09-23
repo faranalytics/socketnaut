@@ -1,37 +1,24 @@
 # Changelog
 
-## [1.2.10] - 2023-09-22
-### Fixed
-- Improve documentation.
-
-## [1.2.9] - 2023-09-22
-### Fixed
-- Improve documentation.
+## [1.2.9 - 1.2.10] - 2023-09-22
+### Changed
+- Improve the documentation.
 
 ## [1.2.8] - 2023-09-22
 ### Fixed
-- Check for nullish agent. This fixes the case where minWorkers is set to 0.
+- Check for nullish Agent. This fixes the case where minWorkers is set to 0.
 
 ## [1.2.7] - 2023-09-22
 ### Added
 - Add Koa example.
 
-## [1.2.6] - 2023-09-22
-### Fixed
-- Improve documentation.
-
-## [1.2.5] - 2023-09-21
-### Fixed
-- Improve documentation.
-
-## [1.2.4] - 2023-09-20
-### Fixed
-- Improve documentation.
-- Improve examples.
+## [1.2.4 - 1.2.6] - 2023-09-20 - 2023-09-22
+### Changed
+- Improve the documentation and examples.
 
 ## [1.2.3] - 2023-09-20
 ### Fixed
-- Discard closed sockets.
+- Discard closed `Socket`s. If a `Socket` is closed by another `Server` handler, Socketnaut will immediately discard it.
 - Improve documentation.
 
 ## [1.2.2] - 2023-09-18
@@ -52,12 +39,13 @@
 
 ## [1.1.1] - 2023-09-16
 ### Fixed
-- Improve documentation.
 - Make linting more specific.
+### Changed
+- Improve documentation.
 
 ## [1.1.0] - 2023-09-16
 ### Changed
-- Socketnaut depends on Memoir ^2.0.0.  This change can improve Socketnaut's performance, depending on how the log Level is set.  Please see the documentation for how to use Memoir's 2.0.0 LevelLogger.
+- Depend on Memoir ^2.0.0.  This change can improve Socketnaut's performance, depending on how the log Level is set.  Please see the documentation for how to use Memoir's 2.0.0 LevelLogger.
 
 ## [1.0.1] - 2023-09-03
 ### Fixed
