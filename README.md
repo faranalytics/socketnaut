@@ -7,8 +7,7 @@ Socketnaut makes scaling native Node.js servers easy.  A Socketnaut **Service** 
 *Socketnaut can be used in order to scale the **main module** of web applications built on performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/), [Koa](https://koajs.com/), [Express](https://expressjs.com/)).*  Please see the [Examples](#examples) section for instructions on how to do this.
 
 ## Features
-- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org.  
-Dependencies:
+- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org:  
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
     - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC facility.
 - The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), and [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; *you can configure them however you choose*.
