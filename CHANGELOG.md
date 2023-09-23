@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0] - 2023-09-23
+### Added
+- Add `workerCount` parameter to the `ServiceProxy` constructor.  The argument specifies the number of worker threads to be spawned when Socketnaut starts. This setting will override `minWorkers` and `maxWorkers`.
+### Changed
+- Remove `workersCheckingInterval` default.
+- Update documentation in order to reflect additions and changes. 
+
 ## [1.2.9 - 1.2.10] - 2023-09-22
 ### Changed
 - Improve the documentation.
