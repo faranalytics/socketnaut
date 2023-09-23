@@ -62,7 +62,7 @@ A `ServiceAgent` coordinates the state of its worker thread and server with its 
 
     - `server` `<node:net.Server>` or `<node:tls.Server>` A `net.Server` configured however you choose.
 
-    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive `ServiceAgent`s will be cleaned up.
+    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive worker threads will be cleaned up.
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
@@ -160,11 +160,13 @@ Scaling can be tuned by specifying a minimum and maximum number of allocated wor
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
+    - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
+
     - `minWorkers` `<number>` Optional argument that specifies the minimum number of worker threads permitted. **Default**: `0`
 
-    - `maxWorkers` `<number>` An argument that specifies the maximum number of worker threads permitted.
+    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive worker threads will be cleaned up.
 
-    - `workersCheckingInterval` `<number>` An argument that specifies the approximate interval at which inactive `ServiceAgent`s will be cleaned up. **Default**: `60000`
+    - `workerCount` `<number>` Optional argument that specifies the number of worker threads.  This setting will override `minWorkers` and `maxWorkers`.
 
 The `minWorkers` argument specifies the minimum number of worker threads to be permitted in the thread pool.  `minWorkers` worker threads will be instantiated when the Socketnaut proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.  However, if a worker thread throws an uncaught exception, Socketnaut will not attempt to automatically restart it, which could result in a thread pool below the specified threshold.
 
