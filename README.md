@@ -66,8 +66,8 @@ A `ServiceAgent` coordinates the state of its worker thread and server with its 
 
     - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
 
-    - `workerCount` `<number>` Optional argument that specifies the number of worker threads.  This setting will override `minWorkers` and `maxWorkers`.
-
+    - `workerCount` `<number>` Optional argument that specifies the number of worker threads to be spawned when Socketnaut starts.  This setting will override `minWorkers` and `maxWorkers`.
+    
     - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance.  This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`.  Please see the [Examples](#examples) section for how to specify the proxy's `ServiceAgent` module. 
 
 - Returns: `<socketnaut.ServiceProxy>`
@@ -166,7 +166,7 @@ Scaling can be tuned by specifying either minimum and maximum range, or a specif
 
     - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive worker threads will be cleaned up.
 
-    - `workerCount` `<number>` Optional argument that specifies the number of worker threads.  This setting will override `minWorkers` and `maxWorkers`.
+    - `workerCount` `<number>` Optional argument that specifies the number of worker threads to be spawned when Socketnaut starts.  This setting will override `minWorkers` and `maxWorkers`.
 
 The `minWorkers` argument specifies the minimum number of worker threads to be permitted in the thread pool.  `minWorkers` worker threads will be instantiated when the Socketnaut proxy starts.  Socketnaut will not allow the thread pool to drop below the specified threshold.  However, if a worker thread throws an uncaught exception, Socketnaut will not attempt to automatically restart it, which could result in a thread pool below the specified threshold.
 
