@@ -7,8 +7,7 @@ server.listen({ port: 3080, host: '0.0.0.0' });
 
 const proxy = createServiceProxy({
     server,
-    minWorkers: 4,
-    maxWorkers: 42,
+    workerCount: 42,
     workerURL: './http_server.js'
 });
 
