@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.10] - 2023-09-22
+### Fixed
+- Improve documentation.
+
 ## [1.2.9] - 2023-09-22
 ### Fixed
 - Improve documentation.
