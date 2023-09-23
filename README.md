@@ -155,7 +155,7 @@ In the previous example, the TLS endpoint was in the worker thread; however, it 
 
 ## Tuning Strategies
 
-Scaling can be tuned by specifying a minimum and maximum number of allocated worker threads.  The minimum and maximum number of worker threads can be specified in the constructor of each `ServiceProxy` by assigning values to the `minWorkers` and `maxWorkers` parameters.  Further, the `workersCheckingInterval` can be used in order to set the frequency at which inactive worker threads are culled until the `minWorkers` threshold is reached.
+Scaling can be tuned by specifying either minimum and maximum range, or a specific number, of allocated worker threads to be spawned.
 
 ### `ServiceProxy` constructor parameters relevant to tuning:
 #### socketnaut.createServiceProxy(options)
@@ -172,9 +172,11 @@ The `minWorkers` argument specifies the minimum number of worker threads to be p
 
 The `maxWorkers` argument is a hard limit on *online* threads; however, because thread termination is asynchronous it is possible for the combined count of online and liminal threads to briefly exceed this limit.
 
-The `workersCheckingInterval` specifies the approximate interval at which Socketnaut will attempt to clean up inactive worker threads.  If Socketnaut's proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.  The default interval is `60000` milliseconds.
+The `workersCheckingInterval` argument specifies the approximate interval at which Socketnaut will attempt to clean up inactive worker threads.  If Socketnaut's proxy finds that a thread has 0 connections, Socketnaut will remove it from the pool and send it a notification requesting that it exit.
 
-By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval` you can tune Socketnaut according to the requirements of your environment.
+The `workerCount` argument sets the number of worker threads to be spawned when Socketnaut starts.  When this argument is specified the effect is for both `minWorkers` and `maxWorkers` to be set to the value of `workerCount`.
+
+By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval`, or `workerCount`, you can tune Socketnaut according to the requirements of your environment.
 
 ## The Client-Proxy Socket's Remote Address and Port
 
