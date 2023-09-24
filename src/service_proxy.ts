@@ -32,7 +32,7 @@ export class ServiceProxy {
     public proxyAddressInfo?: net.AddressInfo | string | null;
 
     constructor({
-        server = net.createServer(),
+        server,
         workerCount,
         workerURL,
         minWorkers = 0,
