@@ -1,8 +1,9 @@
 # Changelog
 
 ## [1.3.1] - 2023-09-24
-### Changed
+### Fixed
 - Remove default server.
+### Changed
 - Improve documentation.
 - Improve logging.
 - Improve example.
