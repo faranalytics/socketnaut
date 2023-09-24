@@ -207,9 +207,9 @@ The information returned by the `ServiceAgent.requestProxySocketAddressInfo` met
 
 ## Logging
 
-Socketnaut uses the Node.js Memoir logging facility.  Each `ServiceProxy` and `ServiceAgent` has its own Memoir `Logger` and `Handler` instances, which can be accessed by the public properties `log` and `logHandler` respectively.  The default `Handler` logs to the console.  The default log Level is `INFO`.
+Socketnaut uses the Node.js Memoir logging facility.  Each `ServiceProxy` and `ServiceAgent` has its own Memoir `Logger` and `Handler` instances, which can be accessed by the public properties `log` and `logHandler` respectively.  The default `Handler` logs to the console.
 
-You can set the log level on the Logger itself to `DEBUG` | `INFO` | `WARN` | `ERROR` using the `setLevel` method.   For example:
+You can set the log level on the Logger itself to `DEBUG` | `INFO` | `WARN` | `ERROR` using the `setLevel` method. The default log Level is `INFO`. For example:
 
 `index.js`
 ```js
