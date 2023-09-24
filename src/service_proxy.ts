@@ -71,7 +71,7 @@ export class ServiceProxy {
             this.server.on('connection', this.tryAllocateThread.bind(this));
         }
         else {
-            this.log.error?.(`The Service Proxy Server must be of type tls.Server or net.Server.`);
+            this.log.error?.(`The Service Proxy Server must be of type net.Server or tls.Server.`);
         }
 
         this.server.on('listening', () => {
@@ -92,12 +92,12 @@ export class ServiceProxy {
 
         if (clientProxySocket.closed) {
             const tuple = `${clientProxySocket.remoteAddress}:${clientProxySocket.remotePort}, ${clientProxySocket.localAddress}:${clientProxySocket.localPort}, ${clientProxySocket.localFamily}`;
-            this.log.debug?.(`The client-proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
+            this.log.debug?.(`The Client-Proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
             return;
         }
 
         clientProxySocket.on('error', (err: Error) => {
-            this.log.error?.(`Client socket error.  ${this.describeError(err)}.`);
+            this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
         });
 
         let agent = this.agents[0];
@@ -153,7 +153,7 @@ export class ServiceProxy {
 
     protected async createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void> {
 
-        const message = `Proxy Server Connect Options: ${JSON.stringify(socketConnectOpts)}`;
+        const message = `Connect options: ${JSON.stringify(socketConnectOpts)}`;
 
         const proxyServerSocket = net.createConnection(socketConnectOpts);
 
@@ -181,37 +181,37 @@ export class ServiceProxy {
                 proxyServerSocket.removeListener('error', j);
 
                 proxyServerSocket.on('error', (err: Error) => {
-                    this.log.error?.(`Server socket error.  ${this.describeError(err)}  ${message}.`);
+                    this.log.error?.(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
                 });
 
                 proxyServerSocket.on('timeout', () => {
-                    this.log.debug?.(`Server timeout. ${message}.`);
+                    this.log.debug?.(`Proxy-Server socket timeout. ${message}.`);
                 });
 
                 clientProxySocket.on('timeout', () => {
-                    this.log.debug?.(`Client timeout. ${message}.`);
+                    this.log.debug?.(`Client-Proxy socket timeout. ${message}.`);
                 });
 
                 proxyServerSocket.once('end', () => {
-                    this.log.debug?.(`Server socket end. ${message}.`);
+                    this.log.debug?.(`Proxy-Server socket end. ${message}.`);
                     clientProxySocket.end();
                 });
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 proxyServerSocket.once('close', (hadError: boolean) => {
-                    this.log.debug?.(`Server socket close. ${message}.`);
+                    this.log.debug?.(`Proxy-Server socket close. ${message}.`);
                     clientProxySocket.destroy();
                     this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
                 });
 
                 clientProxySocket.once('end', () => {
-                    this.log.debug?.(`Client socket end.  ${message}.`);
+                    this.log.debug?.(`Client-Proxy socket end.  ${message}.`);
                     proxyServerSocket.end();
                 });
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 clientProxySocket.once('close', (hadError: boolean) => {
-                    this.log.debug?.(`Client socket close. ${message}.`);
+                    this.log.debug?.(`Client-Proxy socket close. ${message}.`);
                     proxyServerSocket.destroy();
                 });
 
