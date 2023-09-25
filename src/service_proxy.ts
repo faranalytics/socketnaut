@@ -163,6 +163,10 @@ export class ServiceProxy {
 
             proxyServerSocket.on('connect', () => {
 
+                proxyServerSocket.on('error', (err: Error) => {
+                    this.log.error?.(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
+                });
+
                 const proxyServerSocketAddressInfo = proxyServerSocket.address();
                 const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
                 this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
@@ -177,13 +181,7 @@ export class ServiceProxy {
                         port: clientProxySocket.remotePort ?? NaN
                     }
                 });
-
-                proxyServerSocket.removeListener('error', j);
-
-                proxyServerSocket.on('error', (err: Error) => {
-                    this.log.error?.(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
-                });
-
+                
                 proxyServerSocket.on('timeout', () => {
                     this.log.debug?.(`Proxy-Server socket timeout. ${message}.`);
                 });
@@ -222,6 +220,8 @@ export class ServiceProxy {
                 proxyServerSocket.on('data', (data) => {
                     clientProxySocket.write(data);
                 });
+
+                proxyServerSocket.removeListener('error', j);
 
                 r();
             });

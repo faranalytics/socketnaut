@@ -36,10 +36,10 @@ export class WorkerAgent extends Agent {
                     j("The Worker came online; however, it is missing a socketConnectOpts.");
                 }
 
-                r(socketConnectOpts);
-
                 worker.removeListener('exit', j);
                 worker.removeListener('error', j);
+                
+                r(socketConnectOpts);
             });
         });
     }
