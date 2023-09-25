@@ -6,7 +6,7 @@ const app = express();
 
 app.get('/', (req, res) => {
   for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-  res.send('Hello World!');
+  res.send('Hello, World!');
 });
 
 const server = http.createServer(app); // Configure this HTTP Server however you choose.
