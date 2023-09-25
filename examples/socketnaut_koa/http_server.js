@@ -13,5 +13,5 @@ agent.log.setLevel(Level.DEBUG);
 
 app.use(async ctx => {
   for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-  ctx.body = 'Hello World';
+  ctx.body = 'Hello, World!';
 });
