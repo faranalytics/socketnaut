@@ -23,7 +23,6 @@ export class WorkerAgent extends Agent {
         this.online = new Promise<net.SocketConnectOpts>((r, j) => {
 
             worker.once('exit', j);
-
             worker.once('error', j);
 
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -38,7 +37,7 @@ export class WorkerAgent extends Agent {
 
                 worker.removeListener('exit', j);
                 worker.removeListener('error', j);
-                
+
                 r(socketConnectOpts);
             });
         });
