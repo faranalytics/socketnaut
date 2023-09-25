@@ -90,15 +90,15 @@ export class ServiceProxy {
 
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {
 
+        clientProxySocket.on('error', (err: Error) => {
+            this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
+        });
+        
         if (clientProxySocket.closed) {
             const tuple = `${clientProxySocket.remoteAddress}:${clientProxySocket.remotePort}, ${clientProxySocket.localAddress}:${clientProxySocket.localPort}, ${clientProxySocket.localFamily}`;
             this.log.debug?.(`The Client-Proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
             return;
         }
-
-        clientProxySocket.on('error', (err: Error) => {
-            this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
-        });
 
         let agent = this.agents[0];
 
