@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.2] - 2023-09-26
+### Fixed
+- Harmonize handler attachment.
+### Changed
+- Improve documentation.
+
 ## [1.3.1] - 2023-09-24
 ### Fixed
 - Remove default server.
