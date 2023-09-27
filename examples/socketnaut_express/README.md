@@ -40,7 +40,7 @@ cd socketnaut/examples/socketnaut_express
 ```
 ### Install the example dependencies.
 ```bash
-npm install
+npm install && npm update
 ```
 ### Run the application.
 ```bash

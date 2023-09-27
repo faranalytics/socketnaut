@@ -45,7 +45,7 @@ cd socketnaut/examples/redirect_http_to_https
 ```
 ### Install the example dependencies.
 ```bash
-npm install
+npm install && npm update
 ```
 ### Edit https_server.ts in order to read your `key` and `cert` files.
 ```js

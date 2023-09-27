@@ -65,7 +65,7 @@ cd socketnaut/examples/tls_proxy_and_http_redirect
 ```
 ### Install the example dependencies.
 ```bash
-npm install
+npm install && npm update
 ```
 ### Edit index.ts in order to read your `key` and `cert` files.
 ```js
