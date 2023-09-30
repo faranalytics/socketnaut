@@ -21,10 +21,10 @@
   "homepage": "https://github.com/faranalytics/socketnaut#readme",
   "devDependencies": {
     "@types/node": "^20.5.6",
-    "typescript": "^5.2.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.44.0"
+    "eslint": "^8.44.0",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "memoir": "^2.0.0",
