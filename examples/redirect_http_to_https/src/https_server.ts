@@ -22,5 +22,5 @@ server.listen({ port: 0, host: '127.0.0.1' });
 
 const agent = createServiceAgent({ server });
 
-agent.logHandler.setLevel(Level.DEBUG);
+agent.log.setLevel(Level.DEBUG);
 
