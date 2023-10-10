@@ -90,6 +90,8 @@ export class ServiceProxy {
 
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {
 
+        clientProxySocket.pause();
+
         clientProxySocket.on('error', (err: Error) => {
             this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
         });
@@ -221,6 +223,8 @@ export class ServiceProxy {
                     clientProxySocket.write(data);
                 });
 
+                clientProxySocket.resume();
+                
                 proxyServerSocket.removeListener('error', j);
 
                 r();
