@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.3] - 2023-10-10
+### Fixed
+- Pause and resume reading data after the `data` handler is attached.
+
 ## [1.3.2] - 2023-09-26
 ### Fixed
 - Harmonize handler attachment.
