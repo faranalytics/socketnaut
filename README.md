@@ -46,11 +46,11 @@ npm install socketnaut
 
 A Socketnaut **Service** consists of a `ServiceProxy` and a `ServiceAgent`.
 
-### ServiceProxy
+### Service Proxy
 
 A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public port).  A `ServiceProxy` can be instantiated using the `createServiceProxy` function.  The `ServiceProxy` uniformly distributes TCP connections to servers (e.g., HTTP servers) in the worker thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters or `WorkerCount` parameter.  
 
-### ServiceAgent
+### Service Agent
 
 A `ServiceAgent` coordinates the state of its worker thread and server with its respective proxy (e.g., the server's address and worker termination).  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It consumes a native Node.js server (e.g., [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver)).  The Node.js server provided to the `ServiceAgent` may be used the same way it is used natively; hence, Socketnaut works with many popular Node.js web frameworks. Please see the [Examples](#examples) section for instructions on how to use Socketnaut with native Node.js servers and web application frameworks.
 
