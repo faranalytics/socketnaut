@@ -22,8 +22,8 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [Service Proxy](#serviceproxy)
     - [Service Agent](#serviceagent)
 - [API](#api)
-    - [The Service Proxy Class](#the-serviceproxy-class)
-    - [The Service Agent Class](#the-serviceagent-class)
+    - [The ServiceProxy class.](#the-serviceproxy-class)
+    - [The ServiceAgent class.](#the-serviceagent-class)
 - [Usage](#usage)
 - [Examples](#examples)
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
@@ -56,7 +56,7 @@ A `ServiceAgent` coordinates the state of its worker thread and server with its 
 
 ## API
 
-### The `ServiceProxy` Class
+### The `ServiceProxy` class.
 
 #### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
@@ -79,7 +79,7 @@ A `ServiceAgent` coordinates the state of its worker thread and server with its 
 
 Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
-### The `ServiceAgent` Class
+### The `ServiceAgent` class.
 
 #### socketnaut.createServiceAgent(options)
 - options `<ServiceAgentOptions>`
