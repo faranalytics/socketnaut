@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.4] - 2023-12-30
+### Changed
+- Improve naming.
+- Improve documentation.
+
 ## [1.3.3] - 2023-10-10
 ### Fixed
 - Pause and resume reading data after the `data` handler is attached.

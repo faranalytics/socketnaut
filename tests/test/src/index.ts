@@ -13,7 +13,7 @@ const httpProxy = createServiceProxy({
     workerURL: new URL('./http_redirect_service.js', import.meta.url)
 });
 
-// httpProxy.log.setLevel(Level.INFO);
+httpProxy.log.setLevel(Level.DEBUG);
 
 httpProxy.server.listen({ port: 3080, host: '0.0.0.0' });
 
@@ -28,7 +28,7 @@ const tlsProxy = createServiceProxy({
     workerURL: new URL('./service.js', import.meta.url)
 });
 
-// tlsProxy.log.setLevel(Level.INFO);
+tlsProxy.log.setLevel(Level.DEBUG);
 
 tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
 
