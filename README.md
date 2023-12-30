@@ -22,6 +22,8 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [Service Proxy](#serviceproxy)
     - [Service Agent](#serviceagent)
 - [API](#api)
+    - [The Service Proxy Class](#the-serviceproxy-class)
+    - [The Service Agent Class](#the-serviceagent-class)
 - [Usage](#usage)
 - [Examples](#examples)
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
@@ -31,7 +33,8 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
     - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-example)
 - [Tuning Strategies](#tuning-strategies)
-- [The Client-Proxy Socket's Remote Address and Port](#the-client-proxy-sockets-remote-address-and-port)
+    - [Relevant ServiceProxy constructor parameters.](#relevant-serviceproxy-constructor-parameters)
+- [Client-Proxy Socket Remote Address and Port](#client-proxy-socket-remote-address-and-port)
 - [Logging](#logging)
 
 ## Installation
@@ -162,7 +165,7 @@ In the previous example, the TLS endpoint was in the worker thread; however, it 
 
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
-### `ServiceProxy` constructor parameters relevant to tuning:
+### Relevant `ServiceProxy` constructor parameters.
 #### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
     - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
@@ -183,7 +186,7 @@ The `workerCount` argument sets the number of worker threads to be spawned when 
 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval`, or `workerCount`, you can tune Socketnaut according to the requirements of your environment.
 
-## The Client-Proxy Socket's Remote Address and Port
+## Client-Proxy Socket Remote Address and Port
 
 Socketnaut provides a facility for obtaining information about the client-proxy socket.  When a proxied request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the proxy (usu. 127.0.0.1) - not the remote address of the client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.
 

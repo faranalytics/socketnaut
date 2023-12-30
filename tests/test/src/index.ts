@@ -13,7 +13,7 @@ const httpProxy = createServiceProxy({
     workerURL: new URL('./http_redirect_service.js', import.meta.url)
 });
 
-httpProxy.log.setLevel(Level.INFO);
+// httpProxy.log.setLevel(Level.INFO);
 
 httpProxy.server.listen({ port: 3080, host: '0.0.0.0' });
 
@@ -28,13 +28,13 @@ const tlsProxy = createServiceProxy({
     workerURL: new URL('./service.js', import.meta.url)
 });
 
-tlsProxy.log.setLevel(Level.DEBUG);
+// tlsProxy.log.setLevel(Level.INFO);
 
 tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
 
-setInterval(() => {
-    tlsProxy.agents[0].connections;
-    tlsProxy.log.info?.(`Status: ${tlsProxy.agents.length}, ${tlsProxy.maxWorkers}, ${tlsProxy.minWorkers}.`);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-    console.log(JSON.stringify(tlsProxy.agents.map<number>((value: WorkerAgent) => value.connections)));
-}, 1000);
+// setInterval(() => {
+//     tlsProxy.agents[0].connections;
+//     tlsProxy.log.info?.(`Status: ${tlsProxy.agents.length}, ${tlsProxy.maxWorkers}, ${tlsProxy.minWorkers}.`);
+//     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+//     console.log(JSON.stringify(tlsProxy.agents.map<number>((value: WorkerAgent) => value.connections)));
+// }, 1000);
