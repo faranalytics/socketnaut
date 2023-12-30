@@ -10,7 +10,7 @@ export class WorkerAgent extends Agent {
     public worker: threads.Worker;
     public connections: number;
     public socketConnectOpts?: net.SocketConnectOpts;
-    public socketConnectOptsReady: Promise<net.SocketConnectOpts>;
+    public socketConnectOptsReady: Promise<boolean>;
 
     constructor({
         worker,
@@ -20,7 +20,7 @@ export class WorkerAgent extends Agent {
         this.worker = worker;
         this.connections = 0;
 
-        this.socketConnectOptsReady = new Promise<net.SocketConnectOpts>((r, j) => {
+        this.socketConnectOptsReady = new Promise<boolean>((r, j) => {
 
             worker.once('exit', j);
             worker.once('error', j);
@@ -38,7 +38,7 @@ export class WorkerAgent extends Agent {
                 worker.removeListener('exit', j);
                 worker.removeListener('error', j);
 
-                r(socketConnectOpts);
+                r(true);
             });
         });
     }

@@ -10,27 +10,29 @@ Socketnaut makes scaling native Node.js servers easy.  A Socketnaut **Service** 
 Socketnaut can be used in order to scale the **main module** of web applications built on performant Node.js web frameworks (e.g., [Fastify](https://fastify.dev/), [Koa](https://koajs.com/), [Express](https://expressjs.com/)).  Please see the [Examples](#examples) section for instructions on how to do this.
 
 ### Features
-- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics and Research** org:  
+- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics & Research** org:  
     - The [`farar/memoir`](https://www.npmjs.com/package/memoir) logger.
     - The [`farar/port_agent`](https://www.npmjs.com/package/port_agent) RPC-like facility for making inter-thread function calls.
 - The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; *you can configure them however you choose*.
 - Import Socketnaut as a Node.js module (see the [Hello World!](#an-instance-of-hello-world-example) example) or take advantage of the packaged type definitions and import it into your TypeScript project. 
 
 ## Table of Contents
-1. [Installation](#installation)
-2. [Concepts](#concepts)
-3. [API](#api)
-4. [Usage](#usage)
-5. [Examples](#examples)
+- [Installation](#installation)
+- [Concepts](#concepts)
+    - [Service Proxy](#serviceproxy)
+    - [Service Agent](#serviceagent)
+- [API](#api)
+- [Usage](#usage)
+- [Examples](#examples)
     - [*An instance of Hello World!*](#an-instance-of-hello-world-example)
     - [*Use Socketnaut to scale the main module of a Fastify web application.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-web-application-example)
     - [*Use Socketnaut to scale the main module of a Koa web application.*](#use-socketnaut-to-scale-the-main-module-of-a-koa-web-application-example)
     - [*Use Socketnaut to scale the main module of an Express web application.*](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-example)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-example)
     - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-example)
-6. [Tuning Strategies](#tuning-strategies)
-7. [The Client-Proxy Socket's Remote Address and Port](#the-client-proxy-sockets-remote-address-and-port)
-8. [Logging](#logging)
+- [Tuning Strategies](#tuning-strategies)
+- [The Client-Proxy Socket's Remote Address and Port](#the-client-proxy-sockets-remote-address-and-port)
+- [Logging](#logging)
 
 ## Installation
 

@@ -106,7 +106,7 @@ export class ServiceProxy {
 
         try {
             if (agent && agent.socketConnectOpts && agent.connections === 0) {
-                // The Agent has socketConnectOpts; hence, it is online.
+                // The Agent has socketConnectOpts; hence, it is ready.
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
             }
