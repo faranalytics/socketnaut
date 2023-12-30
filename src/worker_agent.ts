@@ -10,7 +10,7 @@ export class WorkerAgent extends Agent {
     public worker: threads.Worker;
     public connections: number;
     public socketConnectOpts?: net.SocketConnectOpts;
-    public online: Promise<net.SocketConnectOpts>;
+    public socketConnectOptsReady: Promise<net.SocketConnectOpts>;
 
     constructor({
         worker,
@@ -20,7 +20,7 @@ export class WorkerAgent extends Agent {
         this.worker = worker;
         this.connections = 0;
 
-        this.online = new Promise<net.SocketConnectOpts>((r, j) => {
+        this.socketConnectOptsReady = new Promise<net.SocketConnectOpts>((r, j) => {
 
             worker.once('exit', j);
             worker.once('error', j);

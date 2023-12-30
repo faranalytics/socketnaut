@@ -106,14 +106,16 @@ export class ServiceProxy {
 
         try {
             if (agent && agent.socketConnectOpts && agent.connections === 0) {
+                // The Agent has socketConnectOpts; hence, it is online.
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
             }
             else if (agent && this.agents.length === this.maxWorkers) {
+                // The Agents pool is full; hence, use the Agent with the least number of connections i.e., the one at index 0.
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
                 if (!agent.socketConnectOpts) {
-                    await agent.online;
+                    await agent.socketConnectOptsReady;
                 }
             }
             else {
@@ -121,7 +123,7 @@ export class ServiceProxy {
                 agent.connections = agent.connections + 1;
                 this.agents.push(agent);
                 this.reorderAgent(agent);
-                await agent.online;
+                await agent.socketConnectOptsReady;
             }
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -294,7 +296,7 @@ export class ServiceProxy {
             while (this.agents.length < this.minWorkers) {
                 const agent = this.spawnWorker();
                 this.agents.push(agent);
-                await agent.online;
+                await agent.socketConnectOptsReady;
                 this.reorderAgent(agent);
             }
         }
