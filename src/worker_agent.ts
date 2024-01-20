@@ -20,25 +20,29 @@ export class WorkerAgent extends Agent {
         this.worker = worker;
         this.connections = 0;
 
-        this.socketConnectOptsReady = new Promise<boolean>((r, j) => {
-
-            worker.once('exit', j);
-            worker.once('error', j);
+        this.socketConnectOptsReady = new Promise<boolean>((r, e) => {
+            worker.once('exit', e);
+            worker.once('error', e);
 
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             worker.once('online', async () => {
-                const socketConnectOpts = await this.call<net.SocketConnectOpts>('socketConnectOpts');
-                if (socketConnectOpts) {
-                    this.socketConnectOpts = socketConnectOpts;
-                }
-                else {
-                    j("The Worker came online; however, it is missing a socketConnectOpts.");
-                }
+                try {
+                    const socketConnectOpts = await this.call<net.SocketConnectOpts>('socketConnectOpts');
+                    if (socketConnectOpts) {
+                        this.socketConnectOpts = socketConnectOpts;
+                    }
+                    else {
+                        e("The Worker came online; however, it is missing a socketConnectOpts.");
+                    }
 
-                worker.removeListener('exit', j);
-                worker.removeListener('error', j);
+                    worker.removeListener('exit', e);
+                    worker.removeListener('error', e);
 
-                r(true);
+                    r(true);
+                }
+                catch (err) {
+                    e(err);
+                }
             });
         });
     }
