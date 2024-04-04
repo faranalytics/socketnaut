@@ -224,7 +224,7 @@ You can set the log level on the `Logger` itself to `DEBUG` | `INFO` | `WARN` | 
 ```js
 import { Level } from 'socketnaut';
 ...
-proxy.log.setLevel(Level.DEBUG)
+proxy.log.setLevel(Level.DEBUG);
 ```
 or
 
@@ -232,7 +232,7 @@ or
 ```js
 import { Level } from 'socketnaut';
 ...
-agent.log.setLevel(Level.DEBUG)
+agent.log.setLevel(Level.DEBUG);
 ```
 
 Socketnaut's `Logger` may be configured however you choose using Memoir's API e.g., you can remove or replace the default handler if you want to.  The `ServiceAgent`'s `Logger` is configured to use a Socketnaut `ServiceMessageHandler`, which marshalls messages to its `ServiceProxy` in the main thread.  This approach allows for messages from many worker threads to be safely logged to the same file.
