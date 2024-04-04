@@ -114,7 +114,7 @@ Please see the [Hello World example](https://github.com/faranalytics/socketnaut/
 import * as net from 'node:net';
 import { createServiceProxy } from 'socketnaut';
 
-const server = net.createServer() // Configure this TCP server however you choose.
+const server = net.createServer(); // Configure this TCP server however you choose.
 
 server.listen({ port: 3080, host: '0.0.0.0' });
 
@@ -130,7 +130,7 @@ const proxy = createServiceProxy({
 import * as http from 'node:http';
 import { createServiceAgent } from 'socketnaut';
 
-const server = http.createServer() // Configure this HTTP Server however you choose.
+const server = http.createServer(); // Configure this HTTP Server however you choose.
 
 server.on('request', (req, res) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
