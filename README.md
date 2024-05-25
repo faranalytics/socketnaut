@@ -82,9 +82,9 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 #### serviceProxy.shutdown()
 Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process exits.  
 
-The return value contains a `Promise` that resolves to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.
+The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.
 
-This method will throw an `Error` if the `Server` is closed prior to being opened. 
+This method throws an `Error` if the `Server` is closed prior to being opened. 
 
 - Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
 
@@ -100,7 +100,7 @@ This method will throw an `Error` if the `Server` is closed prior to being opene
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
 #### serviceAgent.requestProxySocketAddressInfo(socket)
-- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The return value is a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
 
 - Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
@@ -199,7 +199,7 @@ By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval
 
 Socketnaut provides a facility for obtaining information about the client-proxy socket.  When a proxied request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the proxy (usu. 127.0.0.1) - not the remote address of the client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.
 
-Socketnaut solves this problem by simply providing a `MessageChannel` facility for requesting information about the client-proxy socket. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method will return a `Promise` that resolves to a `socketnaut.ProxySocketAddressInfo` object that contains information that describes the proxy's socket tuple.
+Socketnaut solves this problem by simply providing a `MessageChannel` facility for requesting information about the client-proxy socket. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method returns a `Promise` that will resolve to a `socketnaut.ProxySocketAddressInfo` object that contains information that describes the proxy's socket tuple.
 
 ### Example
 
