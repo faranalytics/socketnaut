@@ -80,7 +80,7 @@ A `ServiceAgent` coordinates the state of its server (e.g., the server's address
 Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
 #### serviceProxy.shutdown()
-Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process exits.  
+Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process exits (this assumes there aren't any remaining refs).  
 
 The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.
 
