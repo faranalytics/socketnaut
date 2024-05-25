@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0] - 2024-05-25
+### Added
+- Implement a graceful shutdown method on the `ServiceProxy`.
+### Changed
+- Improve documentation.
+
 ## [1.3.4] - 2023-12-30
 ### Changed
 - Improve naming.
