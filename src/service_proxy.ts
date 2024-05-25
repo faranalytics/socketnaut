@@ -23,6 +23,7 @@ export class ServiceProxy {
     public minWorkers: number;
     public maxWorkers?: number;
     public workersCheckingInterval?: number;
+    public workersCheckingIntervalTimeout?: NodeJS.Timeout;
     public workerOptions?: threads.WorkerOptions;
     public agents: Array<WorkerAgent>;
     public log: LevelLogger<string, string>;
@@ -84,7 +85,7 @@ export class ServiceProxy {
 
         if (this.workersCheckingInterval) {
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
+            this.workersCheckingIntervalTimeout = setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
         }
     }
 
@@ -95,7 +96,7 @@ export class ServiceProxy {
         clientProxySocket.on('error', (err: Error) => {
             this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
         });
-        
+
         if (clientProxySocket.closed) {
             const tuple = `${clientProxySocket.remoteAddress}:${clientProxySocket.remotePort}, ${clientProxySocket.localAddress}:${clientProxySocket.localPort}, ${clientProxySocket.localFamily}`;
             this.log.debug?.(`The Client-Proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
@@ -185,7 +186,7 @@ export class ServiceProxy {
                         port: clientProxySocket.remotePort ?? NaN
                     }
                 });
-                
+
                 proxyServerSocket.on('timeout', () => {
                     this.log.debug?.(`Proxy-Server socket timeout. ${message}.`);
                 });
@@ -226,7 +227,7 @@ export class ServiceProxy {
                 });
 
                 clientProxySocket.resume();
-                
+
                 proxyServerSocket.removeListener('error', j);
 
                 r();
@@ -258,7 +259,7 @@ export class ServiceProxy {
         }
         finally {
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
+            this.workersCheckingIntervalTimeout = setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
         }
     }
 
@@ -340,8 +341,33 @@ export class ServiceProxy {
         return proxySocketAddressInfo;
     }
 
-    protected describeError(err: unknown) {
+    protected describeError(err: unknown): string {
         return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
+    }
+
+    public async shutdown(): Promise<Array<PromiseSettledResult<unknown>>> {
+        await new Promise((r, e) => {
+            this.server.close((err) => err ? e(err) : r(true));
+        });
+        if (this.server instanceof tls.Server) {
+            this.server.removeAllListeners('secureConnection');
+        }
+        else if (this.server instanceof net.Server) {
+            this.server.removeAllListeners('connection');
+        }
+        clearTimeout(this.workersCheckingIntervalTimeout);
+        this.minWorkers = 0;
+        const exits = this.agents.map((agent: WorkerAgent) => {
+            const promise= new Promise((r, j) => {
+                agent.worker.on('exit', r);
+                agent.worker.on('error', j);
+            });
+
+            agent.call('tryTerminate').catch(()=>{});
+
+            return promise;
+        });
+        return Promise.allSettled(exits);
     }
 }
 

@@ -65,8 +65,9 @@ export class ServiceAgent extends Agent {
                 this.server.unref();
                 this.log.debug?.(`Process exit. ${this.agentDescription}.`);
                 setImmediate(() => {
+                    // Process termination is async in order to prevent `tryTerminate` from throwing an Error.
                     process.exit(0);
-                });
+                }).unref();
             }
         }
         catch (err) {
