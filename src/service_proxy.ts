@@ -358,13 +358,11 @@ export class ServiceProxy {
         clearTimeout(this.workersCheckingIntervalTimeout);
         this.minWorkers = 0;
         const exits = this.agents.map((agent: WorkerAgent) => {
-            const promise= new Promise((r, j) => {
+            const promise = new Promise((r, j) => {
                 agent.worker.on('exit', r);
                 agent.worker.on('error', j);
             });
-
-            agent.call('tryTerminate').catch(()=>{});
-
+            agent.call('tryTerminate').catch(() => { });
             return promise;
         });
         return Promise.allSettled(exits);
