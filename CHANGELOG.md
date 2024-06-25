@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.1] - 2024-06-25
+### Changed
+- Update image.
+
 ## [1.4.0] - 2024-05-25
 ### Added
 - Implement a graceful shutdown method on the `ServiceProxy`.
