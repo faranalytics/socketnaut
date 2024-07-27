@@ -108,7 +108,7 @@ export class ServiceProxy {
         let agent = this.agents[0];
 
         try {
-            if (agent && agent.socketConnectOpts && agent.connections === 0) {
+            if (agent?.socketConnectOpts && agent.connections === 0) {
                 // The Agent has socketConnectOpts; hence, it is ready.
                 agent.connections = agent.connections + 1;
                 this.reorderAgent(agent);
@@ -124,7 +124,6 @@ export class ServiceProxy {
             else {
                 agent = this.spawnWorker();
                 agent.connections = agent.connections + 1;
-                this.agents.push(agent);
                 this.reorderAgent(agent);
                 await agent.socketConnectOptsReady;
             }
@@ -272,12 +271,9 @@ export class ServiceProxy {
         if (index != -1) {
             this.agents.splice(index, 1);
         }
-        else {
-            return;  // The agent isn't in the list; hence, there is nothing to reorder.
-        }
 
         for (let i = 0; i < this.agents.length; i = i + 1) {
-            if (agent.connections <= this.agents[i].connections) {
+            if (agent.connections < this.agents[i].connections) {
                 this.agents.splice(i, 0, agent);
                 return;
             }
@@ -290,9 +286,8 @@ export class ServiceProxy {
         try {
             while (this.agents.length < this.minWorkers) {
                 const agent = this.spawnWorker();
-                this.agents.push(agent);
-                await agent.socketConnectOptsReady;
                 this.reorderAgent(agent);
+                await agent.socketConnectOptsReady;
             }
         }
         catch (err) {
