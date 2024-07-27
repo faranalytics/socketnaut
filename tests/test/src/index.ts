@@ -1,41 +1,67 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as net from 'node:net';
-import * as tls from 'node:tls';
+import * as cp from 'node:child_process';
+import * as https from 'node:https';
+import * as crypto from 'node:crypto';
 import * as fs from 'fs';
-import * as os from 'os';
-import * as pth from 'path';
-import { Level, createServiceProxy, WorkerAgent } from 'socketnaut';
+import { once } from 'node:events';
+import * as http from 'node:http';
+import * as assert from 'node:assert';
 
-const httpProxy = createServiceProxy({
-    server: net.createServer(),
-    workerCount: 2,
-    workersCheckingInterval: 1e4,
-    workerURL: new URL('./http_redirect_service.js', import.meta.url)
+const proxy = cp.fork('./dist/proxy.js');
+while ((await once(proxy, 'message'))[0] != 'ready');
+
+const DATA = crypto.randomBytes(1e1).toString();
+const PORT = 3443;
+const PATH = '/';
+const HOST = 'localhost';
+const REQS = 1e2;
+
+const promises: Array<Promise<unknown>> = [];
+for (let i = 0; i < REQS; i++) {
+    promises.push(new Promise((r, e) => {
+        const req = https.request(
+            {
+                hostname: HOST,
+                port: PORT,
+                path: PATH,
+                method: 'POST',
+                ca: [fs.readFileSync('cert.pem')],
+                timeout: 1e6
+            });
+
+        req.on('response', (res: http.IncomingMessage) => {
+            const data: Array<Buffer> = [];
+            res.on('data', (datum: Buffer) => {
+                data.push(datum);
+            });
+            res.on('end', () => {
+                r(data.toString());
+            });
+        });
+
+        req.once('error', e);
+
+        req.end(DATA);
+    }));
+}
+
+console.time('test');
+const results = await Promise.allSettled(promises);
+console.timeEnd('test');
+
+for (const result of results) {
+    if (result.status == 'rejected') {
+        console.log(result.reason);
+    }
+    if (result.status == 'fulfilled') {
+        assert.strictEqual(result.value?.toString(), DATA);
+    }
+}
+
+proxy.send({ event: 'shutdown' });
+
+proxy.on('exit', () => {
+    console.log('exit');
 });
-
-httpProxy.log.setLevel(Level.DEBUG);
-
-httpProxy.server.listen({ port: 3080, host: '0.0.0.0' });
-
-const tlsServer = tls.createServer({
-    key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-    cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
-});
-
-const tlsProxy = createServiceProxy({
-    server: tlsServer,
-    workerCount: 42,
-    workerURL: new URL('./service.js', import.meta.url)
-});
-
-tlsProxy.log.setLevel(Level.DEBUG);
-
-tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
-
-// void (async () => {
-//     await tlsProxy.shutdown();
-//     await httpProxy.shutdown();
-// })();
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 // setTimeout(async () => {
@@ -49,9 +75,3 @@ tlsProxy.server.listen({ port: 3443, host: '0.0.0.0' });
 //     // }, 3000);
 // }, 6000);
 
-// setInterval(() => {
-//     tlsProxy.agents[0].connections;
-//     tlsProxy.log.info?.(`Status: ${tlsProxy.agents.length}, ${tlsProxy.maxWorkers}, ${tlsProxy.minWorkers}.`);
-//     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-//     console.log(JSON.stringify(tlsProxy.agents.map<number>((value: WorkerAgent) => value.connections)));
-// }, 1000);

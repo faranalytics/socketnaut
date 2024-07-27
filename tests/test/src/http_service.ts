@@ -5,7 +5,7 @@ const service = createServiceAgent({
     server: http.createServer()
 });
 
-service.log.setLevel(Level.DEBUG);
+service.log.setLevel(Level.ERROR);
 
 service.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
     if (req.url) {
@@ -14,6 +14,6 @@ service.server.on('request', (req: http.IncomingMessage, res: http.ServerRespons
     }
 });
 
-service.server.listen({ port: 0, host: '127.0.0.1' });
+service.server.listen({ port: 0, host: 'localhost' });
 // Specifying port 0 here will cause the Server to listen on a random port.
 // Socketnaut will communicate the random port number to the ServiceProxy.
