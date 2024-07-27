@@ -1,5 +1,6 @@
 import * as net from 'node:net';
 import * as tls from 'node:tls';
+import * as events from 'node:events';
 import * as threads from 'node:worker_threads';
 import { WorkerAgent } from './worker_agent.js';
 import { ConsoleHandler, Metadata, Level, LevelLogger, MetadataFormatter } from 'memoir';
@@ -31,6 +32,7 @@ export class ServiceProxy {
     public proxySocketAddressInfo: Map<string, ProxySocketAddressInfo>;
     public proxyAddressInfoRepr?: string;
     public proxyAddressInfo?: net.AddressInfo | string | null;
+    public emitter: events.EventEmitter;
 
     constructor({
         server,
@@ -50,7 +52,7 @@ export class ServiceProxy {
         this.workerOptions = workerOptions;
         this.agents = [];
         this.proxySocketAddressInfo = new Map<string, ProxySocketAddressInfo>();
-
+        this.emitter = new events.EventEmitter();
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
@@ -292,7 +294,6 @@ export class ServiceProxy {
     }
 
     protected async spawnMinWorkers(): Promise<void> {
-
         try {
             while (this.agents.length < this.minWorkers) {
                 const agent = this.spawnWorker();
@@ -303,6 +304,9 @@ export class ServiceProxy {
         }
         catch (err) {
             this.describeError(err);
+        }
+        finally {
+            this.emitter.emit('ready', ...this.agents);
         }
     }
 
