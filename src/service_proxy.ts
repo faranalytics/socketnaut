@@ -16,7 +16,7 @@ export interface ServiceProxyOptions {
     workerOptions?: threads.WorkerOptions;
 }
 
-export class ServiceProxy {
+export class ServiceProxy extends events.EventEmitter{
 
     public server: net.Server;
     public workerCount?: number;
@@ -32,7 +32,6 @@ export class ServiceProxy {
     public proxySocketAddressInfo: Map<string, ProxySocketAddressInfo>;
     public proxyAddressInfoRepr?: string;
     public proxyAddressInfo?: net.AddressInfo | string | null;
-    public emitter: events.EventEmitter;
 
     constructor({
         server,
@@ -43,6 +42,7 @@ export class ServiceProxy {
         workersCheckingInterval,
         workerOptions
     }: ServiceProxyOptions) {
+        super();
         this.server = server;
         this.workerCount = workerCount;
         this.workerURL = workerURL;
@@ -52,7 +52,6 @@ export class ServiceProxy {
         this.workerOptions = workerOptions;
         this.agents = [];
         this.proxySocketAddressInfo = new Map<string, ProxySocketAddressInfo>();
-        this.emitter = new events.EventEmitter();
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
@@ -294,7 +293,7 @@ export class ServiceProxy {
             this.describeError(err);
         }
         finally {
-            this.emitter.emit('ready', ...this.agents);
+            this.emit('ready', ...this.agents);
         }
     }
 
