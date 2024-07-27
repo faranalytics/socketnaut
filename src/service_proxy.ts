@@ -74,7 +74,7 @@ export class ServiceProxy {
             this.server.on('connection', this.tryAllocateThread.bind(this));
         }
         else {
-            this.log.error?.(`The Service Proxy Server must be of type net.Server or tls.Server.`);
+            this.log.error?.('The Service Proxy Server must be of type net.Server or tls.Server.');
         }
 
         this.server.on('listening', () => {

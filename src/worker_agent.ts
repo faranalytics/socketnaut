@@ -32,7 +32,7 @@ export class WorkerAgent extends Agent {
                         this.socketConnectOpts = socketConnectOpts;
                     }
                     else {
-                        e("The Worker came online; however, it is missing a socketConnectOpts.");
+                        e('The Worker came online; however, it is missing a socketConnectOpts.');
                     }
 
                     worker.removeListener('exit', e);

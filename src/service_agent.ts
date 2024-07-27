@@ -105,7 +105,7 @@ export class ServiceAgent extends Agent {
 
     public async requestProxySocketAddressInfo(socket: net.Socket): Promise<ProxySocketAddressInfo> {
 
-        const proxyServerAddress = { "address": socket.remoteAddress, "family": socket.remoteFamily, "port": socket.remotePort };
+        const proxyServerAddress = { 'address': socket.remoteAddress, 'family': socket.remoteFamily, 'port': socket.remotePort };
 
         const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
 
