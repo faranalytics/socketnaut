@@ -82,11 +82,11 @@ Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`
 **Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its initial thread pool.
 
 _public_  **serviceProxy.shutdown()**
-Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process does a clean exit (_this assumes there aren't any remaining refs_).  
-
-The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.  It will throw an `Error` if the `Server` is closed prior to being opened. 
 
 Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
+
+Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process does a clean exit (_this assumes there aren't any remaining refs_).  The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.  It will throw an `Error` if the `Server` is closed prior to being opened. 
+
 
 ### The `ServiceAgent` class.
 
