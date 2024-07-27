@@ -79,14 +79,16 @@ A `ServiceAgent` coordinates the state of its server (e.g., the server's address
 
 Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
-#### serviceProxy.shutdown()
+**Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its initial thread pool.
+
+_public_  **serviceProxy.shutdown()**
 Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process exits (this assumes there aren't any remaining refs).  
 
 The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.
 
 This method throws an `Error` if the `Server` is closed prior to being opened. 
 
-- Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
+Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
 
 ### The `ServiceAgent` class.
 
@@ -95,14 +97,16 @@ This method throws an `Error` if the `Server` is closed prior to being opened.
 
     - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` or `<node:tls.Server>` A native Node.js `Server` configured however you choose.
 
-- Returns: `<socketnaut.ServiceAgent>`
+Returns: `<socketnaut.ServiceAgent>`
 
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
-#### serviceAgent.requestProxySocketAddressInfo(socket)
-- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
+_public_  **serviceAgent.requestProxySocketAddressInfo(socket)**
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  
 
-- Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
+Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
+
+The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
 
 ## Usage
 
@@ -110,7 +114,7 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 
 ## Examples
 
-### *An instance of Hello World!* <sup><sup>(example)</sup></sup>
+### *An instance of Hello World!* <sup><sup>\</Node.js\></sup></sup>
 
 This is a complete and simple Socketnaut Service that responds with the text "Hello World!".  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
 
@@ -152,22 +156,22 @@ server.listen({ port: 0, host: '127.0.0.1' });
 
 const agent = createServiceAgent({ server });
 ```
-### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
-### *Use Socketnaut to scale the main module of a Koa web application.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of a Koa web application.* <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
-### *Use Socketnaut to scale the main module of an Express web application.* <sup><sup>(example)</sup></sup>
+### *Use Socketnaut to scale the main module of an Express web application.* <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
-### *Redirect HTTP connections to an HTTPS server.* <sup><sup>(example)</sup></sup>
+### *Redirect HTTP connections to an HTTPS server.* <sup><sup>\</TypeScript\></sup></sup>
 Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/socketnaut/tree/main/examples/redirect_http_to_https) for a working implementation.
 
-### *A TLS Proxy and an HTTP Redirect.* <sup><sup>(example)</sup></sup>
+### *A TLS Proxy and an HTTP Redirect.* <sup><sup>\</TypeScript\></sup></sup>
 In the previous example, the TLS endpoint was in the worker thread; however, it doesn't need to be. Alternatively, TLS can be handled by the proxy server. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
 
 ## Tuning Strategies
