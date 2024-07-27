@@ -220,15 +220,8 @@ export class ServiceProxy {
                     proxyServerSocket.destroy();
                 });
 
-                clientProxySocket.on('data', (data) => {
-                    proxyServerSocket.write(data);
-                });
-
-                proxyServerSocket.on('data', (data) => {
-                    clientProxySocket.write(data);
-                });
-
-                clientProxySocket.resume();
+                clientProxySocket.pipe(proxyServerSocket);
+                proxyServerSocket.pipe(clientProxySocket);
 
                 proxyServerSocket.removeListener('error', j);
 
