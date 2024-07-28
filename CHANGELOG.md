@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0] - 2024-07-28
+### Added
+- Emit a `ready` event on the `ServiceProxy` when its worker threads have spawned.
+### Changed
+- `ServiceProxy` _is a_ `EventEmitter`. 
+- Refactor Socketnaut to use the [_Streams_ Logger](https://www.npmjs.com/package/streams-logger).
+- Refactor how the `Agent` pool is managed in order to improve performance.
+- Use pipe pattern in place of `data` events.
+
 ## [1.4.1] - 2024-06-25
 ### Changed
 - Update image.
