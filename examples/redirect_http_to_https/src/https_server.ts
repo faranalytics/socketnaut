@@ -8,7 +8,7 @@ import { Level, createServiceAgent } from 'socketnaut';
 const server = https.createServer(
     {
         key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-        cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
+        cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/cert.pem'))
     }); // Configure this HTTPS server however you choose.
 
 server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {

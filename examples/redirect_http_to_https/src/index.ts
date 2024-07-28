@@ -8,7 +8,7 @@ const http_proxy = createServiceProxy({
     workerURL: new URL('./http_server.js', import.meta.url)
 });
 
-http_proxy.log.setLevel(Level.DEBUG)
+http_proxy.log.setLevel(Level.DEBUG);
 
 http_proxy.server.listen({ port: 3080, host: '0.0.0.0' });
 
