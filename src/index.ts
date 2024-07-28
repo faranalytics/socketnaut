@@ -3,7 +3,7 @@ import { createServiceAgent, ServiceAgent, ServiceAgentOptions } from './service
 import { createServiceProxy, ServiceProxy, ServiceProxyOptions } from './service_proxy.js';
 import { WorkerAgent } from './worker_agent.js';
 import { ProxySocketAddressInfo } from './types.js';
-import { SyslogLevel as Level } from 'streams-logger';
+import { SyslogLevel, SyslogLevel as Level } from 'streams-logger';
 import { log, logger, formatter, consoleHandler } from './logger.js';
 
 export {
@@ -15,6 +15,7 @@ export {
     ServiceAgentOptions,
     ProxySocketAddressInfo,
     WorkerAgent,
+    SyslogLevel,
     Level,
     logger,
     formatter,
@@ -25,6 +26,6 @@ export {
 if (threads.isMainThread) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const { version } = require('../package.json');
-    log.info?.(`socketnaut v${version}`);
-    log.info?.(`pid ${process.pid}`);
+    log.info(`socketnaut v${version}`);
+    log.info(`pid ${process.pid}`);
 }
