@@ -34,7 +34,7 @@ export class ServiceAgent extends Agent {
         try {
             if (this.server) {
                 this.server.unref();
-                this.log.debug?.(`Process exit. ${this.agentDescription}.`);
+                this.log.debug(`Process exit. ${this.agentDescription}.`);
                 setImmediate(() => {
                     // Process termination is async in order to prevent `tryTerminate` from throwing an Error.
                     process.exit(0);
@@ -42,7 +42,7 @@ export class ServiceAgent extends Agent {
             }
         }
         catch (err) {
-            this.log.error?.(this.describeError(err));
+            this.log.error(this.describeError(err));
         }
         finally {
             setTimeout(this.tryTerminate.bind(this), 4).unref();
@@ -65,7 +65,7 @@ export class ServiceAgent extends Agent {
             socketConnectOpts = null;
         }
 
-        this.log.debug?.(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
+        this.log.debug(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
 
         this.register('socketConnectOpts', () => socketConnectOpts);
     }
