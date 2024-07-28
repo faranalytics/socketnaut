@@ -79,7 +79,7 @@ A `ServiceAgent` coordinates the state of its server (e.g., the server's address
 
 Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
-**Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its initial thread pool.
+**Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its worker threads.
 
 _public_  **serviceProxy.shutdown()**
 
