@@ -227,17 +227,19 @@ The information returned by the `ServiceAgent.requestProxySocketAddressInfo` met
 
 ## Logging
 
-Socketnaut uses the Node.js Memoir logging facility.  Each `ServiceProxy` and `ServiceAgent` has its own Memoir `Logger` and `Handler` instances, which can be accessed by the public properties `log` and `logHandler` respectively.  The default `Handler` logs to the console.
+By default Socketnaut logs to the console using the performant [_Streams_ Logger](https://github.com/faranalytics/streams-logger).
 
-You can set the log level on the `Logger` itself to `DEBUG` | `INFO` | `WARN` | `ERROR` using the `setLevel` method. The default log `Level` is `INFO`. For example:
+### Changing the Log Level
+You can set the log level on the `Logger` itself to a syslog logging level using the `setLevel` method. The default log `Level` is `INFO`.
 
+#### Set the Service Proxy's log Level to DEBUG.
 `index.js`
 ```js
 import { Level } from 'socketnaut';
 ...
 proxy.log.setLevel(Level.DEBUG);
 ```
-or
+#### Set the Service Agent's log Level to DEBUG.
 
 `http_server.js`
 ```js
@@ -245,7 +247,18 @@ import { Level } from 'socketnaut';
 ...
 agent.log.setLevel(Level.DEBUG);
 ```
+### Log to a File using a Rotating File Handler
+Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index:
 
-Socketnaut's `Logger` may be configured however you choose using Memoir's API e.g., you can remove or replace the default handler if you want to.  The `ServiceAgent`'s `Logger` is configured to use a Socketnaut `ServiceMessageHandler`, which marshalls messages to its `ServiceProxy` in the main thread.  This approach allows for messages from many worker threads to be safely logged to the same file.
+```ts
+import { logger, formatter, consoleHandler } from 'socketnaut';
+```
 
-You can use the Memoir `Logger` attached to each `ServiceProxy` or `ServiceAgent` for your own logging purposes if you choose.
+You can manipulate the logging graph as you choose using the [_Streams_ Logger API](https://github.com/faranalytics/streams-logger#api). You could, for example, configure the Service Proxy to log to a file instead of the console:
+```ts
+import { formatter, consoleHandler, Level } from 'socketnaut';
+const rotatingFileHandler = new RotatingFileHandler({ path: './socketnaut.log', level: Level.DEBUG });
+formatter.disconnect(consoleHandler).connect(rotatingFileHandler);
+``` 
+
+Please see the detailed [_Streams_ Logger](https://github.com/faranalytics/streams-logger) documentation for further instructions on how to configure a _Streams_ logging graph.
