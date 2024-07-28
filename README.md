@@ -19,8 +19,8 @@ Socketnaut can be used in order to scale the **main module** of web applications
 ## Table of Contents
 - [Installation](#installation)
 - [Concepts](#concepts)
-    - [Service Proxy](#serviceproxy)
-    - [Service Agent](#serviceagent)
+    - [Service Proxy](#service-proxy)
+    - [Service Agent](#service-agent)
 - [API](#api)
     - [The ServiceProxy class.](#the-serviceproxy-class)
     - [The ServiceAgent class.](#the-serviceagent-class)

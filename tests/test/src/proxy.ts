@@ -15,7 +15,7 @@ proxy3080.server.listen({ port: 3080, host: '127.0.0.1' });
 
 const proxy3443 = createServiceProxy({
     server: net.createServer(),
-    workerCount: 10,
+    workerCount: 100,
     workerURL: new URL('./https_service.js', import.meta.url)
 });
 // proxy3443.log.setLevel(Level.ERROR);

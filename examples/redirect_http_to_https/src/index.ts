@@ -19,6 +19,6 @@ const https_proxy = createServiceProxy({
     workerURL: new URL('./https_server.js', import.meta.url)
 });
 
-https_proxy.log.setLevel(Level.DEBUG)
+https_proxy.log.setLevel(Level.DEBUG);
 
 https_proxy.server.listen({ port: 3443, host: '0.0.0.0' });

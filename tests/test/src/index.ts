@@ -13,7 +13,7 @@ const DATA = crypto.randomBytes(1e1).toString();
 const PORT = 3443;
 const PATH = '/';
 const HOST = 'localhost';
-const REQS = 1e2;
+const REQS = 1e4;
 
 const promises: Array<Promise<unknown>> = [];
 for (let i = 0; i < REQS; i++) {
@@ -57,7 +57,7 @@ for (const result of results) {
     }
 }
 
-proxy.send({ event: 'shutdown' });
+// proxy.send({ event: 'shutdown' });
 
 proxy.on('exit', () => {
     console.log('exit');
