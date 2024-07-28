@@ -1,7 +1,9 @@
 import * as cp from 'node:child_process';
 import * as https from 'node:https';
 import * as crypto from 'node:crypto';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
+import * as pth from 'node:path';
+import * as os from 'node:os';
 import { once } from 'node:events';
 import * as http from 'node:http';
 import * as assert from 'node:assert';
@@ -24,7 +26,7 @@ for (let i = 0; i < REQS; i++) {
                 port: PORT,
                 path: PATH,
                 method: 'POST',
-                ca: [fs.readFileSync('cert.pem')],
+                ca: [fs.readFileSync(pth.resolve(os.homedir(), 'secrets/cert.pem'))],
                 timeout: 1e6
             });
 

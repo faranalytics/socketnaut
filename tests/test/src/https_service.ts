@@ -21,8 +21,8 @@ class StreamBuffer extends Writable {
 }
 
 const server = https.createServer({
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
+    key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
+    cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/cert.pem'))
 });
 
 const agent = createServiceAgent({ server });
