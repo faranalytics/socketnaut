@@ -48,30 +48,19 @@ console.time('test');
 const results = await Promise.allSettled(promises);
 console.timeEnd('test');
 
+let errorCount = 0;
 for (const result of results) {
     if (result.status == 'rejected') {
         console.log(result.reason);
+        errorCount = errorCount + 1;
     }
     if (result.status == 'fulfilled') {
         assert.strictEqual(result.value?.toString(), DATA);
     }
 }
 
-// proxy.send({ event: 'shutdown' });
+proxy.send({ event: 'shutdown' });
 
 proxy.on('exit', () => {
-    console.log('exit');
+    console.log(`Error Count: ${errorCount}`);
 });
-
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-// setTimeout(async () => {
-//     console.log(await tlsProxy.shutdown());
-//     console.log(await httpProxy.shutdown());
-//     console.log('tlsProxy.agents.length', tlsProxy.agents.length);
-//     console.log('httpProxy.agents.length', httpProxy.agents.length);
-//     // setTimeout(() => {
-//     //     console.log('tlsProxy.agents.length', tlsProxy.agents.length);
-//     //     console.log('httpProxy.agents.length', httpProxy.agents.length);
-//     // }, 3000);
-// }, 6000);
-

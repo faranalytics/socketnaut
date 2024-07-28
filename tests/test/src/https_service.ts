@@ -31,7 +31,7 @@ agent.log.setLevel(Level.ERROR);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/require-await
 server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    // for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const proxyAddressInfo: ProxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
     // console.log(proxyAddressInfo);
