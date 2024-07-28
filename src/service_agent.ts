@@ -3,30 +3,11 @@ import * as http from 'node:http';
 import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
-import { Metadata, Level, MetadataHandler, LevelLogger, MetadataFormatter } from 'memoir';
 import { ProxySocketAddressInfo } from './types';
+import { Logger, SyslogLevel } from 'streams-logger';
+import { log } from './logger.js';
 
 threads.parentPort?.unref();
-
-export class ServiceMessageHandler<MessageT, FormatT> extends MetadataHandler<MessageT, FormatT> {
-
-    private agent: Agent;
-
-    constructor(agent: Agent) {
-        super();
-        this.handle = this.handle.bind(this);
-        this.agent = agent;
-    }
-
-    async handle(message: MessageT, meta: Metadata): Promise<void> {
-        if (meta.level && Level[meta.level] >= this.level) {
-            if (this.formatter) {
-                const formattedMessage = this.formatter.format(message, meta);
-                await this.agent.call<void>('serviceLog', { level: meta.level, value: formattedMessage });
-            }
-        }
-    }
-}
 
 export interface ServiceAgentOptions {
     server: http.Server | https.Server | net.Server;
@@ -37,8 +18,7 @@ export class ServiceAgent extends Agent {
     public server: net.Server;
     public addressInfo?: string | net.AddressInfo | null;
     public agentDescription: string;
-    public log: LevelLogger<string, string>;
-    public logHandler: ServiceMessageHandler<string, string>;
+    public log: Logger<string>;
 
     constructor(port: threads.MessagePort, options: ServiceAgentOptions) {
         super(port);
@@ -46,17 +26,8 @@ export class ServiceAgent extends Agent {
         this.register('tryTerminate', this.tryTerminate.bind(this));
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
-            `${func}:${line}:${col}:${message}`;
-
-        this.log = new LevelLogger<string, string>({ name: `Agent ${threads.threadId}`, level: Level.INFO });
-        this.logHandler = new ServiceMessageHandler<string, string>(this);
-        const metadataFormatter = new MetadataFormatter<string, string>({ formatter });
-        this.logHandler.setLevel(Level.DEBUG);
-        this.logHandler.setFormatter(metadataFormatter);
-        this.log.addHandler(this.logHandler);
+        this.log = log;
+        this.log.setLevel(SyslogLevel.ERROR);
     }
 
     protected tryTerminate(): void {
