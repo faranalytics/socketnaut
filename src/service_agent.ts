@@ -71,7 +71,7 @@ export class ServiceAgent extends Agent {
     }
 
     protected describeError(err: unknown): string {
-        return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
+        return `${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
 
     public async requestProxySocketAddressInfo(socket: net.Socket): Promise<ProxySocketAddressInfo> {

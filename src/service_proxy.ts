@@ -322,7 +322,7 @@ export class ServiceProxy extends events.EventEmitter {
     }
 
     protected describeError(err: unknown): string {
-        return `Error: ${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
+        return `${err instanceof Error ? err.stack ? err.stack : err.message : 'Error'}`;
     }
 
     public async shutdown(): Promise<Array<PromiseSettledResult<unknown>>> {
