@@ -21,9 +21,9 @@ const proxy3443 = createServiceProxy({
 proxy3443.server.listen({ port: 3443, host: '127.0.0.1' });
 
 const timeout = setInterval(() => {
-    proxy3443.log.info(`agents.length: ${proxy3443.agents.length}, maxWorkers: ${proxy3443.maxWorkers}, minWorkers: ${proxy3443.minWorkers}.`);
+    proxy3443.log.info(`proxy.agents.length: ${proxy3443.agents.length}, proxy.maxWorkers: ${proxy3443.maxWorkers}, proxyminWorkers: ${proxy3443.minWorkers}.`);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-    console.log(`Connections: ${JSON.stringify(proxy3443.agents.map<number>((value: WorkerAgent) => value.connections))}`);
+    console.log(`Connection Distribution: ${JSON.stringify(proxy3443.agents.map<number>((value: WorkerAgent) => value.connections))}`);
 }, 1500);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
