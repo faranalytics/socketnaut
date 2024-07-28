@@ -2,8 +2,9 @@ import * as net from 'node:net';
 import * as tls from 'node:tls';
 import * as events from 'node:events';
 import * as threads from 'node:worker_threads';
+import { Logger } from 'streams-logger';
+import { log } from './logger.js';
 import { WorkerAgent } from './worker_agent.js';
-import { ConsoleHandler, Metadata, Level, LevelLogger, MetadataFormatter } from 'memoir';
 import { ProxySocketAddressInfo } from './types.js';
 
 export interface ServiceProxyOptions {
@@ -16,7 +17,7 @@ export interface ServiceProxyOptions {
     workerOptions?: threads.WorkerOptions;
 }
 
-export class ServiceProxy extends events.EventEmitter{
+export class ServiceProxy extends events.EventEmitter {
 
     public server: net.Server;
     public workerCount?: number;
@@ -27,8 +28,7 @@ export class ServiceProxy extends events.EventEmitter{
     public workersCheckingIntervalTimeout?: NodeJS.Timeout;
     public workerOptions?: threads.WorkerOptions;
     public agents: Array<WorkerAgent>;
-    public log: LevelLogger<string, string>;
-    public logHandler: ConsoleHandler<string, string>;
+    public log: Logger<string>;
     public proxySocketAddressInfo: Map<string, ProxySocketAddressInfo>;
     public proxyAddressInfoRepr?: string;
     public proxyAddressInfo?: net.AddressInfo | string | null;
@@ -52,18 +52,7 @@ export class ServiceProxy extends events.EventEmitter{
         this.workerOptions = workerOptions;
         this.agents = [];
         this.proxySocketAddressInfo = new Map<string, ProxySocketAddressInfo>();
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const formatter = (message: string, { name, level, func, url, line, col }: Metadata): string =>
-            `${level}:${new Date().toISOString()}:${name}:${func}:${line}:${col}:${message}`;
-
-        this.log = new LevelLogger<string, string>({ name: `Proxy ${threads.threadId}`, level: Level.INFO });
-        this.logHandler = new ConsoleHandler<string, string>();
-        this.logHandler.setLevel(Level.DEBUG);
-        const metadataFormatter = new MetadataFormatter<string, string>({ formatter });
-        this.logHandler.setFormatter(metadataFormatter);
-        this.log.addHandler(this.logHandler);
-
+        this.log = log;
         if (this.server instanceof tls.Server) {
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             this.server.on('secureConnection', this.tryAllocateThread.bind(this));
