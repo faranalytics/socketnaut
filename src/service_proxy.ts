@@ -68,7 +68,7 @@ export class ServiceProxy extends events.EventEmitter {
         this.server.on('listening', () => {
             this.proxyAddressInfo = this.server?.address();
             this.proxyAddressInfoRepr = JSON.stringify(this.proxyAddressInfo);
-            this.log.info?.(`Service Proxy listening on ${this.proxyAddressInfoRepr}`);
+            this.log.info(`Service Proxy listening on ${this.proxyAddressInfoRepr}`);
         });
 
         void this.spawnMinWorkers();
@@ -127,7 +127,7 @@ export class ServiceProxy extends events.EventEmitter {
             }
             catch (err) {
                 clientProxySocket.destroy();
-                this.log.error?.(this.describeError(err));
+                this.log.error(this.describeError(err));
             }
         }
         catch (err) {
@@ -139,9 +139,9 @@ export class ServiceProxy extends events.EventEmitter {
                 }
             }
             catch (err) {
-                this.log.error?.(this.describeError(err));
+                this.log.error(this.describeError(err));
             }
-            this.log.error?.(this.describeError(err));
+            this.log.error(this.describeError(err));
         }
     }
 
@@ -158,7 +158,7 @@ export class ServiceProxy extends events.EventEmitter {
             proxyServerSocket.on('connect', () => {
 
                 proxyServerSocket.on('error', (err: Error) => {
-                    this.log.error?.(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
+                    this.log.error(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
                 });
 
                 const proxyServerSocketAddressInfo = proxyServerSocket.address();
@@ -177,33 +177,33 @@ export class ServiceProxy extends events.EventEmitter {
                 });
 
                 proxyServerSocket.on('timeout', () => {
-                    this.log.debug?.(`Proxy-Server socket timeout. ${message}.`);
+                    this.log.debug(`Proxy-Server socket timeout. ${message}.`);
                 });
 
                 clientProxySocket.on('timeout', () => {
-                    this.log.debug?.(`Client-Proxy socket timeout. ${message}.`);
+                    this.log.debug(`Client-Proxy socket timeout. ${message}.`);
                 });
 
                 proxyServerSocket.once('end', () => {
-                    this.log.debug?.(`Proxy-Server socket end. ${message}.`);
+                    this.log.debug(`Proxy-Server socket end. ${message}.`);
                     clientProxySocket.end();
                 });
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 proxyServerSocket.once('close', (hadError: boolean) => {
-                    this.log.debug?.(`Proxy-Server socket close. ${message}.`);
+                    this.log.debug(`Proxy-Server socket close. ${message}.`);
                     clientProxySocket.destroy();
                     this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
                 });
 
                 clientProxySocket.once('end', () => {
-                    this.log.debug?.(`Client-Proxy socket end.  ${message}.`);
+                    this.log.debug(`Client-Proxy socket end.  ${message}.`);
                     proxyServerSocket.end();
                 });
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 clientProxySocket.once('close', (hadError: boolean) => {
-                    this.log.debug?.(`Client-Proxy socket close. ${message}.`);
+                    this.log.debug(`Client-Proxy socket close. ${message}.`);
                     proxyServerSocket.destroy();
                 });
 
@@ -219,7 +219,7 @@ export class ServiceProxy extends events.EventEmitter {
 
     protected async checkThreads(): Promise<void> {
         try {
-            this.log.debug?.(`Thread Count: ${this.agents.length}`);
+            this.log.debug(`Thread Count: ${this.agents.length}`);
 
             if (this.agents.length > this.minWorkers) {
                 for (const agent of [...this.agents]) {
@@ -229,7 +229,7 @@ export class ServiceProxy extends events.EventEmitter {
                             await agent.call('tryTerminate');
                         }
                         catch (err) {
-                            this.log.error?.(this.describeError(err));
+                            this.log.error(this.describeError(err));
                         }
 
                         if (this.agents.length <= this.minWorkers) {
@@ -290,7 +290,7 @@ export class ServiceProxy extends events.EventEmitter {
         const worker = new threads.Worker(this.workerURL, this.workerOptions);
         const agent = new WorkerAgent({ worker });
         worker.once('error', (err: Error) => {
-            this.log.error?.(this.describeError(err));
+            this.log.error(this.describeError(err));
             this.removeAgent(agent);
         });
         worker.once('exit', this.removeAgent.bind(this, agent));
@@ -302,16 +302,16 @@ export class ServiceProxy extends events.EventEmitter {
     protected serviceLog(message: { level: string, value: string }): void {
         switch (message.level) {
             case 'DEBUG':
-                this.log.debug?.(message.value);
+                this.log.debug(message.value);
                 break;
             case 'INFO':
-                this.log.info?.(message.value);
+                this.log.info(message.value);
                 break;
             case 'WARN':
-                this.log.warn?.(message.value);
+                this.log.warn(message.value);
                 break;
             case 'ERROR':
-                this.log.error?.(message.value);
+                this.log.error(message.value);
                 break;
         }
     }
