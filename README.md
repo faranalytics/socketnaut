@@ -249,7 +249,6 @@ agent.log.setLevel(Level.DEBUG);
 ```
 ### Log to a File using a Rotating File Handler
 Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index:
-
 ```ts
 import { logger, formatter, consoleHandler } from 'socketnaut';
 ```
@@ -257,6 +256,7 @@ import { logger, formatter, consoleHandler } from 'socketnaut';
 You can manipulate the logging graph as you choose using the [_Streams_ Logger API](https://github.com/faranalytics/streams-logger#api). You could, for example, configure the Service Proxy to log to a file instead of the console:
 ```ts
 import { formatter, consoleHandler, Level } from 'socketnaut';
+import { RotatingFileHandler } from "streams-logger";
 const rotatingFileHandler = new RotatingFileHandler({ path: './socketnaut.log', level: Level.DEBUG });
 formatter.disconnect(consoleHandler).connect(rotatingFileHandler);
 ``` 
