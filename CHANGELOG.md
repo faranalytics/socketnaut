@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.2] - 2024-08-02
+### Changed
+- Improve documentation.
+
+## [1.5.1] - 2024-07-28
+### Changed
+- Improve test.
+- Improve examples.
+
 ## [1.5.0] - 2024-07-28
 ### Added
 - Emit a `ready` event on the `ServiceProxy` when its worker threads have spawned.
