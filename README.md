@@ -230,7 +230,7 @@ The information returned by the `ServiceAgent.requestProxySocketAddressInfo` met
 By default Socketnaut logs to the console using the performant [_Streams_ Logger](https://github.com/faranalytics/streams-logger).
 
 ### Changing the Log Level
-You can set the log level on the `Logger` itself to a syslog logging level using the `setLevel` method. The default log `Level` is `INFO`.
+You can set the log level on the `Logger` itself to a syslog logging level using the `log.setLevel` method. The default log `Level` is `INFO`.
 
 #### Set the Service Proxy's log Level to DEBUG.
 `index.js`
@@ -248,7 +248,7 @@ import { Level } from 'socketnaut';
 agent.log.setLevel(Level.DEBUG);
 ```
 ### Log to a File using a Rotating File Handler
-Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index.  In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` is imported.
+Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index.  In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` are imported.
 ```ts
 import { logger, formatter, consoleHandler } from 'socketnaut';
 ```
