@@ -253,7 +253,9 @@ Socketnaut's `Logger` may be configured however you choose.  You can `connect` o
 import { logger, formatter, consoleHandler } from 'socketnaut';
 ```
 
-Once you have imported Socketnaut's logging Nodes, you can manipulate the logging graph as you choose using the [_Streams_ Logger API](https://github.com/faranalytics/streams-logger#api). You could, for example, configure the Service Proxy to log to a file instead of the console.  In this example a `RotatingFileHandler` is instantiated that will log messages to a file named `socketnaut.log`. Socketnaut's `Formatter` is disconnected from the `ConsoleHandler` and connected to the `RotatingFileHandler`.
+Once you have imported Socketnaut's logging Nodes, you can manipulate the logging graph as you choose using the [_Streams_ Logger API](https://github.com/faranalytics/streams-logger#api). You could, for example, configure the Service Proxy to log to a file instead of the console.  
+
+In this example a `RotatingFileHandler` is instantiated that will log messages to a file named `socketnaut.log`. Socketnaut's `Formatter` is disconnected from the `ConsoleHandler` and connected to the `RotatingFileHandler`.
 ```ts
 import { formatter, consoleHandler, Level } from 'socketnaut';
 import { RotatingFileHandler } from "streams-logger";
