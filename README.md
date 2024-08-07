@@ -248,17 +248,19 @@ import { Level } from 'socketnaut';
 agent.log.setLevel(Level.DEBUG);
 ```
 ### Log to a File using a Rotating File Handler
-Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index:
+Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index.  In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` is imported.
 ```ts
 import { logger, formatter, consoleHandler } from 'socketnaut';
 ```
 
-You can manipulate the logging graph as you choose using the [_Streams_ Logger API](https://github.com/faranalytics/streams-logger#api). You could, for example, configure the Service Proxy to log to a file instead of the console:
+Once you have imported Socketnaut's logging Nodes, you can manipulate the logging graph as you choose using the [_Streams_ Logger API](https://github.com/faranalytics/streams-logger#api). You could, for example, configure the Service Proxy to log to a file instead of the console.  In this example a `RotatingFileHandler` is instantiated that will log messages to a file named `socketnaut.log`. Socketnaut's `Formatter` is disconnected from the `ConsoleHandler` and connected to the `RotatingFileHandler`.
 ```ts
 import { formatter, consoleHandler, Level } from 'socketnaut';
 import { RotatingFileHandler } from "streams-logger";
+
 const rotatingFileHandler = new RotatingFileHandler({ path: './socketnaut.log', level: Level.DEBUG });
+
 formatter.disconnect(consoleHandler).connect(rotatingFileHandler);
 ``` 
 
-Please see the detailed [_Streams_ Logger](https://github.com/faranalytics/streams-logger) documentation for further instructions on how to configure a _Streams_ logging graph.
+You can use Socketnaut's `logger` instance for your logging purposes or use a logger of your choice.  Please see the detailed [_Streams_ Logger](https://github.com/faranalytics/streams-logger) documentation for further instructions on how to configure a _Streams_ logging graph.
