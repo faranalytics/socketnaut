@@ -21,11 +21,9 @@ const proxy = createServiceProxy({
 });
 ```
 
-The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
-
 `http_server.js`
 
-This is your scaled application.
+This is your scaled application. The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 ```js
 import * as http from 'node:http';
 import express from 'express';
