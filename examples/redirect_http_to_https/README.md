@@ -4,8 +4,30 @@ In this example you will create an HTTP Service and a HTTPS Service.  The HTTP s
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request and returns the string "Hello World!".
 
+`http_server.ts`
+```ts
+import * as http from 'node:http';
+import { Level, createServiceAgent } from 'socketnaut';
+
+const server = http.createServer(); // Configure this HTTP server however you choose.
+
+server.listen({ port: 0, host: '127.0.0.1' });
+// Specifying port 0 here will cause the Server to listen on a random port.
+// Socketnaut will communicate the random port number to the ServiceProxy.
+
+server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
+    if (req.url) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        res.writeHead(301, { 'location': `https://${url.hostname}:3443${url.pathname}` }).end();
+        console.log(`Request: ${url}`);
+    }
+});
+
+const agent = createServiceAgent({ server });
+```
+
 `https_server.ts`
-```js
+```ts
 import * as http from 'node:http';
 import * as https from 'node:https';
 import * as fs from 'fs';
