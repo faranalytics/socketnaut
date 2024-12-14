@@ -1,8 +1,6 @@
 # *Use Socketnaut to scale the main module of an Express web application.*
 
-In this example you will use Socketnaut to scale the main module of an Express web application.  The `ServiceProxy` is configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
-
-The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
+In this example you will use Socketnaut to scale the main module of an Express web application.  This example consists of an `index.js` module and a scaled `http_server.js` module.  In `index.js`, a `ServiceProxy` is instantiated and configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
 
 `index.js`
 ```js
@@ -20,6 +18,8 @@ const proxy = createServiceProxy({
     workerURL: './http_server.js'
 });
 ```
+
+The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 `http_server.js`
 ```js
