@@ -3,6 +3,8 @@
 In this example you will use Socketnaut to scale the main module of an Express web application.  This example consists of an `index.js` module and a scaled `http_server.js` module.  In `index.js` a `ServiceProxy` is instantiated and configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
 
 `index.js`
+
+This is the main thread.
 ```js
 import * as net from 'node:net';
 import { createServiceProxy, Level } from 'socketnaut';
@@ -22,6 +24,8 @@ const proxy = createServiceProxy({
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 `http_server.js`
+
+This is your scaled application.
 ```js
 import * as http from 'node:http';
 import express from 'express';
