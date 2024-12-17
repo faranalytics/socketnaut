@@ -1,6 +1,6 @@
-# *An instance of Hello World!*
+# *An instance of Hello, World!*
 
-In this example you will use Socketnaut to scale a Hello World! server.  The `ServiceProxy` is configured to start up 42 `http_server.js` workers.
+In this example you will use Socketnaut to scale a Hello, World! server.  The `ServiceProxy` is configured to start up 42 `http_server.js` workers.
 
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
@@ -29,7 +29,7 @@ const server = http.createServer() // Configure this HTTP Server however you cho
 
 server.on('request', (req, res) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    res.end('Hello World!');
+    res.end('Hello, World!');
 });
 
 server.listen({ port: 0, host: '127.0.0.1' });

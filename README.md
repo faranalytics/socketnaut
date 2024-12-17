@@ -77,7 +77,7 @@ A `ServiceAgent` coordinates the state of its server (e.g., the server's address
 
 - Returns: `<socketnaut.ServiceProxy>`
 
-Creates a `ServiceProxy`.  Each process may contain any number of `ServiceProxy`s.  However, all `ServiceProxy`s run in the main thread; hence, the number of instances created in each process should be considered carefully.
+Creates a `ServiceProxy`.  Each process may contain any number of ServiceProxys.  However, all ServiceProxys run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
 **Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its worker threads.
 
@@ -112,13 +112,13 @@ Each Socketnaut Service consists of at least one `ServiceProxy` and a respective
 
 ## Examples
 
-### *An instance of Hello World!* <sup><sup>\</Node.js\></sup></sup>
+### *An instance of Hello, World!* <sup><sup>\</Node.js\></sup></sup>
 
-This is a complete and simple Socketnaut Service that responds with the text "Hello World!".  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
+This is a complete and simple Socketnaut Service that responds with the text "Hello, World!".  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
 
 The `index.js` module runs the Service's `ServiceProxy` and the scaled `http_server.js` module runs the Service's `ServiceAgent`.  The `http_server.js` module is scaled according to the value of the `workerCount` property of the `ServiceProxy`.
 
-Please see the [Hello World example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
+Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
 `index.js`
 ```js
@@ -145,7 +145,7 @@ const server = http.createServer(); // Configure this HTTP Server however you ch
 
 server.on('request', (req, res) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    res.end('Hello World!');
+    res.end('Hello, World!');
 });
 
 server.listen({ port: 0, host: '127.0.0.1' });
