@@ -1,6 +1,6 @@
 # *A TLS Proxy and an HTTP Redirect.*
 
-In this example you will create an HTTP Service that redirects to a Service that consists of a TLS proxy that manages a pool of HTTP servers.
+In this advanced example you will create an HTTP Service that redirects to a Service that consists of a TLS proxy that manages a pool of HTTP servers.
 
 The proxy is a TLS server.
 

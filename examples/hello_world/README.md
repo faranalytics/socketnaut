@@ -5,6 +5,8 @@ In this example you will use Socketnaut to scale a Hello, World! server.  The `S
 The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
 `index.js`
+
+This is the main thread.
 ```js
 import * as net from 'node:net';
 import { createServiceProxy, Level } from 'socketnaut';
@@ -21,6 +23,9 @@ const proxy = createServiceProxy({
 ```
 
 `http_server.js`
+
+This is your scaled application. The endpoint i.e., /, runs a for loop that blocks for 100ms on each request.
+
 ```js
 import * as http from 'node:http';
 import { createServiceAgent } from 'socketnaut';
@@ -47,22 +52,27 @@ Please make sure your firewall is configured to allow connections on `0.0.0.0:30
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
+
 ### Change directory into the relevant example directory.
 ```bash
 cd socketnaut/examples/hello_world
 ```
+
 ### Install the example dependencies.
 ```bash
 npm install && npm update
 ```
+
 ### Run the application.
 ```bash
 npm start
 ```
+
 ### In another shell send 1000 requests to the endpoint.
 ```bash
 time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl
 ```
+
 #### Output
 ```bash
 real    0m12.274s

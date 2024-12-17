@@ -44,6 +44,7 @@ server.listen({ port: 0, host: '127.0.0.1' });
 
 const agent = createServiceAgent({ server });
 ```
+
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.
 
@@ -53,23 +54,28 @@ Please make sure your firewall is configured to allow connections on `0.0.0.0:30
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
+
 ### Change directory into the relevant example directory.
 ```bash
 cd socketnaut/examples/socketnaut_express
 ```
+
 ### Install the example dependencies.
 ```bash
 npm install && npm update
 ```
+
 ### Run the application.
 Run the `index.js` module.
 ```bash
 npm start
 ```
+
 ### In another shell send 1000 requests to the endpoint.
 ```bash
 time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl
 ```
+
 #### Output
 ```bash
 real    0m10.466s
