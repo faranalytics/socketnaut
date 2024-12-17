@@ -26,7 +26,7 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [The ServiceAgent class.](#the-serviceagent-class)
 - [Usage](#usage)
 - [Examples](#examples)
-    - [*An instance of Hello World!*](#an-instance-of-hello-world-nodejs)
+    - [*An instance of Hello, World!*](#an-instance-of-hello-world-nodejs)
     - [*Use Socketnaut to scale the main module of a Fastify web application.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-web-application-typescript)
     - [*Use Socketnaut to scale the main module of a Koa web application.*](#use-socketnaut-to-scale-the-main-module-of-a-koa-web-application-typescript)
     - [*Use Socketnaut to scale the main module of an Express web application.*](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-typescript)
