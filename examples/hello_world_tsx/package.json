@@ -1,0 +1,19 @@
+{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+    "start": "npx tsx index.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "socketnaut": "^1.5.3"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2"
+  }
+}
