@@ -10,6 +10,8 @@ import * as threads from 'node:worker_threads';
 import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 import { Writable } from 'node:stream';
 
+const certPath = pth.join(pth.dirname(import.meta.dirname), 'tls');
+
 class StreamBuffer extends Writable {
     public buffer: Buffer = Buffer.allocUnsafe(0);
     _write(chunk: string | Buffer, encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
@@ -17,12 +19,13 @@ class StreamBuffer extends Writable {
             chunk = Buffer.from(chunk);
         }
         this.buffer = Buffer.concat([this.buffer, chunk]);
+        callback();
     }
 }
 
 const server = https.createServer({
-    key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-    cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/cert.pem'))
+    key: fs.readFileSync(pth.join(certPath, 'key.pem')),
+    cert: fs.readFileSync(pth.join(certPath, 'cert.pem'))
 });
 
 const agent = createServiceAgent({ server });
@@ -31,10 +34,11 @@ agent.log.setLevel(Level.ERROR);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/require-await
 server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+    // for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const proxyAddressInfo: ProxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
     // console.log(proxyAddressInfo);
+    console.log('request');
     const streamBuf = new StreamBuffer();
     req.pipe(streamBuf);
     req.on('end', () => {

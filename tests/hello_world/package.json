@@ -1,0 +1,23 @@
+{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc --build .",
+    "clean": "rm -rf ./dist/*",
+    "clean:build": "npm run clean && npm run build",
+    "monitor": "nodemon ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "socketnaut": "file:../.."
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.7.2"
+  },
+  "type": "module"
+}
