@@ -286,6 +286,12 @@ npm install && npm update
 ```
 
 #### Run the tests.
+The test assumes `openssl` is available.
+```bash
+npm test
+```
+
+Setting the `level` argument to `INFO` will display the connection distribution.
 ```bash
 npm test level=INFO
 ```
