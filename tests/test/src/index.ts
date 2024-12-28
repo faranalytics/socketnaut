@@ -6,7 +6,7 @@ import * as fs from 'node:fs';
 import * as http from 'node:http';
 import * as assert from 'node:assert';
 import { dispatch, listen } from './utils.js';
-import {CERT_PATH} from './paths.js';
+import { CERT_PATH } from './paths.js';
 
 const httpProxy = fork('./dist/http_proxy.js');
 const httpsProxy = fork('./dist/https_proxy.js');
