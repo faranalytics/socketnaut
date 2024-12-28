@@ -13,6 +13,6 @@ export async function dispatch(req: http.ClientRequest, data: string | Buffer) {
     return Buffer.concat(chunks);
 }
 
-export async function listen(process: ChildProcess, message:string) {
+export async function listen(process: ChildProcess | NodeJS.Process, message:string) {
     while ((await once(process, 'message'))[0] != message);
 }

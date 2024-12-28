@@ -5,9 +5,7 @@ import * as pth from 'path'; import * as http from 'node:http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 import { Writable } from 'node:stream';
-
-const CERT_PATH = pth.join(pth.dirname(import.meta.dirname), 'secrets');
-
+import { KEY_PATH, CERT_PATH } from './paths.js';
 class StreamBuffer extends Writable {
     public buffer: Buffer = Buffer.allocUnsafe(0);
     _write(chunk: string | Buffer, encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
@@ -20,8 +18,8 @@ class StreamBuffer extends Writable {
 }
 
 const server = https.createServer({
-    key: fs.readFileSync(pth.join(CERT_PATH, 'key.pem')),
-    cert: fs.readFileSync(pth.join(CERT_PATH, 'cert.pem'))
+    key: fs.readFileSync(KEY_PATH),
+    cert: fs.readFileSync(CERT_PATH)
 });
 
 const agent = createServiceAgent({ server });

@@ -1,6 +1,7 @@
 import { createServiceProxy, SyslogLevel, WorkerAgent } from 'socketnaut';
 import * as net from 'node:net';
 import { once } from 'node:events';
+import { listen } from './utils.js';
 
 const proxy = createServiceProxy({
     server: net.createServer(),
@@ -23,16 +24,7 @@ await once(proxy, 'ready');
 
 process.send?.('ready');
 
-process.on('message', async (message)=>{
-    try {
-        proxy.log.info(`Message received: ${message}`);
-        if (message == 'exit') {
-            await proxy.shutdown();
-            clearInterval(timeout);
-            process.exit();
-        }
-    }
-    catch(err) {
-        console.error(err);
-    }
-});
+await listen(process, 'exit');
+await proxy.shutdown();
+clearInterval(timeout);
+process.exit();

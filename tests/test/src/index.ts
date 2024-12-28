@@ -5,25 +5,21 @@ import * as https from 'node:https';
 import * as fs from 'node:fs';
 import * as http from 'node:http';
 import * as assert from 'node:assert';
-import * as pth from 'node:path';
 import { dispatch, listen } from './utils.js';
+import {CERT_PATH} from './paths.js';
 
 const httpProxy = fork('./dist/http_proxy.js');
 const httpsProxy = fork('./dist/https_proxy.js');
 
 await Promise.all([listen(httpProxy, 'ready'), listen(httpsProxy, 'ready')]);
 
-const TLS_PATH = pth.join(pth.dirname(import.meta.dirname), 'secrets');
-const CERT_PATH = pth.join(TLS_PATH, "cert.pem");
-
-const DATA = crypto.randomBytes(1e1).toString();
+const DATA = crypto.randomBytes(1e5).toString();
 const PORT = 3443;
 const PATH = '/';
 const HOST = 'localhost';
-const REQS = 1e3;
+const REQS = 1e2;
 
 const promises: Array<Promise<unknown>> = [];
-
 
 for (let i = 0; i < REQS; i++) {
     const req = https.request(
