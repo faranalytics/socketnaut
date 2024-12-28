@@ -21,9 +21,6 @@ Socketnaut can be used in order to scale the **main module** of web applications
 - [Concepts](#concepts)
     - [Service Proxy](#service-proxy)
     - [Service Agent](#service-agent)
-- [API](#api)
-    - [The ServiceProxy class.](#the-serviceproxy-class)
-    - [The ServiceAgent class.](#the-serviceagent-class)
 - [Usage](#usage)
 - [Examples](#examples)
     - [*An instance of Hello, World!*](#an-instance-of-hello-world-nodejs)
@@ -32,6 +29,9 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [*Use Socketnaut to scale the main module of an Express web application.*](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-typescript)
     - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-typescript)
     - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-typescript)
+- [API](#api)
+    - [The ServiceProxy class.](#the-serviceproxy-class)
+    - [The ServiceAgent class.](#the-serviceagent-class)
 - [Tuning Strategies](#tuning-strategies)
     - [Relevant ServiceProxy constructor parameters.](#relevant-serviceproxy-constructor-parameters)
 - [Client-Proxy Socket Remote Address and Port](#client-proxy-socket-remote-address-and-port)
@@ -53,58 +53,6 @@ A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu.
 ### Service Agent
 
 A `ServiceAgent` coordinates the state of its server (e.g., the server's address) with its respective proxy.  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It consumes a native Node.js server (e.g., [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver)).  The Node.js server provided to the `ServiceAgent` may be used the same way it is used natively; hence, Socketnaut works with many popular Node.js web frameworks. Please see the [Examples](#examples) section for instructions on how to use Socketnaut with native Node.js servers and web application frameworks.
-
-## API
-
-### The `ServiceProxy` class.
-
-#### socketnaut.createServiceProxy(options)
-- options `<ServiceProxyOptions>`
-
-    - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
-
-    - `minWorkers` `<number>` Optional argument that specifies the minimum number of worker threads permitted. **Default**: `0`
-
-    - `server` `<node:net.Server>` or `<node:tls.Server>` A `net.Server` configured however you choose.
-
-    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive worker threads will be cleaned up.
-
-    - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
-
-    - `workerCount` `<number>` Optional argument that specifies the number of worker threads to be spawned when Socketnaut starts.  This setting will override `minWorkers` and `maxWorkers`.
-    
-    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance.  This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`.  Please see the [Examples](#examples) section for how to specify the proxy's `ServiceAgent` module. 
-
-- Returns: `<socketnaut.ServiceProxy>`
-
-Creates a `ServiceProxy`.  Each process may contain any number of ServiceProxys.  However, all ServiceProxys run in the main thread; hence, the number of instances created in each process should be considered carefully.
-
-**Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its worker threads.
-
-_public_  **serviceProxy.shutdown()**
-
-Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
-
-Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process does a clean exit (_this assumes there aren't any remaining refs_).  The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.  It will throw an `Error` if the `Server` is closed prior to being opened. 
-
-
-### The `ServiceAgent` class.
-
-#### socketnaut.createServiceAgent(options)
-- options `<ServiceAgentOptions>`
-
-    - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` or `<node:tls.Server>` A native Node.js `Server` configured however you choose.
-
-Returns: `<socketnaut.ServiceAgent>`
-
-Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each worker; hence, this function will throw an `Error` if it is called more than once in a module.
-
-_public_  **serviceAgent.requestProxySocketAddressInfo(socket)**
-- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  
-
-Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
-
-The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
 
 ## Usage
 
@@ -171,6 +119,59 @@ Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/
 
 ### *A TLS Proxy and an HTTP Redirect.* <sup><sup>\</TypeScript\></sup></sup>
 In the previous example, the TLS endpoint was in the worker thread; however, it doesn't need to be. Alternatively, TLS can be handled by the proxy server. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
+
+## API
+
+### The `ServiceProxy` class.
+
+#### socketnaut.createServiceProxy(options)
+- options `<ServiceProxyOptions>`
+
+    - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
+
+    - `minWorkers` `<number>` Optional argument that specifies the minimum number of worker threads permitted. **Default**: `0`
+
+    - `server` `<node:net.Server>` or `<node:tls.Server>` A `net.Server` configured however you choose.
+
+    - `workersCheckingInterval` `<number>` Optional argument that specifies the approximate interval (milliseconds) at which inactive worker threads will be cleaned up.
+
+    - `workerOptions` `<node:worker_threads.WorkerOptions>` Optional `WorkerOptions` passed to the `worker_threads.Worker` constructor.
+
+    - `workerCount` `<number>` Optional argument that specifies the number of worker threads to be spawned when Socketnaut starts.  This setting will override `minWorkers` and `maxWorkers`.
+    
+    - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance.  This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`.  Please see the [Examples](#examples) section for how to specify the proxy's `ServiceAgent` module. 
+
+- Returns: `<socketnaut.ServiceProxy>`
+
+Creates a `ServiceProxy`.  Each process may contain any number of ServiceProxys.  However, all ServiceProxys run in the main thread; hence, the number of instances created in each process should be considered carefully.
+
+**Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its worker threads.
+
+_public_  **serviceProxy.shutdown()**
+
+Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
+
+Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process does a clean exit (_this assumes there aren't any remaining refs_).  The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.  It will throw an `Error` if the `Server` is closed prior to being opened. 
+
+
+### The `ServiceAgent` class.
+
+#### socketnaut.createServiceAgent(options)
+- options `<ServiceAgentOptions>`
+
+    - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` or `<node:tls.Server>` A native Node.js `Server` configured however you choose.
+
+Returns: `<socketnaut.ServiceAgent>`
+
+Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each worker; hence, this function will throw an `Error` if it is called more than once in a module.
+
+_public_  **serviceAgent.requestProxySocketAddressInfo(socket)**
+- `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.  
+
+Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
+
+The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
+
 
 ## Tuning Strategies
 
