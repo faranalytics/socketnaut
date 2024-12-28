@@ -172,12 +172,12 @@ Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
 The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
 
-
 ## Tuning Strategies
 
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
 ### Relevant `ServiceProxy` constructor parameters.
+
 #### socketnaut.createServiceProxy(options)
 - options `<ServiceProxyOptions>`
     - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
@@ -240,14 +240,15 @@ import { Level } from 'socketnaut';
 ...
 proxy.log.setLevel(Level.DEBUG);
 ```
-#### Set the Service Agent's log Level to DEBUG.
 
+#### Set the Service Agent's log Level to DEBUG.
 `http_server.js`
 ```js
 import { Level } from 'socketnaut';
 ...
 agent.log.setLevel(Level.DEBUG);
 ```
+
 ### Log to a File using a Rotating File Handler
 Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index.  In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` are imported.
 ```ts
@@ -267,3 +268,23 @@ formatter.disconnect(consoleHandler).connect(rotatingFileHandler);
 ``` 
 
 You can use Socketnaut's `logger` instance for your logging purposes or use a logger of your choice.  Please see the detailed [_Streams_ Logger](https://github.com/faranalytics/streams-logger) documentation for further instructions on how to configure a _Streams_ logging graph.
+
+## Test
+
+### Create and Test a Socketnaut Service
+
+#### Clone the repository and change directory into the root of the repository.
+```bash
+git clone https://github.com/faranalytics/socketnaut.git
+cd socketnaut
+```
+
+#### Install dependencies.
+```bash
+npm install && npm update
+```
+
+#### Run the tests.
+```bash
+npm test level=INFO
+```
