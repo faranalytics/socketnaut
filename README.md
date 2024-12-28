@@ -36,6 +36,7 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [Relevant ServiceProxy constructor parameters.](#relevant-serviceproxy-constructor-parameters)
 - [Client-Proxy Socket Remote Address and Port](#client-proxy-socket-remote-address-and-port)
 - [Logging](#logging)
+- [Test](#test)
 
 ## Installation
 
