@@ -1,7 +1,5 @@
 tsconfig.tsbuildinfo
 dist
 node_modules
-paste.txt
 *.log
 *.log.*
-
