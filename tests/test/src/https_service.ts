@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as net from 'node:net';
-import * as tls from 'node:tls';
 import * as https from 'node:https';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as pth from 'path'; import * as http from 'node:http';
-import * as threads from 'node:worker_threads';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 import { Writable } from 'node:stream';
 
-const certPath = pth.join(pth.dirname(import.meta.dirname), 'tls');
+const CERT_PATH = pth.join(pth.dirname(import.meta.dirname), 'secrets');
 
 class StreamBuffer extends Writable {
     public buffer: Buffer = Buffer.allocUnsafe(0);
@@ -24,8 +20,8 @@ class StreamBuffer extends Writable {
 }
 
 const server = https.createServer({
-    key: fs.readFileSync(pth.join(certPath, 'key.pem')),
-    cert: fs.readFileSync(pth.join(certPath, 'cert.pem'))
+    key: fs.readFileSync(pth.join(CERT_PATH, 'key.pem')),
+    cert: fs.readFileSync(pth.join(CERT_PATH, 'cert.pem'))
 });
 
 const agent = createServiceAgent({ server });
@@ -34,11 +30,10 @@ agent.log.setLevel(Level.ERROR);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/require-await
 server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    // for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const proxyAddressInfo: ProxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
     // console.log(proxyAddressInfo);
-    console.log('request');
     const streamBuf = new StreamBuffer();
     req.pipe(streamBuf);
     req.on('end', () => {

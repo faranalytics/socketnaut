@@ -13,5 +13,5 @@
       "NODE_ENV": "development"
     },
     "ext": "ts,json",
-    "exec": "clear && npm run build && node ."
+    "exec": "clear && npm run clean:build && node ."
   }
