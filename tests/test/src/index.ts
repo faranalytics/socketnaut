@@ -48,7 +48,7 @@ await describe('A suite of tests.', async () => {
         log.info('Stopped HTTP and HTTPS proxies.');
     });
 
-    void test('Test transmission of 100,000 bytes.', async (t) => {
+    void test('Make 1000 requests each with a message body of 100,000 bytes.', async (t) => {
         const data = crypto.randomBytes(1e5);
         const promises: Array<Promise<unknown>> = [];
         for (let i = 0; i < 1e3; i++) {
