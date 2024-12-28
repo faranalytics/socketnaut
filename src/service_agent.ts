@@ -4,8 +4,7 @@ import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
 import { ProxySocketAddressInfo } from './types';
-import { Logger, SyslogLevel } from 'streams-logger';
-import { log } from './logger.js';
+import { Logger, Formatter, ConsoleHandler, SyslogLevel } from 'streams-logger';
 
 threads.parentPort?.unref();
 
@@ -26,8 +25,20 @@ export class ServiceAgent extends Agent {
         this.register('tryTerminate', this.tryTerminate.bind(this));
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
+
+        const logger = new Logger({ level: SyslogLevel.WARN, captureStackTrace: false, parent: null });
+        const formatter = new Formatter({
+            format: async ({ level, isotime, hostname, pid, message, }) => (
+                `<${level}> ${isotime} ${hostname} ${pid} - ${message}\n`
+            )
+        });
+        const consoleHandler = new ConsoleHandler({ level: SyslogLevel.DEBUG });
+        const log = logger.connect(
+            formatter.connect(
+                consoleHandler
+            )
+        );
         this.log = log;
-        this.log.setLevel(SyslogLevel.ERROR);
     }
 
     protected tryTerminate(): void {
