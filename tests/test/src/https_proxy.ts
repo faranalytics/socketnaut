@@ -1,6 +1,6 @@
 import { exec } from 'node:child_process';
 import * as net from 'node:net';
-import { createServiceProxy, SyslogLevel, WorkerAgent } from 'socketnaut';
+import { createServiceProxy, SyslogLevel, WorkerAgent, log} from 'socketnaut';
 import { once } from 'node:events';
 import { CERT_PATH, KEY_PATH } from './paths.js';
 import { listen } from './utils.js';
@@ -10,7 +10,7 @@ await once(
         `openssl req -newkey rsa:2048 -nodes -x509 -subj "/CN=localhost" \
         -keyout ${KEY_PATH} \
         -out ${CERT_PATH}`, (...args) => {
-        args.forEach((arg, index) => arg ? (index + 1) % 2 == 0 ? console.log(arg) : console.error(arg) : null)
+        args.forEach((arg, index) => arg ? log.debug(arg.toString()) : null)
     }),
     'exit'
 );
@@ -23,7 +23,7 @@ const proxy = createServiceProxy({
 
 proxy.server.listen({ port: 3443, host: '127.0.0.1' });
 
-proxy.log.setLevel(SyslogLevel.INFO);
+proxy.log.setLevel(SyslogLevel.WARN);
 
 const timeout = setInterval(() => {
     proxy.log.info(`proxy.agents.length: ${proxy.agents.length}, proxy.maxWorkers: ${proxy.maxWorkers}, proxy.minWorkers: ${proxy.minWorkers}.`);

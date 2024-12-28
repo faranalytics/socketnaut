@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as https from 'node:https';
 import * as fs from 'fs';
-import * as pth from 'path'; import * as http from 'node:http';
+import * as http from 'node:http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 import { Writable } from 'node:stream';
 import { KEY_PATH, CERT_PATH } from './paths.js';
+
 class StreamBuffer extends Writable {
     public buffer: Buffer = Buffer.allocUnsafe(0);
     _write(chunk: string | Buffer, encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
@@ -24,7 +25,7 @@ const server = https.createServer({
 
 const agent = createServiceAgent({ server });
 
-agent.log.setLevel(Level.ERROR);
+agent.log.setLevel(Level.WARN);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/require-await
 server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {

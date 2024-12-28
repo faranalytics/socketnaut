@@ -7,16 +7,18 @@
     "build": "tsc --build .",
     "clean": "rm -rf ./dist/*",
     "clean:build": "npm run clean && npm run build",
-    "monitor": "nodemon ."
+    "monitor": "nodemon .",
+    "start": "node --expose-gc --trace-warnings ."
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "socketnaut": "file:../.."
+    "socketnaut": "file:../..",
+    "streams-logger": "^1.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.5.6",
     "nodemon": "^3.0.1"
   },
-  "type":"module"
+  "type": "module"
 }

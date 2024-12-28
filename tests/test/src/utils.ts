@@ -14,5 +14,5 @@ export async function dispatch(req: http.ClientRequest, data: string | Buffer) {
 }
 
 export async function listen(process: ChildProcess | NodeJS.Process, message: string) {
-    while ((await once(process, 'message'))[0] != message);
+    while (JSON.stringify((await once(process, 'message'))[0]) != JSON.stringify(message));
 }
