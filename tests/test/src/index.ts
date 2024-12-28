@@ -5,7 +5,6 @@ import { Logger, Formatter, ConsoleHandler, SyslogLevel, SyslogLevelT } from 'st
 import * as crypto from 'node:crypto';
 import * as https from 'node:https';
 import * as fs from 'node:fs';
-// import * as http from 'node:http';
 import * as assert from 'node:assert';
 import { dispatch, listen } from './utils.js';
 import { CERT_PATH } from './paths.js';

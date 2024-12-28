@@ -1,24 +1,12 @@
-import { exec } from 'node:child_process';
 import * as net from 'node:net';
-import { createServiceProxy, SyslogLevel, WorkerAgent, log} from 'socketnaut';
+import { createServiceProxy, SyslogLevel, WorkerAgent } from 'socketnaut';
 import { once } from 'node:events';
-import { CERT_PATH, KEY_PATH } from './paths.js';
 import { listen } from './utils.js';
 import { SyslogLevelT } from 'streams-logger';
 import { KeysUppercase } from 'streams-logger/dist/commons/types.js';
 
 const arg: Record<string, string> = process.argv.slice(2).reduce((prev: Record<string, string>, curr: string) => ({ ...prev, ...Object.fromEntries([curr.trim().split('=')]) }), {});
 const LEVEL = <KeysUppercase<SyslogLevelT>><unknown>arg['level'];
-
-await once(
-    exec(
-        `openssl req -newkey rsa:2048 -nodes -x509 -subj "/CN=localhost" \
-        -keyout ${KEY_PATH} \
-        -out ${CERT_PATH}`, (...args) => {
-        args.forEach((arg) => arg ? log.debug(arg.toString()) : null);
-    }),
-    'exit'
-);
 
 const proxy = createServiceProxy({
     server: net.createServer(),
