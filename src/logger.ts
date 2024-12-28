@@ -11,7 +11,7 @@ export const formatter = new Formatter({
         `<${level}> ${isotime} ${hostname} ${pid} - ${message}\n`
     )
 });
-export const consoleHandler = new ConsoleHandler({ level: SyslogLevel.INFO });
+export const consoleHandler = new ConsoleHandler({ level: SyslogLevel.DEBUG });
 export const log = logger.connect(
     formatter.connect(
         consoleHandler
