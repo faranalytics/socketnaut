@@ -39,30 +39,25 @@ Socketnaut can be used in order to scale the **main module** of web applications
 - [Test](#test)
 
 ## Installation
-
 ```bash
 npm install socketnaut
 ``` 
-## Concepts
 
+## Concepts
 A Socketnaut **Service** consists of a `ServiceProxy` and a `ServiceAgent`.
 
 ### Service Proxy
-
 A `ServiceProxy` is used in order to bind a TCP server to a specified port (usu. a public interface).  A `ServiceProxy` can be instantiated using the `createServiceProxy` function.  The `ServiceProxy` uniformly distributes TCP connections to servers (e.g., HTTP servers) in the worker thread pool.  The `ServiceProxy` manages the thread pool according to the values specified for the `minWorkers` and `maxWorkers` parameters or `workerCount` parameter.  
 
 ### Service Agent
-
 A `ServiceAgent` coordinates the state of its server (e.g., the server's address) with its respective proxy.  A `ServiceAgent` can be instantiated using the `createServiceAgent` function.  It consumes a native Node.js server (e.g., [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver)).  The Node.js server provided to the `ServiceAgent` may be used the same way it is used natively; hence, Socketnaut works with many popular Node.js web frameworks. Please see the [Examples](#examples) section for instructions on how to use Socketnaut with native Node.js servers and web application frameworks.
 
 ## Usage
-
 Each Socketnaut Service consists of at least one `ServiceProxy` and a respective worker module that has a `ServiceAgent` instance.  Please see the [Examples](#examples) section for how to create a Socketnaut Service.
 
 ## Examples
 
 ### *An instance of Hello, World!* <sup><sup>\</Node.js\></sup></sup>
-
 This is a complete and simple Socketnaut Service that responds with the text "Hello, World!".  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
 
 The `index.js` module runs the Service's `ServiceProxy` and the scaled `http_server.js` module runs the Service's `ServiceAgent`.  The `http_server.js` module is scaled according to the value of the `workerCount` property of the `ServiceProxy`.
@@ -103,16 +98,14 @@ server.listen({ port: 0, host: '127.0.0.1' });
 
 const agent = createServiceAgent({ server });
 ```
-### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>\</TypeScript\></sup></sup>
 
+### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>\</TypeScript\></sup></sup>
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
 ### *Use Socketnaut to scale the main module of a Koa web application.* <sup><sup>\</TypeScript\></sup></sup>
-
 Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
 ### *Use Socketnaut to scale the main module of an Express web application.* <sup><sup>\</TypeScript\></sup></sup>
-
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
 ### *Redirect HTTP connections to an HTTPS server.* <sup><sup>\</TypeScript\></sup></sup>
@@ -174,7 +167,6 @@ Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port). 
 
 ## Tuning Strategies
-
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
 ### Relevant `ServiceProxy` constructor parameters.
@@ -200,13 +192,11 @@ The `workerCount` argument sets the number of worker threads to be spawned when 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval`, or `workerCount`, you can tune Socketnaut according to the requirements of your environment.
 
 ## Client-Proxy Socket Remote Address and Port
-
 Socketnaut provides a facility for obtaining information about the client-proxy socket.  When a proxied request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`.  The remote address of the socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the proxy (usu. 127.0.0.1) - not the remote address of the client.  Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.
 
 Socketnaut solves this problem by simply providing a `MessageChannel` facility for requesting information about the client-proxy socket. Call the `ServiceAgent.requestProxySocketAddressInfo` method with the request socket (e.g., `req.socket`) as an argument.  The method returns a `Promise` that will resolve to a `socketnaut.ProxySocketAddressInfo` object that contains information that describes the proxy's socket tuple.
 
 ### Example
-
 ```ts
 const server = http.createServer();
 
@@ -228,7 +218,6 @@ server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse)
 The information returned by the `ServiceAgent.requestProxySocketAddressInfo` method can be used in order to associate the remote client address and port with each HTTP request e.g., for logging purposes.
 
 ## Logging
-
 By default Socketnaut logs to the console using the performant [_Streams_ Logger](https://github.com/faranalytics/streams-logger).
 
 ### Changing the Log Level
