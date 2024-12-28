@@ -59,7 +59,7 @@ git clone https://github.com/faranalytics/socketnaut.git
 
 ### Change directory into the relevant example directory.
 ```bash
-cd socketnaut/examples/hello_world
+cd socketnaut/examples/hello_world_tsx
 ```
 
 ### Install the example dependencies.
