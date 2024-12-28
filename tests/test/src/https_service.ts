@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as https from 'node:https';
 import * as fs from 'fs';
 import * as http from 'node:http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 import { Writable } from 'node:stream';
 import { KEY_PATH, CERT_PATH } from './paths.js';
@@ -30,9 +28,8 @@ agent.log.setLevel(Level.WARN);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/require-await
 server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const proxyAddressInfo: ProxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
-    // console.log(proxyAddressInfo);
+    const proxyAddressInfo: ProxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
+    agent.log.debug(JSON.stringify(proxyAddressInfo));
     const streamBuf = new StreamBuffer();
     req.pipe(streamBuf);
     req.on('end', () => {

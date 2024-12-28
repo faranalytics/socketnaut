@@ -4,13 +4,18 @@ import { createServiceProxy, SyslogLevel, WorkerAgent, log} from 'socketnaut';
 import { once } from 'node:events';
 import { CERT_PATH, KEY_PATH } from './paths.js';
 import { listen } from './utils.js';
+import { SyslogLevelT } from 'streams-logger';
+import { KeysUppercase } from 'streams-logger/dist/commons/types.js';
+
+const arg: Record<string, string> = process.argv.slice(2).reduce((prev: Record<string, string>, curr: string) => ({ ...prev, ...Object.fromEntries([curr.trim().split('=')]) }), {});
+const LEVEL = <KeysUppercase<SyslogLevelT>><unknown>arg['level'];
 
 await once(
     exec(
         `openssl req -newkey rsa:2048 -nodes -x509 -subj "/CN=localhost" \
         -keyout ${KEY_PATH} \
         -out ${CERT_PATH}`, (...args) => {
-        args.forEach((arg, index) => arg ? log.debug(arg.toString()) : null)
+        args.forEach((arg) => arg ? log.debug(arg.toString()) : null);
     }),
     'exit'
 );
@@ -23,7 +28,7 @@ const proxy = createServiceProxy({
 
 proxy.server.listen({ port: 3443, host: '127.0.0.1' });
 
-proxy.log.setLevel(SyslogLevel.WARN);
+proxy.log.setLevel(SyslogLevel[LEVEL]);
 
 const timeout = setInterval(() => {
     proxy.log.info(`proxy.agents.length: ${proxy.agents.length}, proxy.maxWorkers: ${proxy.maxWorkers}, proxy.minWorkers: ${proxy.minWorkers}.`);
