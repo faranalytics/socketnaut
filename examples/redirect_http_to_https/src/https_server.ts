@@ -1,14 +1,13 @@
 import * as http from 'node:http';
 import * as https from 'node:https';
 import * as fs from 'fs';
-import * as os from 'os';
-import * as pth from 'path';
 import { Level, createServiceAgent } from 'socketnaut';
+import { CERT_PATH, KEY_PATH } from './paths.js';
 
 const server = https.createServer(
     {
-        key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-        cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/cert.pem'))
+        key: fs.readFileSync(KEY_PATH),
+        cert: fs.readFileSync(CERT_PATH)
     }); // Configure this HTTPS server however you choose.
 
 server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {

@@ -4,7 +4,10 @@
   "description": "Redirect HTTP to HTTPS.",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build .",
+    "clean": "rm -rf ./dist/* && rm -rf ./ssl/*",
+    "prep": "openssl req -newkey rsa:2048 -nodes -x509 -subj '/CN=localhost' -keyout ./ssl/key.pem -out ./ssl/cert.pem",
+    "clean:build": "npm run clean && npm run build",
     "start": "node ."
   },
   "author": "FAR",
@@ -16,5 +19,8 @@
   "dependencies": {
     "socketnaut": "^1.1.0"
   },
-  "type":"module"
+  "engines": {
+    "node": ">=18.1.0"
+  },
+  "type": "module"
 }
