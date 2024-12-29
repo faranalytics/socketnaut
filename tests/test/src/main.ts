@@ -71,6 +71,7 @@ await describe('A suite of tests:', async () => {
             for (const result of results) {
                 if (result.status == 'rejected') {
                     errorCount = errorCount + 1;
+                    log.error(result.reason);
                 }
                 if (result.status == 'fulfilled') {
                     assert.strictEqual((result.value.body).toString(), data.toString());
