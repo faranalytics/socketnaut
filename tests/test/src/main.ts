@@ -6,21 +6,17 @@ import * as assert from 'node:assert';
 import { ChildProcess, fork } from 'node:child_process';
 import { once } from 'node:events';
 import { after, before, describe, test } from 'node:test';
-import { Logger, Formatter, ConsoleHandler, SyslogLevel, SyslogLevelT } from 'streams-logger';
+import { Logger, Formatter, ConsoleHandler, SyslogLevel } from 'streams-logger';
 import { dispatch, DispatchResult, listen } from './utils.js';
 import { CERT_PATH } from './paths.js';
-import { KeysUppercase } from 'streams-logger/dist/commons/types.js';
 
-const arg: Record<string, string> = process.argv.slice(2).reduce((prev: Record<string, string>, curr: string) => ({ ...prev, ...Object.fromEntries([curr.trim().split('=')]) }), {});
-const LEVEL = <KeysUppercase<SyslogLevelT>><unknown>(arg['level'] ? arg['level'] : 'WARN');
-
-const logger = new Logger({ name: 'hello-logger', level: SyslogLevel[LEVEL] });
+const logger = new Logger({ name: 'hello-logger', level: SyslogLevel.INFO });
 export const formatter = new Formatter({
     format: async ({ level, isotime, hostname, pid, message, }) => (
         `<${level}> ${isotime} ${hostname} ${pid} - ${message}\n`
     )
 });
-const consoleHandler = new ConsoleHandler({ level: SyslogLevel[LEVEL] });
+const consoleHandler = new ConsoleHandler({ level: SyslogLevel.INFO });
 const log = logger.connect(
     formatter.connect(
         consoleHandler
@@ -38,6 +34,7 @@ await describe('A suite of tests:', async () => {
         httpsProxy = fork('./dist/https_proxy.js', process.argv.slice(2));
         await Promise.all([listen(httpProxy, 'ready'), listen(httpsProxy, 'ready')]);
         log.info('Started proxies.');
+        log.info('Running tests.');
     });
 
     after(async () => {
