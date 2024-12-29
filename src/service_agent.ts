@@ -4,7 +4,8 @@ import * as https from 'node:https';
 import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
 import { ProxySocketAddressInfo } from './types';
-import { Logger, Formatter, ConsoleHandler, SyslogLevel } from 'streams-logger';
+import { Logger } from 'streams-logger';
+import { AgentHandler } from './agent_handler';
 
 threads.parentPort?.unref();
 
@@ -26,18 +27,9 @@ export class ServiceAgent extends Agent {
         this.server = options.server;
         this.server.once('listening', this.postListeningMessage.bind(this));
 
-        const logger = new Logger({ level: SyslogLevel.WARN, captureStackTrace: false, parent: null });
-        const formatter = new Formatter({
-            format: async ({ level, isotime, hostname, pid, message, }) => (
-                `<${level}> ${isotime} ${hostname} ${pid} - ${message}\n`
-            )
-        });
-        const consoleHandler = new ConsoleHandler({ level: SyslogLevel.DEBUG });
-        const log = logger.connect(
-            formatter.connect(
-                consoleHandler
-            )
-        );
+        const logger = new Logger({ captureStackTrace: false, parent: null });
+        const agentHandler = new AgentHandler(this, 'serviceLog');
+        const log = logger.connect(agentHandler);
         this.log = log;
     }
 
@@ -61,9 +53,7 @@ export class ServiceAgent extends Agent {
     }
 
     protected postListeningMessage(): void {
-
         this.addressInfo = this.server?.address();
-
         let socketConnectOpts: net.SocketConnectOpts | null;
 
         if (typeof this.addressInfo == 'string') {
@@ -77,7 +67,6 @@ export class ServiceAgent extends Agent {
         }
 
         this.log.debug(`Server thread ${threads.threadId} is listening on ${JSON.stringify(this.addressInfo)}.`);
-
         this.register('socketConnectOpts', () => socketConnectOpts);
     }
 
@@ -86,13 +75,9 @@ export class ServiceAgent extends Agent {
     }
 
     public async requestProxySocketAddressInfo(socket: net.Socket): Promise<ProxySocketAddressInfo> {
-
         const proxyServerAddress = { 'address': socket.remoteAddress, 'family': socket.remoteFamily, 'port': socket.remotePort };
-
         const proxyServerAddressInfo = JSON.stringify(proxyServerAddress, Object.keys(proxyServerAddress).sort());
-
         const clientProxyAddressInfo = await this.call<ProxySocketAddressInfo>('requestProxyAddressInfo', proxyServerAddressInfo);
-
         return clientProxyAddressInfo;
     }
 }

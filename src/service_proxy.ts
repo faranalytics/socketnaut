@@ -2,10 +2,11 @@ import * as net from 'node:net';
 import * as tls from 'node:tls';
 import * as events from 'node:events';
 import * as threads from 'node:worker_threads';
-import { Logger } from 'streams-logger';
-import { log } from './logger.js';
+import { Logger, SyslogLevelT } from 'streams-logger';
+import { log, recordHandler } from './logger.js';
 import { WorkerAgent } from './worker_agent.js';
 import { ProxySocketAddressInfo } from './types.js';
+import { LogContextOptions } from 'streams-logger/dist/commons/log_context.js';
 
 export interface ServiceProxyOptions {
     server: net.Server;
@@ -43,6 +44,7 @@ export class ServiceProxy extends events.EventEmitter {
         workerOptions
     }: ServiceProxyOptions) {
         super();
+
         this.server = server;
         this.workerCount = workerCount;
         this.workerURL = workerURL;
@@ -80,9 +82,7 @@ export class ServiceProxy extends events.EventEmitter {
     }
 
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {
-
         clientProxySocket.pause();
-
         clientProxySocket.on('error', (err: Error) => {
             this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
         });
@@ -146,21 +146,15 @@ export class ServiceProxy extends events.EventEmitter {
     }
 
     protected async createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void> {
-
         const message = `Connect options: ${JSON.stringify(socketConnectOpts)}`;
-
         const proxyServerSocket = net.createConnection(socketConnectOpts);
 
         return new Promise((r, j) => {
-
             proxyServerSocket.once('error', j);
-
             proxyServerSocket.on('connect', () => {
-
                 proxyServerSocket.on('error', (err: Error) => {
                     this.log.error(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
                 });
-
                 const proxyServerSocketAddressInfo = proxyServerSocket.address();
                 const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
                 this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
@@ -253,7 +247,6 @@ export class ServiceProxy extends events.EventEmitter {
     }
 
     protected reorderAgent(agent: WorkerAgent): void {
-
         const index = this.agents.indexOf(agent);
 
         if (index != -1) {
@@ -299,21 +292,8 @@ export class ServiceProxy extends events.EventEmitter {
         return agent;
     }
 
-    protected serviceLog(message: { level: string, value: string }): void {
-        switch (message.level) {
-            case 'DEBUG':
-                this.log.debug(message.value);
-                break;
-            case 'INFO':
-                this.log.info(message.value);
-                break;
-            case 'WARN':
-                this.log.warn(message.value);
-                break;
-            case 'ERROR':
-                this.log.error(message.value);
-                break;
-        }
+    protected serviceLog(logContextOptions: LogContextOptions<string, SyslogLevelT>): void {
+        void recordHandler.write(logContextOptions);
     }
 
     protected requestProxySocketAddressInfo(proxyServerAddressInfo: string): ProxySocketAddressInfo | undefined {
