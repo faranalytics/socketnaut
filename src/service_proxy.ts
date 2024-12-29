@@ -2,11 +2,10 @@ import * as net from 'node:net';
 import * as tls from 'node:tls';
 import * as events from 'node:events';
 import * as threads from 'node:worker_threads';
-import { Logger, SyslogLevelT } from 'streams-logger';
+import { Logger, SyslogLevelT, LogContextOptions } from 'streams-logger';
 import { log, recordHandler } from './logger.js';
 import { WorkerAgent } from './worker_agent.js';
 import { ProxySocketAddressInfo } from './types.js';
-import { LogContextOptions } from 'streams-logger/dist/commons/log_context.js';
 
 export interface ServiceProxyOptions {
     server: net.Server;

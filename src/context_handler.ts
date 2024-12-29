@@ -1,6 +1,5 @@
 import * as stream from 'node:stream';
-import { Node, LogContext, SyslogLevelT, Config } from 'streams-logger';
-import { LogContextOptions } from 'streams-logger/dist/commons/log_context';
+import { Node, LogContext, SyslogLevelT, Config, LogContextOptions} from 'streams-logger';
 
 export class ContextHandler extends Node<LogContext<string, SyslogLevelT>, LogContext<string, SyslogLevelT>> {
     constructor(streamOptions?: stream.TransformOptions) {

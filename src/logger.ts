@@ -1,9 +1,4 @@
-import {
-    Logger,
-    Formatter,
-    ConsoleHandler,
-    SyslogLevel,
-} from 'streams-logger';
+import { Logger, Formatter, ConsoleHandler, SyslogLevel } from 'streams-logger';
 import { ContextHandler } from './context_handler';
 
 export const logger = new Logger({ level: SyslogLevel.INFO, captureStackTrace: false, parent: null });
