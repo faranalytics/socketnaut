@@ -55,11 +55,9 @@ export class ServiceProxy extends events.EventEmitter {
         this.proxySocketAddressInfo = new Map<string, ProxySocketAddressInfo>();
         this.log = log;
         if (this.server instanceof tls.Server) {
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             this.server.on('secureConnection', this.tryAllocateThread.bind(this));
         }
         else if (this.server instanceof net.Server) {
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             this.server.on('connection', this.tryAllocateThread.bind(this));
         }
         else {
@@ -75,7 +73,6 @@ export class ServiceProxy extends events.EventEmitter {
         void this.spawnMinWorkers();
 
         if (this.workersCheckingInterval) {
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             this.workersCheckingIntervalTimeout = setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
         }
     }
@@ -233,7 +230,6 @@ export class ServiceProxy extends events.EventEmitter {
             }
         }
         finally {
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             this.workersCheckingIntervalTimeout = setTimeout(this.checkThreads.bind(this), this.workersCheckingInterval);
         }
     }

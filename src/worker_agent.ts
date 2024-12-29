@@ -24,7 +24,6 @@ export class WorkerAgent extends Agent {
             worker.once('exit', e);
             worker.once('error', e);
 
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             worker.once('online', async () => {
                 try {
                     const socketConnectOpts = await this.call<net.SocketConnectOpts>('socketConnectOpts');
