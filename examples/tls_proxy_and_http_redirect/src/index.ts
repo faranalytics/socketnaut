@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as net from 'node:net';
 import * as tls from 'node:tls';
 import * as fs from 'fs';
-import * as os from 'os';
-import * as pth from 'path';
-import { Level, createServiceProxy } from 'socketnaut';
-import { WorkerAgent } from 'socketnaut/dist/worker_agent.js';
+import { Level, createServiceProxy, WorkerAgent } from 'socketnaut';
+import { CERT_PATH, KEY_PATH } from './paths.js';
 
 const server = net.createServer(); // Configure this TCP Server however you choose.
 
@@ -22,10 +19,12 @@ const httpProxy = createServiceProxy({
 
 httpProxy.log.setLevel(Level.DEBUG);
 
-const tlsServer = tls.createServer({
-    key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-    cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
-}); // Configure this TLS Server however you choose.
+const tlsServer = tls.createServer(
+    {
+        key: fs.readFileSync(KEY_PATH),
+        cert: fs.readFileSync(CERT_PATH)
+    }); // Configure this HTTPS server however you choose.
+
 
 tlsServer.listen({ port: 3443, host: '0.0.0.0' });
 
