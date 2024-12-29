@@ -301,12 +301,16 @@ Excerpted from [Semantic Versioning 2.0.0](https://semver.org/):
 
 ## Test
 
-### Create and Test a Socketnaut Service
+### Test a Socketnaut Service Instance 
 
-#### Clone the repository and change directory into the root of the repository.
+#### Clone the repository.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
+```
+
+#### Change directory into the root of the repository.
+```bash
 cd socketnaut
 ```
 
@@ -316,9 +320,9 @@ cd socketnaut
 npm install && npm update
 ```
 
-#### Run the tests.
+#### Run the test.
 
-The test assumes `openssl` is available.
+The test script assumes `openssl` is available.
 ```bash
 npm test
 ```
