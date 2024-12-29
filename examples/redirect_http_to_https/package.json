@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc --build .",
-    "clean": "rm -rf ./dist/* && rm -rf ./ssl/*",
+    "clean": "rm -rf ./dist/* && rm -rf ./ssl/*.pem",
     "prep": "openssl req -newkey rsa:2048 -nodes -x509 -subj '/CN=localhost' -keyout ./ssl/key.pem -out ./ssl/cert.pem",
     "clean:build": "npm run clean && npm run build",
     "start": "node ."
