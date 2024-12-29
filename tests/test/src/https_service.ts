@@ -1,9 +1,11 @@
 import * as https from 'node:https';
 import * as fs from 'fs';
 import * as http from 'node:http';
-import { Level, createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
+import { createServiceAgent, ProxySocketAddressInfo } from 'socketnaut';
 import { Writable } from 'node:stream';
 import { KEY_PATH, CERT_PATH } from './paths.js';
+import { KeysUppercase } from 'streams-logger/dist/commons/types.js';
+import { SyslogLevel, SyslogLevelT } from 'streams-logger';
 
 class StreamBuffer extends Writable {
     public buffer: Buffer = Buffer.allocUnsafe(0);
@@ -16,6 +18,9 @@ class StreamBuffer extends Writable {
     }
 }
 
+const arg: Record<string, string> = process.argv.slice(2).reduce((prev: Record<string, string>, curr: string) => ({ ...prev, ...Object.fromEntries([curr.trim().split('=')]) }), {});
+const LEVEL = <KeysUppercase<SyslogLevelT>><unknown>arg['level'];
+
 const server = https.createServer({
     key: fs.readFileSync(KEY_PATH),
     cert: fs.readFileSync(CERT_PATH)
@@ -23,7 +28,7 @@ const server = https.createServer({
 
 const agent = createServiceAgent({ server });
 
-agent.log.setLevel(Level.WARN);
+agent.log.setLevel(SyslogLevel[LEVEL]);
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/require-await
 server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse) => {

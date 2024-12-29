@@ -11,7 +11,8 @@ const LEVEL = <KeysUppercase<SyslogLevelT>><unknown>arg['level'];
 const proxy = createServiceProxy({
     server: net.createServer(),
     workerCount: 1e2,
-    workerURL: new URL('./https_service.js', import.meta.url)
+    workerURL: new URL('./https_service.js', import.meta.url),
+    workerOptions: { argv: process.argv.slice(2) }
 });
 
 proxy.server.listen({ port: 3443, host: '127.0.0.1' });

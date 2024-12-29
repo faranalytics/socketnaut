@@ -1,12 +1,13 @@
+import * as crypto from 'node:crypto';
+import * as https from 'node:https';
+import * as http from 'node:http';
+import * as fs from 'node:fs';
+import * as assert from 'node:assert';
 import { ChildProcess, fork } from 'node:child_process';
 import { once } from 'node:events';
 import { after, before, describe, test } from 'node:test';
 import { Logger, Formatter, ConsoleHandler, SyslogLevel, SyslogLevelT } from 'streams-logger';
-import * as crypto from 'node:crypto';
-import * as https from 'node:https';
-import * as fs from 'node:fs';
-import * as assert from 'node:assert';
-import { dispatch, listen } from './utils.js';
+import { dispatch, DispatchResult, listen } from './utils.js';
 import { CERT_PATH } from './paths.js';
 import { KeysUppercase } from 'streams-logger/dist/commons/types.js';
 
@@ -26,30 +27,31 @@ const log = logger.connect(
     )
 );
 
-await describe('A suite of tests.', async () => {
+await describe('A suite of tests:', async () => {
 
     let httpProxy: ChildProcess;
     let httpsProxy: ChildProcess;
 
     before(async () => {
-        log.info('Starting 2 HTTP proxies and 100 HTTPS proxies.');
+        log.info('Starting proxies.');
         httpProxy = fork('./dist/http_proxy.js', process.argv.slice(2));
         httpsProxy = fork('./dist/https_proxy.js', process.argv.slice(2));
         await Promise.all([listen(httpProxy, 'ready'), listen(httpsProxy, 'ready')]);
-        log.info('Started 2 HTTP proxies and 100 HTTPS proxies.');
+        log.info('Started proxies.');
     });
 
     after(async () => {
-        log.info('Stopping 2 HTTP proxies and 100 HTTPS proxies.');
+        log.info('Stopping proxies.');
         httpsProxy.send('exit');
         httpProxy.send('exit');
         await Promise.all([once(httpsProxy, 'exit'), once(httpProxy, 'exit')]);
-        log.info('Stopped 2 HTTP proxies and 100 HTTPS proxies.');
+        log.info('Stopped proxies.');
     });
 
-    void test('Make 1000 requests each with a message body of 100,000 bytes.', async (t) => {
+    await describe('1000 request each with a message body of 1e5 bytes:', async () => {
+
         const data = crypto.randomBytes(1e5);
-        const promises: Array<Promise<unknown>> = [];
+        const promises: Array<Promise<DispatchResult>> = [];
         for (let i = 0; i < 1e3; i++) {
             const req = https.request(
                 {
@@ -64,20 +66,66 @@ await describe('A suite of tests.', async () => {
 
             promises.push(dispatch(req, data));
         }
-        const results = await Promise.allSettled(promises);
+        const results = await Promise.allSettled<Promise<DispatchResult>>(promises);
 
-        void t.test('Test the integrity of the echoed data.', (t) => {
+        await test('The data in the response body should equal the data in the request body.', async (t) => {
+
             let errorCount = 0;
             for (const result of results) {
                 if (result.status == 'rejected') {
                     errorCount = errorCount + 1;
                 }
                 if (result.status == 'fulfilled') {
-                    assert.strictEqual((result.value as Buffer).toString(), data.toString());
+                    assert.strictEqual((result.value.body).toString(), data.toString());
                 }
             }
-            void t.test('Test for errors.', () => {
+            await t.test('Test for errors.', () => {
                 assert.strictEqual(errorCount, 0);
+            });
+        });
+    });
+
+    await describe('A 301 redirect:', async () => {
+
+        const data = crypto.randomBytes(1e5);
+
+        await test('The response status code of the HTTP request should equal 301.', async () => {
+
+            const clientRequest = http.request(
+                {
+                    hostname: 'localhost',
+                    port: 3080,
+                    path: '/',
+                    method: 'POST',
+                    timeout: 1e6,
+                    headers: { 'content-length': data.length }
+                });
+
+            const { incomingMessage } = await dispatch(clientRequest, data);
+
+            assert.strictEqual(incomingMessage.statusCode, 301);
+        });
+
+        await test('The response code of the HTTPS request should equal 200.', async (t) => {
+
+            const clientRequest = https.request(
+                {
+                    hostname: 'localhost',
+                    port: 3443,
+                    path: '/',
+                    method: 'POST',
+                    ca: [fs.readFileSync(CERT_PATH)],
+                    timeout: 1e6,
+                    headers: { 'content-length': data.length }
+                });
+
+            const { incomingMessage, body } = await dispatch(clientRequest, data);
+
+            assert.strictEqual(incomingMessage.statusCode, 200);
+
+            await t.test('The data in the response body should equal the data in the request body.', () => {
+
+                assert.strictEqual(body.toString(), data.toString());
             });
         });
     });

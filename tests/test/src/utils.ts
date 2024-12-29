@@ -2,15 +2,20 @@ import * as http from 'node:http';
 import { once } from 'node:events';
 import { ChildProcess } from 'node:child_process';
 
-export async function dispatch(req: http.ClientRequest, data: string | Buffer) {
+export interface DispatchResult {
+    incomingMessage: http.IncomingMessage;
+    body: Buffer;
+}
+
+export async function dispatch(req: http.ClientRequest, data: string | Buffer): Promise<DispatchResult> {
     req.end(data);
-    const [res] = await once(req, 'response');
+    const [incomingMessage] = await once(req, 'response');
     const chunks: Array<Buffer> = [];
-    res.on('data', (datum: Buffer) => {
+    incomingMessage.on('data', (datum: Buffer) => {
         chunks.push(datum);
     });
-    await once(res, 'end');
-    return Buffer.concat(chunks);
+    await once(incomingMessage, 'end');
+    return { incomingMessage, body: Buffer.concat(chunks) };
 }
 
 export async function listen(process: ChildProcess | NodeJS.Process, message: string) {
