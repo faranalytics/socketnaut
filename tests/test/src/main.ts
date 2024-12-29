@@ -48,7 +48,7 @@ await describe('A suite of tests:', async () => {
         log.info('Stopped proxies.');
     });
 
-    await describe('1000 request each with a message body of 1e5 bytes:', async () => {
+    await describe('Make 1000 requests, each with a message body of 1e5 bytes:', async () => {
 
         const data = crypto.randomBytes(1e5);
         const promises: Array<Promise<DispatchResult>> = [];
@@ -85,7 +85,7 @@ await describe('A suite of tests:', async () => {
         });
     });
 
-    await describe('A 301 redirect:', async () => {
+    await describe('Perform a 301 redirect:', async () => {
 
         const data = crypto.randomBytes(1e5);
 
