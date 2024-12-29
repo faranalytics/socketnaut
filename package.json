@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "port_agent": "^1.0.0",
-    "streams-logger": "^1.4.0"
+    "streams-logger": "^1.5.0"
   },
   "engines": {
     "node": ">=18.1.0"
