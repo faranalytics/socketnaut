@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0] - 2024-12-28
+### Changed
+- Improve documentation.
+- Improve examples.
+### Added
+- Refactor the ServiceAgent's log facility to send messages to its ServiceProxy's log pipeline.  All log messages emitted by a Service are processed by a single handler in the main thread.
+- Add a formal test suite.
+
 ## [1.5.3] - 2024-08-06
 ### Changed
 - Improve documentation.
