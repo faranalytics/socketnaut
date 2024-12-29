@@ -13,5 +13,5 @@ export const log = logger.connect(
         consoleHandler
     )
 );
-export const recordHandler = new ContextHandler();
-recordHandler.connect(log);
+export const contextHandler = new ContextHandler();
+contextHandler.connect(log);

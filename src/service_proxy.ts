@@ -3,7 +3,7 @@ import * as tls from 'node:tls';
 import * as events from 'node:events';
 import * as threads from 'node:worker_threads';
 import { Logger, SyslogLevelT, LogContextOptions } from 'streams-logger';
-import { log, recordHandler } from './logger.js';
+import { log, contextHandler } from './logger.js';
 import { WorkerAgent } from './worker_agent.js';
 import { ProxySocketAddressInfo } from './types.js';
 
@@ -288,7 +288,7 @@ export class ServiceProxy extends events.EventEmitter {
     }
 
     protected serviceLog(logContextOptions: LogContextOptions<string, SyslogLevelT>): void {
-        void recordHandler.write(logContextOptions);
+        void contextHandler.write(logContextOptions);
     }
 
     protected requestProxySocketAddressInfo(proxyServerAddressInfo: string): ProxySocketAddressInfo | undefined {
