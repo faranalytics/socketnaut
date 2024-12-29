@@ -6,24 +6,22 @@ The proxy is a TLS server.
 
 `index.ts`
 ```ts
-
 ...
 
 const tlsServer = tls.createServer({
-    key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
-    cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
-}); // Configure this TLS Server however you choose.
+    key: fs.readFileSync(KEY_PATH),
+    cert: fs.readFileSync(CERT_PATH)
+}); // Configure this TLS server however you choose.
 
 tlsServer.listen({ port: 3443, host: '0.0.0.0' });
 
-// Create a Service Proxy for handling HTTP requests.
+// Create a Service Proxy for handling HTTPS requests.
 const tlsProxy = createServiceProxy({
     server: tlsServer,
     minWorkers: 4,
     maxWorkers: 42,
     workerURL: new URL('./service.js', import.meta.url)
 });
-
 ...
 ```
 
@@ -86,17 +84,17 @@ npm run clean:build
 
 The HTTPS server is configured to read a `key.pem` and `cert.pem` from the `./ssl/` directory.  However, you can configure it however you choose.
 
-`service.ts`
+`index.ts`
 
 ```js
 ...
-const server = https.createServer(
-    {
-        key: fs.readFileSync(KEY_PATH),
-        cert: fs.readFileSync(CERT_PATH)
-    });
+const tlsServer = tls.createServer({
+    key: fs.readFileSync(KEY_PATH),
+    cert: fs.readFileSync(CERT_PATH)
+}); // Configure this TLS server however you choose.
 ...
 ```
+
 Alternatively, if you have `openssl` installed, you can generate the credentials using the `prep` script.
 ```bash
 npm run prep
@@ -126,7 +124,7 @@ time for fun in {1..1000}; do echo "http://localhost:3080"; done | xargs -n1 -P1
 
 1000 concurrent requests were processed; each request blocked for 100ms. Please see the `https_server.ts` module for detail.
 ```bash
-real    0m12.281s
-user    0m16.016s
-sys     0m6.832s
+real    0m9.117s
+user    0m7.156s
+sys     0m4.194s
 ```

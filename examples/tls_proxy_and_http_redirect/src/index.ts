@@ -19,11 +19,10 @@ const httpProxy = createServiceProxy({
 
 httpProxy.log.setLevel(Level.DEBUG);
 
-const tlsServer = tls.createServer(
-    {
-        key: fs.readFileSync(KEY_PATH),
-        cert: fs.readFileSync(CERT_PATH)
-    }); // Configure this HTTPS server however you choose.
+const tlsServer = tls.createServer({
+    key: fs.readFileSync(KEY_PATH),
+    cert: fs.readFileSync(CERT_PATH)
+}); // Configure this TLS server however you choose.
 
 
 tlsServer.listen({ port: 3443, host: '0.0.0.0' });
@@ -40,6 +39,6 @@ tlsProxy.log.setLevel(Level.DEBUG);
 
 // Display the state of the HTTP server pool each 1000ms.
 setInterval(() => {
-    tlsProxy.log.info?.(`Status: ${tlsProxy.agents.length}, ${tlsProxy.maxWorkers}, ${tlsProxy.minWorkers}.`);
-    console.log(`Server pool connections: ${JSON.stringify(tlsProxy.agents.map((value: WorkerAgent) => value.connections))}`);
+    tlsProxy.log.info(`proxy.agents.length: ${tlsProxy.agents.length}, proxy.maxWorkers: ${tlsProxy.maxWorkers}, proxy.minWorkers: ${tlsProxy.minWorkers}.`);
+    tlsProxy.log.info(`Connection Distribution: ${JSON.stringify(tlsProxy.agents.map<number>((value: WorkerAgent) => value.connections))}`);
 }, 1000);
