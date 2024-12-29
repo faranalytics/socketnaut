@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "socketnaut": "file:../..",
-    "streams-logger": "^1.4.3"
+    "streams-logger": "^1.5.0"
   },
   "devDependencies": {
     "@types/node": "^20.5.6",

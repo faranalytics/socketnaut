@@ -29,7 +29,7 @@
     "typescript-eslint": "^7.15.0"
   },
   "dependencies": {
-    "port_agent": "^1.0.0",
+    "port_agent": "^1.4.0",
     "streams-logger": "^1.5.0"
   },
   "engines": {
