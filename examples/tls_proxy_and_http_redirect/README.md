@@ -51,46 +51,68 @@ server.on('request', async (req: http.IncomingMessage, res: http.ServerResponse)
 ```
 
 ## Requirements
+
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.
 
-## Instructions
+## Run the Example
 
-### Clone the Socketnaut repo.
+### Instructions
+
+#### Clone the Socketnaut repo.
+
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
-### Change directory into the relevant example directory.
+
+#### Change directory into the relevant example directory.
+
 ```bash
 cd socketnaut/examples/tls_proxy_and_http_redirect
 ```
-### Install the example dependencies.
+
+#### Install the example dependencies.
+
 ```bash
 npm install && npm update
 ```
-### Edit index.ts in order to read your `key` and `cert` files.
+
+#### Edit index.ts in order to read your `key` and `cert` files.
+
 ```js
 const tlsServer = tls.createServer({
     key: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/key.pem')),
     cert: fs.readFileSync(pth.resolve(os.homedir(), 'secrets/crt.pem'))
 });
 ```
-### Build the TypeScript application.
+
+#### Build the TypeScript application.
+
 ```bash
 npm run build
 ```
-### Run the application.
+
+#### Run the application.
+
 ```bash
 npm start
 ```
-### Test the HTTP redirect using your browser.
+
+#### Test the HTTP redirect using your browser.
+
 ```bash
 http://example.com:3080
 ```
-### In another shell send 1000 requests to the endpoint.
+
+#### In another shell send 1000 requests to the endpoint.
+
 ```bash
 time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl -k -L 
 ```
-#### Output
+
+##### Output
+
+1000 concurrent requests were processed; each request blocked for 100ms. Please see the `service.ts` module for detail.
+
 ```bash
 real    0m11.520s
 user    0m15.058s

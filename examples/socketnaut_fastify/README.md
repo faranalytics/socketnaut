@@ -45,35 +45,44 @@ void fastify.listen({ port: 0, host: '127.0.0.1' });
 ## Requirements
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.
 
-## Instructions
+## Run the Example
 
-### Clone the Socketnaut repo.
+### Instructions
+
+#### Clone the Socketnaut repo.
+
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-### Change directory into the relevant example directory.
+#### Change directory into the relevant example directory.
+
 ```bash
 cd socketnaut/examples/socketnaut_fastify
 ```
 
-### Install the example dependencies.
+#### Install the example dependencies.
+
 ```bash
 npm install && npm update
 ```
 
-### Run the application.
+#### Run the application.
+
 Run the `index.js` module.
 ```bash
 npm start
 ```
 
-### In another shell send 1000 requests to the endpoint.
+#### In another shell send 1000 requests to the endpoint.
+
 ```bash
 time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl
 ```
 
-#### Output
+##### Output
+
+1000 concurrent requests were processed; each request blocked for 100ms. Please see the `http_server.js` module for detail.
 ```bash
 real    0m10.947s
 user    0m6.572s
