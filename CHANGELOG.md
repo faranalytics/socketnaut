@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.1] - 2024-12-28
+### Changed
+- Reversion
+
 ## [1.6.0] - 2024-12-28
 ### Changed
 - Improve documentation.
