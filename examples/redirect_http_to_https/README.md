@@ -155,7 +155,7 @@ time for fun in {1..1000}; do echo "http://localhost:3080"; done | xargs -n1 -P1
 
 ##### Output
 
-1000 concurrent requests were processed; each request blocked for 100ms. Please see the `https_server.ts` module for detail.
+One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `https_server.ts` module for detail.
 ```bash
 real    0m12.281s
 user    0m16.016s

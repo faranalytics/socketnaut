@@ -86,7 +86,7 @@ time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P100
 
 ##### Output
 
-1000 concurrent requests were processed; each request blocked for 100ms. Please see the `http_server.js` module for detail.
+One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `http_server.js` module for detail.
 ```bash
 real    0m10.466s
 user    0m6.364s
