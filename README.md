@@ -62,13 +62,16 @@ A `ServiceAgent` coordinates the state of its server (e.g., the server's address
 
 ## Usage
 
-This simple "Hello, World!" app is a complete Socketnaut Service.  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
+This simple app is a complete Socketnaut service that responds to requests with "Hello, World!".  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
 
 The `index.js` module runs the Service's `ServiceProxy` and the scaled `http_server.js` module runs the Service's `ServiceAgent`.  The `http_server.js` module is scaled according to the value of the `workerCount` property of the `ServiceProxy`.
 
 Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
 `index.js`
+
+This is the main thread.
+
 ```js
 import * as net from 'node:net';
 import { createServiceProxy } from 'socketnaut';
@@ -85,6 +88,9 @@ const proxy = createServiceProxy({
 ```
 
 `http_server.js`
+
+This is the scaled application.
+
 ```js
 import * as http from 'node:http';
 import { createServiceAgent } from 'socketnaut';
