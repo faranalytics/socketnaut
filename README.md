@@ -62,13 +62,7 @@ A `ServiceAgent` coordinates the state of its server (e.g., the server's address
 
 ## Usage
 
-Each Socketnaut Service consists of at least one `ServiceProxy` and a respective worker module that has a `ServiceAgent` instance.  Please see the [Examples](#examples) section for how to create a Socketnaut Service.
-
-## Examples
-
-### *An instance of Hello, World!* <sup><sup>\</Node.js\></sup></sup>
-
-This is a complete and simple Socketnaut Service that responds with the text "Hello, World!".  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
+This simple "Hello, World!" app is a complete Socketnaut Service.  **You're looking at an ordinary Node.js web app**, except that a `ServiceProxy` instance is created in the `index.js` module and a `ServiceAgent` instance is created in the scaled `http_server.js` module - *that is all it takes to scale this web app*. Scaling sophisticated web applications is just as easy.
 
 The `index.js` module runs the Service's `ServiceProxy` and the scaled `http_server.js` module runs the Service's `ServiceAgent`.  The `http_server.js` module is scaled according to the value of the `workerCount` property of the `ServiceProxy`.
 
@@ -108,6 +102,12 @@ server.listen({ port: 0, host: '127.0.0.1' });
 
 const agent = createServiceAgent({ server });
 ```
+
+## Examples
+
+### *An instance of Hello, World!* <sup><sup>\</Node.js\></sup></sup>
+
+Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
 ### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>\</TypeScript\></sup></sup>
 
