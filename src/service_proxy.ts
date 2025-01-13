@@ -1,6 +1,6 @@
 import * as net from 'node:net';
 import * as tls from 'node:tls';
-import * as events from 'node:events';
+import { EventEmitter, once } from 'node:events';
 import * as threads from 'node:worker_threads';
 import { Logger, SyslogLevelT, LogContextOptions } from 'streams-logger';
 import { log, contextHandler } from './logger.js';
@@ -17,7 +17,7 @@ export interface ServiceProxyOptions {
     workerOptions?: threads.WorkerOptions;
 }
 
-export class ServiceProxy extends events.EventEmitter {
+export class ServiceProxy extends EventEmitter {
 
     public server: net.Server;
     public workerCount?: number;
@@ -142,69 +142,63 @@ export class ServiceProxy extends events.EventEmitter {
     }
 
     protected async createServerConnection(clientProxySocket: net.Socket, socketConnectOpts: net.SocketConnectOpts): Promise<void> {
-        const message = `Connect options: ${JSON.stringify(socketConnectOpts)}`;
+        
         const proxyServerSocket = net.createConnection(socketConnectOpts);
 
-        return new Promise((r, j) => {
-            proxyServerSocket.once('error', j);
-            proxyServerSocket.on('connect', () => {
-                proxyServerSocket.on('error', (err: Error) => {
-                    this.log.error(`Proxy-Server socket error.  ${this.describeError(err)}  ${message}.`);
-                });
-                const proxyServerSocketAddressInfo = proxyServerSocket.address();
-                const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
-                this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
-                    local: {
-                        address: clientProxySocket.localAddress ?? '',
-                        family: clientProxySocket.localFamily ?? '',
-                        port: clientProxySocket.localPort ?? NaN
-                    },
-                    remote: {
-                        address: clientProxySocket.remoteAddress ?? '',
-                        family: clientProxySocket.remoteFamily ?? '',
-                        port: clientProxySocket.remotePort ?? NaN
-                    }
-                });
-
-                proxyServerSocket.on('timeout', () => {
-                    this.log.debug(`Proxy-Server socket timeout. ${message}.`);
-                });
-
-                clientProxySocket.on('timeout', () => {
-                    this.log.debug(`Client-Proxy socket timeout. ${message}.`);
-                });
-
-                proxyServerSocket.once('end', () => {
-                    this.log.debug(`Proxy-Server socket end. ${message}.`);
-                    clientProxySocket.end();
-                });
-
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                proxyServerSocket.once('close', (hadError: boolean) => {
-                    this.log.debug(`Proxy-Server socket close. ${message}.`);
-                    clientProxySocket.destroy();
-                    this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
-                });
-
-                clientProxySocket.once('end', () => {
-                    this.log.debug(`Client-Proxy socket end.  ${message}.`);
-                    proxyServerSocket.end();
-                });
-
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                clientProxySocket.once('close', (hadError: boolean) => {
-                    this.log.debug(`Client-Proxy socket close. ${message}.`);
-                    proxyServerSocket.destroy();
-                });
-
-                clientProxySocket.pipe(proxyServerSocket);
-                proxyServerSocket.pipe(clientProxySocket);
-
-                proxyServerSocket.removeListener('error', j);
-
-                r();
-            });
+        proxyServerSocket.on('error', (err: Error) => {
+            this.log.error(`Proxy-Server socket error.  ${this.describeError(err)}  Connect options: ${JSON.stringify(socketConnectOpts)}.`);
         });
+
+        await once(proxyServerSocket, 'connect');
+        
+        const proxyServerSocketAddressInfo = proxyServerSocket.address();
+        const proxyServerSocketAddressInfoRepr = JSON.stringify(proxyServerSocketAddressInfo, Object.keys(proxyServerSocketAddressInfo).sort());
+        this.proxySocketAddressInfo.set(proxyServerSocketAddressInfoRepr, {
+            local: {
+                address: clientProxySocket.localAddress ?? '',
+                family: clientProxySocket.localFamily ?? '',
+                port: clientProxySocket.localPort ?? NaN
+            },
+            remote: {
+                address: clientProxySocket.remoteAddress ?? '',
+                family: clientProxySocket.remoteFamily ?? '',
+                port: clientProxySocket.remotePort ?? NaN
+            }
+        });
+
+        proxyServerSocket.on('timeout', () => {
+            this.log.debug(`Proxy-Server socket timeout. Connect options: ${JSON.stringify(socketConnectOpts)}.`);
+        });
+
+        clientProxySocket.on('timeout', () => {
+            this.log.debug(`Client-Proxy socket timeout. Connect options: ${JSON.stringify(socketConnectOpts)}.`);
+        });
+
+        proxyServerSocket.once('end', () => {
+            this.log.debug(`Proxy-Server socket end. Connect options: ${JSON.stringify(socketConnectOpts)}.`);
+            clientProxySocket.end();
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        proxyServerSocket.once('close', (hadError: boolean) => {
+            this.log.debug(`Proxy-Server socket close. Connect options: ${JSON.stringify(socketConnectOpts)}.`);
+            clientProxySocket.destroy();
+            this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
+        });
+
+        clientProxySocket.once('end', () => {
+            this.log.debug(`Client-Proxy socket end.  Connect options: ${JSON.stringify(socketConnectOpts)}.`);
+            proxyServerSocket.end();
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        clientProxySocket.once('close', (hadError: boolean) => {
+            this.log.debug(`Client-Proxy socket close. Connect options: ${JSON.stringify(socketConnectOpts)}.`);
+            proxyServerSocket.destroy();
+        });
+
+        clientProxySocket.pipe(proxyServerSocket);
+        proxyServerSocket.pipe(clientProxySocket);
     }
 
     protected async checkThreads(): Promise<void> {
