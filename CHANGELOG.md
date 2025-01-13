@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.6.2] - 2025-01-12
+### Changed
+- Improve documentation.
+- Improve examples.
+
 ## [1.6.1] - 2024-12-28
 ### Changed
 - Reversion
