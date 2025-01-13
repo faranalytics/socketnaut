@@ -4,3 +4,4 @@ node_modules
 *.log
 *.log.*
 /examples/**/package-lock.json
+/tests/**/package-lock.json
