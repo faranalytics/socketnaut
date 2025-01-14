@@ -39,6 +39,7 @@ const service = createService(socket);
 const controller = service.createServiceAPI<ProxyController>();
 
 socket.on('ready', async () => {
+
     log.info('Connected to Proxy Controller.');
 
     await describe('A suite of tests:', async () => {
@@ -166,10 +167,12 @@ socket.on('ready', async () => {
         await describe('Perform a graceful shutdown.', async () => {
 
             await test('Shutting down the ServiceProxy for the HTTP service should not throw.', async () => {
+
                 await assert.doesNotReject(controller.httpServiceProxy.shutdown());
             });
 
             await test('Shutting down the ServiceProxy for the HTTPS service should not throw.', async () => {
+                
                 await assert.doesNotReject(controller.httpsServiceProxy.shutdown());
             });
         });
