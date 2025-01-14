@@ -37,9 +37,9 @@ const socket = net.connect({ port: 3000, host: '127.0.0.1' });
 socket.on('error', console.error);
 const service = createService(socket);
 const controller = service.createServiceAPI<ProxyController>();
-log.info('Connected to Proxy Controller.');
 
 socket.on('ready', async () => {
+    log.info('Connected to Proxy Controller.');
 
     await describe('A suite of tests:', async () => {
 
