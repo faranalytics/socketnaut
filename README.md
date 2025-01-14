@@ -311,7 +311,7 @@ Please ensure resources are available prior to running the test:
 - A Controller will attempt to bind to port 3000.
 - A Service Proxy for the HTTP Server will attempt to bind to port 3080.  
 - A Service Proxy for the HTTPS Server will attempt to bind to port 3443.
-- The test script will use `openssl` in order to generate a certificate.
+- The test script will use `openssl` in order to generate a certificate and key.
 
 #### Clone the repository.
 
