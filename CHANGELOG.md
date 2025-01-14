@@ -1,8 +1,13 @@
 # Changelog
 
+## [1.6.4] - 2025-01-14
+### Changed
+- Refactor WorkerAgent.
+- Refactor tests.
+
 ## [1.6.3] - 2025-01-13
 ### Changed
-- Refactored tests.
+- Refactor tests.
 - Improve documentation.
 
 ## [1.6.2] - 2025-01-12
