@@ -54,7 +54,7 @@ socket.on('ready', async () => {
             log.info('Finished tests.');
         });
 
-        await describe('Make 1000 requests, each with a message body of 1e5 bytes.', async () => {
+        await describe('Make 1000 requests, each with a message body of 1e5 bytes.  Block for 100 ms on each request.', async () => {
 
             const data = crypto.randomBytes(1e5);
             const promises: Array<Promise<DispatchResult>> = [];
