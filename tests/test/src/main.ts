@@ -42,7 +42,7 @@ socket.on('ready', async () => {
 
     log.info('Connected to Proxy Controller.');
 
-    await describe('A suite of tests:', async () => {
+    await describe('Test a Socketnaut service.', async () => {
 
         before(async () => {
             log.info('Running tests.');
@@ -54,7 +54,7 @@ socket.on('ready', async () => {
             log.info('Finished tests.');
         });
 
-        await describe('Make 1000 requests, each with a message body of 1e5 bytes:', async () => {
+        await describe('Make 1000 requests, each with a message body of 1e5 bytes.', async () => {
 
             const data = crypto.randomBytes(1e5);
             const promises: Array<Promise<DispatchResult>> = [];
@@ -92,7 +92,7 @@ socket.on('ready', async () => {
             });
         });
 
-        await describe('Perform a 301 redirect:', async () => {
+        await describe('Perform a 301 redirect.', async () => {
 
             const data = crypto.randomBytes(1e5);
 
