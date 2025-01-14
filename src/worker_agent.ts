@@ -13,9 +13,7 @@ export class WorkerAgent extends Agent {
     public socketConnectOpts?: net.SocketConnectOpts;
     public socketConnectOptsReady: Promise<boolean>;
 
-    constructor({
-        worker,
-    }: WorkerAgentOptions
+    constructor({ worker }: WorkerAgentOptions
     ) {
         super(worker);
         this.worker = worker;
