@@ -20,7 +20,9 @@ await once(httpServiceProxy, 'ready');
 
 const httpsServiceProxy = createServiceProxy({
     server: net.createServer(),
-    workerCount: 1e2,
+    minWorkers: 1e1,
+    maxWorkers: 1e2,
+    workersCheckingInterval: 100,
     workerURL: new URL('./https_service.js', import.meta.url),
     workerOptions: { argv: process.argv.slice(2) }
 });
