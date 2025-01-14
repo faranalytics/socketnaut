@@ -80,8 +80,8 @@ server.listen({ port: 3080, host: '0.0.0.0' });
 
 const proxy = createServiceProxy({
     server,
-    workerCount: 42, // The ServiceProxy will start 42 instances of the `http_server.js` module.
-    workerURL: './http_server.js'
+    workerCount: 42, // Start 42 instances of the `http_server.js` module.
+    workerURL: './http_server.js' // The scaled module.
 });
 ```
 
