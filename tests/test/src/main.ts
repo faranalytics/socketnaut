@@ -26,12 +26,11 @@ const log = logger.connect(
     )
 );
 
-log.warn('Binding to ports 3000, 3080, and 3443 on localhost.');
+log.warn('The test will attempt to bind ports 3000, 3080, 3443.');
 
-log.info('Starting Service Proxies.');
+log.info('Starting the Socketnaut Service.');
 const httpsProxyChildProcess = fork('./dist/proxies.js', process.argv.slice(2));
 await once(httpsProxyChildProcess, 'message');
-log.info('Started Service Proxies.');
 
 log.info('Connecting to Proxy Controller.');
 const socket = net.connect({ port: 3000, host: '127.0.0.1' });
