@@ -11,7 +11,6 @@ const LEVEL = <KeysUppercase<SyslogLevelT>><unknown>arg['level'];
 const httpServiceProxy = createServiceProxy({
     server: net.createServer(),
     workerCount: 2,
-    workersCheckingInterval: 1e4,
     workerURL: new URL('./http_service.js', import.meta.url)
 });
 httpServiceProxy.server.listen({ port: 3080, host: '127.0.0.1' });
@@ -22,7 +21,7 @@ const httpsServiceProxy = createServiceProxy({
     server: net.createServer(),
     minWorkers: 1e1,
     maxWorkers: 1e2,
-    workersCheckingInterval: 100,
+    workersCheckingInterval: 1e2,
     workerURL: new URL('./https_service.js', import.meta.url),
     workerOptions: { argv: process.argv.slice(2) }
 });
