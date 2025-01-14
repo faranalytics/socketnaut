@@ -309,8 +309,8 @@ Excerpted from [Semantic Versioning 2.0.0](https://semver.org/):
 
 Please ensure resources are available prior to running the test:
 - A Controller will attempt to bind to port 3000.
-- An HTTP Service Proxy will attempt to bind to port 3080.  
-- An HTTPS Service Proxy will attempt to bind to port 3443.
+- A Service Proxy for the HTTP Server will attempt to bind to port 3080.  
+- A Service Proxy for the HTTPS Server will attempt to bind to port 3443.
 
 #### Clone the repository.
 
