@@ -305,7 +305,12 @@ Excerpted from [Semantic Versioning 2.0.0](https://semver.org/):
 
 ## Test
 
-### Test a Socketnaut Service Instance 
+### Test a Socketnaut Service Instance
+
+Please ensure resources are available prior to running the test:
+- The Controller will attempt to bind to port 3000.
+- The HTTP Service Proxy will attempt to bind to port 3080.  
+- The HTTPS Service Proxy will attempt to bind to port 3443.
 
 #### Clone the repository.
 
