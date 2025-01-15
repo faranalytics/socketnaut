@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.6.5] - 2025-01-14
+### Changed
+- Improve documentation.
+- Organize logging components.
+
 ## [1.6.4] - 2025-01-14
 ### Changed
 - Refactor WorkerAgent.
