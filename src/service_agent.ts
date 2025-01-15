@@ -5,7 +5,7 @@ import * as threads from 'node:worker_threads';
 import { Agent } from 'port_agent';
 import { ProxySocketAddressInfo } from './types';
 import { Logger } from 'streams-logger';
-import { AgentHandler } from './agent_handler';
+import { AgentHandler } from './logging/agent_handler';
 
 threads.parentPort?.unref();
 

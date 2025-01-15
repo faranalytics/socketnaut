@@ -4,7 +4,7 @@ import { createServiceProxy, ServiceProxy, ServiceProxyOptions } from './service
 import { WorkerAgent } from './worker_agent.js';
 import { ProxySocketAddressInfo } from './types.js';
 import { SyslogLevel, SyslogLevel as Level } from 'streams-logger';
-import { log, logger, formatter, consoleHandler } from './logger.js';
+import { log, logger, formatter, consoleHandler } from './logging/logger.js';
 
 export {
     createServiceProxy,

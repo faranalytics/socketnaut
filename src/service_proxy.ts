@@ -3,7 +3,7 @@ import * as tls from 'node:tls';
 import { EventEmitter, once } from 'node:events';
 import * as threads from 'node:worker_threads';
 import { Logger, SyslogLevelT, LogContextOptions } from 'streams-logger';
-import { log, contextHandler } from './logger.js';
+import { log, contextHandler } from './logging/logger.js';
 import { WorkerAgent } from './worker_agent.js';
 import { ProxySocketAddressInfo } from './types.js';
 
