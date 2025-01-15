@@ -61,7 +61,7 @@ export class ServiceProxy extends EventEmitter {
             this.server.on('connection', this.tryAllocateThread.bind(this));
         }
         else {
-            this.log.error?.('The Service Proxy Server must be of type net.Server or tls.Server.');
+            this.log.error('The Service Proxy Server must be of type net.Server or tls.Server.');
         }
 
         this.server.on('listening', () => {
@@ -80,12 +80,12 @@ export class ServiceProxy extends EventEmitter {
     protected async tryAllocateThread(clientProxySocket: net.Socket): Promise<void> {
         clientProxySocket.pause();
         clientProxySocket.on('error', (err: Error) => {
-            this.log.error?.(`Client-Proxy socket error.  ${this.describeError(err)}.`);
+            this.log.error(`Client-Proxy socket error.  ${this.describeError(err)}.`);
         });
 
         if (clientProxySocket.closed) {
             const tuple = `${clientProxySocket.remoteAddress}:${clientProxySocket.remotePort}, ${clientProxySocket.localAddress}:${clientProxySocket.localPort}, ${clientProxySocket.localFamily}`;
-            this.log.debug?.(`The Client-Proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
+            this.log.debug(`The Client-Proxy socket ${tuple} closed prior to proxying the connection. Proxy: ${this.proxyAddressInfoRepr}.`);
             return;
         }
 
