@@ -336,7 +336,7 @@ npm install && npm update
 npm test
 ```
 
-Setting the `level` argument to `INFO` will display the connection distribution.
+Use the `level=INFO` argument to display the connection distribution.
 ```bash
 npm test level=INFO
 ```
