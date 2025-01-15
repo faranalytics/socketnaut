@@ -135,7 +135,7 @@ In the previous example, the TLS endpoint was in the worker thread; however, it 
 
 ## API
 
-### The `ServiceProxy` class.
+### The `ServiceProxy` Class
 
 #### socketnaut.createServiceProxy(options)
 
@@ -168,7 +168,7 @@ Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
 Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process does a clean exit (_this assumes there aren't any remaining refs_).  The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.  It will throw an `Error` if the `Server` is closed prior to being opened. 
 
 
-### The `ServiceAgent` class.
+### The `ServiceAgent` Class
 
 #### socketnaut.createServiceAgent(options)
 
@@ -191,7 +191,7 @@ The method returns a `Promise` that will resolve to an object that contains info
 
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
-### Relevant `ServiceProxy` constructor parameters.
+### Relevant `ServiceProxy` Constructor Parameters
 
 #### socketnaut.createServiceProxy(options)
 
@@ -268,7 +268,7 @@ import { Level } from 'socketnaut';
 agent.log.setLevel(Level.DEBUG);
 ```
 
-### Log to a File using a Rotating File Handler
+### Log to a File Using a Rotating File Handler
 
 Socketnaut's `Logger` may be configured however you choose.  You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph.  You can reference the Nodes by importing them from Socketnaut's index.  In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` are imported.
 ```ts
