@@ -12,7 +12,7 @@ Socketnaut can be used in order to scale the **main module** of web applications
 
 ### Features
 
-- Socketnaut requires 0 out-of-org dependencies.  Socketnaut's dependencies are published and maintained by the **FAR Analytics & Research** org:  
+- Socketnaut requires 0 out-of-org dependencies.  Socketnaut's dependencies are published and maintained by the FAR Analytics & Research org:  
     - [_Streams_ Logger](https://www.npmjs.com/package/streams-logger); a performant logger built from Node.js streams.
     - [Port Agent](https://www.npmjs.com/package/port_agent); an RPC-like facility for making inter-thread function calls.
 - The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; *you can configure them however you choose*.
