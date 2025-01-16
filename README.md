@@ -27,9 +27,9 @@ Socketnaut can be used in order to scale the **main module** of web applications
 - [Usage](#usage)
 - [Examples](#examples)
     - [_An Instance of Hello, World!_](#an-instance-of-hello-world-nodejs)
-    - [_Use Socketnaut to Scale the Main Module of a Fastify Web Application_](#use-socketnaut-to-scale-the-main-module-of-a-fastify-web-application-typescript)
-    - [_Use Socketnaut to Scale the Main Module of a Koa Web Application_](#use-socketnaut-to-scale-the-main-module-of-a-koa-web-application-typescript)
-    - [_Use Socketnaut to Scale the Main Module of an Express Web Application_](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-typescript)
+    - [_Use Socketnaut to Scale a Fastify Web Application_](#use-socketnaut-to-scale-a-fastify-web-application-typescript)
+    - [_Use Socketnaut to Scale a Koa Web Application_](#use-socketnaut-to-scale-a-koa-web-application-typescript)
+    - [_Use Socketnaut to Scale an Express Web Application_](#use-socketnaut-to-scale-an-express-web-application-typescript)
     - [_Redirect HTTP Connections to an HTTPS Server_](#redirect-http-connections-to-an-https-server-typescript)
     - [_A TLS Proxy and an HTTP Redirect_](#a-tls-proxy-and-an-http-redirect-typescript)
 - [API](#api)
@@ -113,15 +113,15 @@ const agent = createServiceAgent({ server });
 
 Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
-### _Use Socketnaut to Scale the Main Module of a Fastify Web Application_ <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to Scale a Fastify Web Application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
-### _Use Socketnaut to Scale the Main Module of a Koa Web Application_ <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to Scale a Koa Web Application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
-### _Use Socketnaut to Scale the Main Module of an Express Web Application_ <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to Scale an Express Web Application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
