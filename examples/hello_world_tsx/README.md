@@ -1,4 +1,4 @@
-# *An instance of Hello, World! using the TypeScript Execute Loader*
+# *An Instance of Hello, World! Using the TypeScript Execute Loader*
 
 ## Introduction
 
