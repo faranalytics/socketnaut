@@ -1,4 +1,4 @@
-# *An instance of Hello, World!*
+# *An Instance of Hello, World!*
 
 ## Introduction
 

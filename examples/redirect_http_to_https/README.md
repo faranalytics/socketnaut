@@ -1,4 +1,4 @@
-# *Redirect HTTP connections to an HTTPS server.*
+# *Redirect HTTP Connections to an HTTPS Server*
 
 ## Introduction
 

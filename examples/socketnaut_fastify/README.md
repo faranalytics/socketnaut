@@ -1,4 +1,4 @@
-# *Use Socketnaut to scale the main module of a Fastify web application.*
+# *Use Socketnaut to Scale a Fastify Web Application*
 
 ## Introduction
 

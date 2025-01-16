@@ -1,4 +1,4 @@
-# *Use Socketnaut to scale the main module of a Koa web application.*
+# *Use Socketnaut to Scale a Koa Web Application*
 
 ## Introduction
 

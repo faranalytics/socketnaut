@@ -1,4 +1,4 @@
-# *Use Socketnaut to scale the main module of an Express web application.*
+# *Use Socketnaut to Scale an Express Web Application*
 
 ## Introduction
 
