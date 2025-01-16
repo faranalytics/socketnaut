@@ -12,7 +12,7 @@ Socketnaut can be used in order to scale the **main module** of web applications
 
 ### Features
 
-- **Socketnaut requires 0 out-of-org dependencies**.  Socketnaut's dependencies are published and maintained by the **FAR Analytics & Research** org:  
+- Socketnaut requires 0 out-of-org dependencies.  Socketnaut's dependencies are published and maintained by the **FAR Analytics & Research** org:  
     - [_Streams_ Logger](https://www.npmjs.com/package/streams-logger); a performant logger built from Node.js streams.
     - [Port Agent](https://www.npmjs.com/package/port_agent); an RPC-like facility for making inter-thread function calls.
 - The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; *you can configure them however you choose*.
@@ -26,17 +26,17 @@ Socketnaut can be used in order to scale the **main module** of web applications
     - [Service Agent](#service-agent)
 - [Usage](#usage)
 - [Examples](#examples)
-    - [*An instance of Hello, World!*](#an-instance-of-hello-world-nodejs)
-    - [*Use Socketnaut to scale the main module of a Fastify web application.*](#use-socketnaut-to-scale-the-main-module-of-a-fastify-web-application-typescript)
-    - [*Use Socketnaut to scale the main module of a Koa web application.*](#use-socketnaut-to-scale-the-main-module-of-a-koa-web-application-typescript)
-    - [*Use Socketnaut to scale the main module of an Express web application.*](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-typescript)
-    - [*Redirect HTTP connections to an HTTPS server.*](#redirect-http-connections-to-an-https-server-typescript)
-    - [*A TLS Proxy and an HTTP Redirect.*](#a-tls-proxy-and-an-http-redirect-typescript)
+    - [_An Instance of Hello, World!_](#an-instance-of-hello-world-nodejs)
+    - [_Use Socketnaut to Scale the Main Module of a Fastify Web Application_](#use-socketnaut-to-scale-the-main-module-of-a-fastify-web-application-typescript)
+    - [_Use Socketnaut to Scale the Main Module of a Koa Web Application_](#use-socketnaut-to-scale-the-main-module-of-a-koa-web-application-typescript)
+    - [_Use Socketnaut to Scale the Main Module of an Express Web Application_](#use-socketnaut-to-scale-the-main-module-of-an-express-web-application-typescript)
+    - [_Redirect HTTP Connections to an HTTPS Server_](#redirect-http-connections-to-an-https-server-typescript)
+    - [_A TLS Proxy and an HTTP Redirect_](#a-tls-proxy-and-an-http-redirect-typescript)
 - [API](#api)
-    - [The ServiceProxy class.](#the-serviceproxy-class)
-    - [The ServiceAgent class.](#the-serviceagent-class)
+    - [The ServiceProxy Class](#the-serviceproxy-class)
+    - [The ServiceAgent Class](#the-serviceagent-class)
 - [Tuning Strategies](#tuning-strategies)
-    - [Relevant ServiceProxy constructor parameters.](#relevant-serviceproxy-constructor-parameters)
+    - [Relevant ServiceProxy Constructor Parameters](#relevant-serviceproxy-constructor-parameters)
 - [Client-Proxy Socket Remote Address and Port](#client-proxy-socket-remote-address-and-port)
 - [Logging](#logging)
 - [Versioning](#versioning)
@@ -109,35 +109,35 @@ const agent = createServiceAgent({ server });
 
 ## Examples
 
-### *An instance of Hello, World!* <sup><sup>\</Node.js\></sup></sup>
+### _An Instance of Hello, World!_ <sup><sup>\</Node.js\></sup></sup>
 
 Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
-### *Use Socketnaut to scale the main module of a Fastify web application.* <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to Scale the Main Module of a Fastify Web Application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
-### *Use Socketnaut to scale the main module of a Koa web application.* <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to Scale the Main Module of a Koa Web Application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
-### *Use Socketnaut to scale the main module of an Express web application.* <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to Scale the Main Module of an Express Web Application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
-### *Redirect HTTP connections to an HTTPS server.* <sup><sup>\</TypeScript\></sup></sup>
+### _Redirect HTTP Connections to an HTTPS Server_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/socketnaut/tree/main/examples/redirect_http_to_https) for a working implementation.
 
-### *A TLS Proxy and an HTTP Redirect.* <sup><sup>\</TypeScript\></sup></sup>
+### _A TLS Proxy and an HTTP Redirect_ <sup><sup>\</TypeScript\></sup></sup>
 
 In the previous example, the TLS endpoint was in the worker thread; however, it doesn't need to be. Alternatively, TLS can be handled by the proxy server. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
 
 ## API
 
-### The `ServiceProxy` Class
+### The ServiceProxy Class
 
-#### socketnaut.createServiceProxy(options)
+**socketnaut.createServiceProxy(options)**
 
 - options `<ServiceProxyOptions>`
 
@@ -167,10 +167,9 @@ Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
 
 Performs a graceful shutdown.  The `Server` is closed.  Event listeners are removed.  Worker threads are terminated asynchronously.  The process does a clean exit (_this assumes there aren't any remaining refs_).  The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread.  It will throw an `Error` if the `Server` is closed prior to being opened. 
 
+### The ServiceAgent Class
 
-### The `ServiceAgent` Class
-
-#### socketnaut.createServiceAgent(options)
+**socketnaut.createServiceAgent(options)**
 
 - options `<ServiceAgentOptions>`
 
