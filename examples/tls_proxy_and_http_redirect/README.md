@@ -1,4 +1,4 @@
-# *A TLS Proxy and an HTTP Redirect.*
+# *A TLS Proxy and an HTTP Redirect*
 
 ## Introduction
 
