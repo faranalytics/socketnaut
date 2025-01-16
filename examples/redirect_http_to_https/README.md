@@ -1,6 +1,10 @@
 # *Redirect HTTP connections to an HTTPS server.*
 
+## Introduction
+
 In this example you will create an HTTP Service and a HTTPS Service.  The HTTP server will redirect all requests to the HTTPS server.
+
+## Implementation
 
 `index.ts`
 

@@ -1,6 +1,10 @@
 # *Use Socketnaut to scale the main module of a Koa web application.*
 
+## Introduction
+
 In this example you will use Socketnaut to scale the main module of a Koa web application.  The `ServiceProxy` is configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
+
+## Implementation
 
 `index.js`
 

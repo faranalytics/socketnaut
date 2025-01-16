@@ -1,8 +1,12 @@
 # *A TLS Proxy and an HTTP Redirect.*
 
-In this advanced example you will create an HTTP Service that redirects to a Service that consists of a TLS proxy that manages a pool of HTTP servers.
+## Introduction
 
-The proxy is a TLS server.
+In this advanced example the proxy is a TLS server.  You will create two services: 
+- An HTTP Service that redirects to a secure TLS Service
+- A secure TLS Service that manages a pool of HTTP servers
+
+## Implementation
 
 `index.ts`
 ```ts
