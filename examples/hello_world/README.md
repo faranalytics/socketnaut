@@ -83,7 +83,7 @@ Run the application.
 npm start
 ```
 
-#### Test the HTTP redirect from the command line.
+#### Test the Service from the command line.
 
 In another shell send 1000 requests to the endpoint.
 
