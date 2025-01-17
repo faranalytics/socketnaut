@@ -1,58 +1,64 @@
-# *Redirect HTTP Connections to an HTTPS Server*
+# _Redirect HTTP Connections to an HTTPS Server_
 
 ## Introduction
 
-In this example you will create an HTTP Service and a HTTPS Service.  The HTTP server will redirect all requests to the HTTPS server.
+In this example you will create an HTTP Service and a HTTPS Service. The HTTP server will redirect all requests to the HTTPS server.
 
 ## Implementation
 
 `index.ts`
 
-This is the main thread.  A `ServiceProxy` is instantiated for each of the HTTP and HTTPS servers.
+This is the main thread. A `ServiceProxy` is instantiated for each of the HTTP and HTTPS servers.
+
 ```ts
-import * as net from 'node:net';
-import { createServiceProxy, Level } from 'socketnaut';
+import * as net from "node:net";
+import { createServiceProxy, Level } from "socketnaut";
 
 const http_proxy = createServiceProxy({
-    server: net.createServer(), // Configure this TCP Server however you choose.
-    minWorkers: 4,
-    maxWorkers: 42,
-    workerURL: new URL('./http_server.js', import.meta.url)
+  server: net.createServer(), // Configure this TCP Server however you choose.
+  minWorkers: 4,
+  maxWorkers: 42,
+  workerURL: new URL("./http_server.js", import.meta.url),
 });
 
 http_proxy.log.setLevel(Level.DEBUG);
 
-http_proxy.server.listen({ port: 3080, host: '0.0.0.0' });
+http_proxy.server.listen({ port: 3080, host: "0.0.0.0" });
 
 const https_proxy = createServiceProxy({
-    server: net.createServer(), // Configure this TCP Server however you choose.
-    minWorkers: 4,
-    maxWorkers: 42,
-    workerURL: new URL('./https_server.js', import.meta.url)
+  server: net.createServer(), // Configure this TCP Server however you choose.
+  minWorkers: 4,
+  maxWorkers: 42,
+  workerURL: new URL("./https_server.js", import.meta.url),
 });
 
-https_proxy.server.listen({ port: 3443, host: '0.0.0.0' });
+https_proxy.server.listen({ port: 3443, host: "0.0.0.0" });
 ```
 
 `http_server.ts`
 
-The HTTP server will redirect requests to the HTTPS server listening on port 3443. 
+The HTTP server will redirect requests to the HTTPS server listening on port 3443.
+
 ```ts
-import * as http from 'node:http';
-import { Level, createServiceAgent } from 'socketnaut';
+import * as http from "node:http";
+import { Level, createServiceAgent } from "socketnaut";
 
 const server = http.createServer(); // Configure this HTTP server however you choose.
 
-server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: "127.0.0.1" });
 // Specifying port 0 here will cause the Server to listen on a random port.
 // Socketnaut will communicate the random port number to the ServiceProxy.
 
-server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
-    if (req.url) {
-        const url = new URL(req.url, `http://${req.headers.host}`);
-        res.writeHead(301, { 'location': `https://${url.hostname}:3443${url.pathname}` }).end();
-        console.log(`Request: ${url}`);
-    }
+server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
+  if (req.url) {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    res
+      .writeHead(301, {
+        location: `https://${url.hostname}:3443${url.pathname}`,
+      })
+      .end();
+    console.log(`Request: ${url}`);
+  }
 });
 
 const agent = createServiceAgent({ server });
@@ -61,65 +67,68 @@ const agent = createServiceAgent({ server });
 `https_server.ts`
 
 The HTTPS server endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request and returns the string "Hello, World!".
+
 ```ts
-import * as http from 'node:http';
-import * as https from 'node:https';
-import * as fs from 'fs';
-import { Level, createServiceAgent } from 'socketnaut';
-import { CERT_PATH, KEY_PATH } from './paths.js';
+import * as http from "node:http";
+import * as https from "node:https";
+import * as fs from "fs";
+import { Level, createServiceAgent } from "socketnaut";
+import { CERT_PATH, KEY_PATH } from "./paths.js";
 
 const server = https.createServer({
-    key: fs.readFileSync(KEY_PATH),
-    cert: fs.readFileSync(CERT_PATH)
+  key: fs.readFileSync(KEY_PATH),
+  cert: fs.readFileSync(CERT_PATH),
 }); // Configure this HTTPS server however you choose.
 
-server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
-    for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
-    res.end('Hello, World!');
+server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
+  for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
+  res.end("Hello, World!");
 });
 
-server.listen({ port: 0, host: '127.0.0.1' });
+server.listen({ port: 0, host: "127.0.0.1" });
 // Specifying port 0 here will cause the Server to listen on a random port.
 // The Socketnaut Agent will communicate the randomly selected port to the ServiceProxy.
 
 const agent = createServiceAgent({ server });
 ```
 
-## Requirements
+## Run the Example
+
+### Requirements
 
 Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.
 
-## Run the Example
-
 ### Instructions
 
-#### Clone the Socketnaut repo.
+#### Clone the repository and run the example.
+
+Clone the Socketnaut repo.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-#### Change directory into the relevant example directory.
+Change directory into the relevant example directory.
 
 ```bash
 cd socketnaut/examples/redirect_http_to_https
 ```
 
-#### Install the example dependencies.
+Install the example dependencies.
 
 ```bash
 npm install && npm update
 ```
 
-#### Build the TypeScript application.
+Build the TypeScript application.
 
 ```bash
 npm run clean:build
 ```
 
-#### Specify a `key.pem` and `cert.pem`.
+Specify a `key.pem` and `cert.pem`.
 
-The HTTPS server is configured to read a `key.pem` and `cert.pem` from the `./ssl/` directory.  However, you can configure it however you choose.
+The HTTPS server is configured to read a `key.pem` and `cert.pem` from the `./ssl/` directory. However, you can configure it however you choose.
 
 `https_server.ts`
 
@@ -132,12 +141,14 @@ const server = https.createServer(
     });
 ...
 ```
+
 Alternatively, if you have `openssl` installed, you can generate the credentials using the `prep` script.
+
 ```bash
 npm run prep
-``` 
+```
 
-#### Run the application.
+Run the application.
 
 ```bash
 npm start
@@ -145,21 +156,24 @@ npm start
 
 #### Test the HTTP redirect using your browser.
 
-If you're using the self-signed certificate generated by the `prep` script you will see a warning.  If you're using your domain's certificate, adjust the domain name accordingly.
+If you're using the self-signed certificate generated by the `prep` script you will see a warning. If you're using your domain's certificate, adjust the domain name accordingly.
+
 ```bash
 http://localhost:3080
 ```
 
-#### In another shell send 1000 requests to the HTTP endpoint.
+#### Test the HTTP redirect from the command line.
 
-If you're using your domain's certificate, adjust the domain name accordingly.
+In another shell send 1000 requests to the HTTP endpoint. If you're using your domain's certificate, adjust the domain name accordingly.
+
 ```bash
-time for fun in {1..1000}; do echo "http://localhost:3080"; done | xargs -n1 -P1000 curl -k -L 
+time for fun in {1..1000}; do echo "http://localhost:3080"; done | xargs -n1 -P1000 curl -k -L
 ```
 
-##### Output
+#### Output
 
 One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `https_server.ts` module for detail.
+
 ```bash
 real    0m12.281s
 user    0m16.016s
