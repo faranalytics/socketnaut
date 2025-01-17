@@ -349,6 +349,6 @@ npm test level=INFO
 
 ## Support
 
-If you have a feature request or if something isn't working for you, please submit an [issue](https://github.com/faranalytics/socketnaut/issues) or start a [discussion](https://github.com/faranalytics/socketnaut/discussions).  You are also welcome to reach out to one of the authors directly:
+If you have a feature request or run into any issues, feel free to submit an [issue](https://github.com/faranalytics/socketnaut/issues) or start a [discussion](https://github.com/faranalytics/socketnaut/discussions). You’re also welcome to reach out directly to one of the authors at any time.
 
 - [Adam Patterson](https://github.com/adamjpatterson)
