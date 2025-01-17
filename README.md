@@ -155,7 +155,7 @@ In the previous example, the TLS endpoint was in the worker thread; however, it 
 
   - `workerURL` `<string>` or `<URL>` The URL or path to the `.js` module file that contains the `ServiceAgent` instance. This is the module that will be scaled according to the values specified for `minWorkers` and `maxWorkers`. Please see the [Examples](#examples) section for how to specify the proxy's `ServiceAgent` module.
 
-- Returns: `<socketnaut.ServiceProxy>`
+Returns: `<socketnaut.ServiceProxy>`
 
 Creates a `ServiceProxy`. Each process may contain any number of ServiceProxys. However, all ServiceProxys run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
@@ -163,7 +163,7 @@ Creates a `ServiceProxy`. Each process may contain any number of ServiceProxys. 
 
 _public_ **serviceProxy.shutdown()**
 
-- Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
+Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
 
 Performs a graceful shutdown. The `Server` is closed. Event listeners are removed. Worker threads are terminated asynchronously. The process does a clean exit (_this assumes there aren't any remaining refs_). The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread. It will throw an `Error` if the `Server` is closed prior to being opened.
 
@@ -175,7 +175,7 @@ Performs a graceful shutdown. The `Server` is closed. Event listeners are remove
 
   - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` or `<node:tls.Server>` A native Node.js `Server` configured however you choose.
 
-- Returns: `<socketnaut.ServiceAgent>`
+Returns: `<socketnaut.ServiceAgent>`
 
 Creates a `ServiceAgent`. Just one `ServiceAgent` may be instantiated for each worker; hence, this function will throw an `Error` if it is called more than once in a module.
 
@@ -183,7 +183,7 @@ _public_ **serviceAgent.requestProxySocketAddressInfo(socket)**
 
 - `socket` `<net.Socket>` The socket associated with the `http.IncomingMessage` i.e., `http.IncomingMessage.socket`.
 
-- Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
+Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
 The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port).
 
