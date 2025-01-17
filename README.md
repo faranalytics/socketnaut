@@ -30,7 +30,7 @@ Socketnaut can be used in order to scale the **main module** of web applications
 - [Logging](#logging)
 - [Versioning](#versioning)
 - [Test](#test)
-- [Help](#help)
+- [Support](#support)
 
 ## Installation
 
@@ -347,7 +347,7 @@ Use the `level=INFO` argument to display the connection distribution.
 npm test level=INFO
 ```
 
-## Help
+## Support
 
 If you have a feature request or if something isn't working for you, please submit an [issue](https://github.com/faranalytics/socketnaut/issues) or start a [discussion](https://github.com/faranalytics/socketnaut/discussions).  You are also welcome to reach out to one of the authors directly:
 
