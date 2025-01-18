@@ -56,7 +56,7 @@ This simple "Hello, World!" app is a complete Socketnaut Service. **You're looki
 
 Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
-### Implement the `index.js` module
+### Implement the index.js module
 
 #### Import the dependencies and create a Service Proxy.
 
@@ -77,7 +77,7 @@ const proxy = createServiceProxy({
 });
 ```
 
-### Implement the `http_server.js` module
+### Implement the http_server.js module
 
 #### Import the dependencies, implement the application, and create a Service Agent.
 
