@@ -56,7 +56,9 @@ This simple "Hello, World!" app is a complete Socketnaut Service. **You're looki
 
 Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
-`index.js`
+### Implement the `index.js` module
+
+#### Import the dependencies and create a Service Proxy.
 
 This is the main thread.
 
@@ -75,7 +77,9 @@ const proxy = createServiceProxy({
 });
 ```
 
-`http_server.js`
+### Implement the `http_server.js` module
+
+#### Import the dependencies, implement the application, and create a Service Agent.
 
 This is the scaled application.
 
@@ -99,33 +103,33 @@ const agent = createServiceAgent({ server });
 
 ## Examples
 
-### _An Instance of Hello, World!_ <sup><sup>\</Node.js\></sup></sup>
+### _An instance of Hello, World!_ <sup><sup>\</Node.js\></sup></sup>
 
 Please see the [Hello, World! example](https://github.com/faranalytics/socketnaut/tree/main/examples/hello_world) for a working implementation.
 
-### _Use Socketnaut to Scale a Fastify Web Application_ <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to scale a Fastify web application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Fastify example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_fastify) for a working implementation.
 
-### _Use Socketnaut to Scale a Koa Web Application_ <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to scale a Koa web application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Koa example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_koa) for a working implementation.
 
-### _Use Socketnaut to Scale an Express Web Application_ <sup><sup>\</TypeScript\></sup></sup>
+### _Use Socketnaut to scale an Express web application_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Express example](https://github.com/faranalytics/socketnaut/tree/main/examples/socketnaut_express) for a working implementation.
 
-### _Redirect HTTP Connections to an HTTPS Server_ <sup><sup>\</TypeScript\></sup></sup>
+### _Redirect HTTP connections to an HTTPS server_ <sup><sup>\</TypeScript\></sup></sup>
 
 Please see the [Redirect HTTP to HTTPS example](https://github.com/faranalytics/socketnaut/tree/main/examples/redirect_http_to_https) for a working implementation.
 
-### _A TLS Proxy and an HTTP Redirect_ <sup><sup>\</TypeScript\></sup></sup>
+### _A TLS proxy and an HTTP redirect_ <sup><sup>\</TypeScript\></sup></sup>
 
 In the previous example, the TLS endpoint was in the worker thread; however, it doesn't need to be. Alternatively, TLS can be handled by the proxy server. Please see the [A TLS Proxy and an HTTP Redirect example](https://github.com/faranalytics/socketnaut/tree/main/examples/tls_proxy_and_http_redirect) for a working implementation.
 
 ## API
 
-### The ServiceProxy Class
+### The ServiceProxy class
 
 #### socketnaut.createServiceProxy(options)
 
@@ -149,7 +153,7 @@ Returns: `<socketnaut.ServiceProxy>`
 
 Creates a `ServiceProxy`. Each process may contain any number of ServiceProxys. However, all ServiceProxys run in the main thread; hence, the number of instances created in each process should be considered carefully.
 
-**Event: 'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its worker threads.
+Event: **'ready'** The `'ready'` event is emitted when the `ServiceProxy` has spawned its worker threads.
 
 _public_ **serviceProxy.shutdown()**
 
@@ -157,7 +161,7 @@ Returns: `<Promise<Array<PromiseSettledResult<unknown>>>>`
 
 Performs a graceful shutdown. The `Server` is closed. Event listeners are removed. Worker threads are terminated asynchronously. The process does a clean exit (_this assumes there aren't any remaining refs_). The method returns a `Promise` that will resolve to an `Array` of `PromiseSettledResult`, where each element reflects the exit status of each worker thread. It will throw an `Error` if the `Server` is closed prior to being opened.
 
-### The ServiceAgent Class
+### The ServiceAgent class
 
 #### socketnaut.createServiceAgent(options)
 
@@ -181,7 +185,7 @@ The method returns a `Promise` that will resolve to an object that contains info
 
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
-### Relevant `ServiceProxy` Constructor Parameters
+### Relevant `ServiceProxy` constructor parameters
 
 #### socketnaut.createServiceProxy(options)
 
@@ -242,11 +246,11 @@ The information returned by the `ServiceAgent.requestProxySocketAddressInfo` met
 
 By default Socketnaut logs to the console using the performant [_Streams_ Logger](https://github.com/faranalytics/streams-logger).
 
-### Changing the Log Level
+### Changing the log level
 
 You can set the log level on the `Logger` itself to a syslog logging level using the `log.setLevel` method. The default log `Level` is `INFO`.
 
-#### Set the Service Proxy's log Level to DEBUG.
+#### Set the Service Proxy's log level to DEBUG.
 
 `index.js`
 
@@ -256,7 +260,7 @@ import { Level } from 'socketnaut';
 proxy.log.setLevel(Level.DEBUG);
 ```
 
-#### Set the Service Agent's log Level to DEBUG.
+#### Set the Service Agent's log level to DEBUG.
 
 `http_server.js`
 
@@ -266,7 +270,7 @@ import { Level } from 'socketnaut';
 agent.log.setLevel(Level.DEBUG);
 ```
 
-### Log to a File Using a Rotating File Handler
+### Log to a File using a rotating file handler
 
 Socketnaut's `Logger` may be configured however you choose. You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph. You can reference the Nodes by importing them from Socketnaut's index. In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` are imported.
 
@@ -315,33 +319,33 @@ Excerpted from [Semantic Versioning 2.0.0](https://semver.org/):
 - A Service Proxy for the HTTPS Server will attempt to bind to port 3443.
 - The test script will use `openssl` in order to generate a certificate and key.
 
-### Instructions
+### Run the test
 
-Clone the repository.
+#### Clone the repository.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-Change directory into the root of the repository.
+#### Change directory into the root of the repository.
 
 ```bash
 cd socketnaut
 ```
 
-Install dependencies.
+#### Install dependencies.
 
 ```bash
 npm install && npm update
 ```
 
-Run the test.
+#### Run the test.
 
 ```bash
 npm test
 ```
 
-Use the `level=INFO` argument to display the connection distribution.
+#### Use the `level=INFO` argument to display the connection distribution.
 
 ```bash
 npm test level=INFO
