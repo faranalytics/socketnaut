@@ -185,7 +185,7 @@ The method returns a `Promise` that will resolve to an object that contains info
 
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
-### Relevant `ServiceProxy` constructor parameters
+### Relevant ServiceProxy constructor parameters
 
 #### socketnaut.createServiceProxy(options)
 
