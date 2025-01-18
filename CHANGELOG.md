@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.8] - 2025-01-18
+### Changed
+- Improve documentation.
+
 ## [1.6.7] - 2025-01-17
 ### Changed
 - Improve documentation.
