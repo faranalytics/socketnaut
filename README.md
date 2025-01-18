@@ -270,7 +270,7 @@ import { Level } from 'socketnaut';
 agent.log.setLevel(Level.DEBUG);
 ```
 
-### Log to a File using a rotating file handler
+### Log to a file using a rotating file handler
 
 Socketnaut's `Logger` may be configured however you choose. You can `connect` or `disconnect` _Streams_ logging Nodes from the logging graph. You can reference the Nodes by importing them from Socketnaut's index. In this example Socketnaut's `Logger`, `Formatter`, and `ConsoleHandler` are imported.
 
@@ -345,7 +345,7 @@ npm install && npm update
 npm test
 ```
 
-#### Use the `level=INFO` argument to display the connection distribution.
+Use the `level=INFO` argument to display the connection distribution.
 
 ```bash
 npm test level=INFO
