@@ -4,13 +4,13 @@
 
 In this example you will use Socketnaut to scale a Hello, World! server. The `ServiceProxy` is configured to start up 42 `http_server.js` workers.
 
-The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
+## Implement the example
 
-## Implementation
-
-`index.js`
+### Implement the `index.js` module
 
 This is the main thread.
+
+#### Import the depedencies and implement the Service Proxy.
 
 ```js
 import * as net from "node:net";
@@ -27,9 +27,11 @@ const proxy = createServiceProxy({
 });
 ```
 
-`http_server.js`
+### Implement the `http_server.js` module
 
-This is your scaled application. The endpoint i.e., /, runs a for loop that blocks for 100ms on each request.
+This is your scaled application. The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
+
+#### Import the dependencies, implement the application, and create a Service Agent.
 
 ```js
 import * as http from "node:http";
@@ -49,35 +51,33 @@ server.listen({ port: 0, host: "127.0.0.1" });
 const agent = createServiceAgent({ server });
 ```
 
-## Run the Example
+## Run the example
 
 ### Requirements
 
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.
+- The `net.Server` will attempt to bind to `localhost:3080`.
 
-### Instructions
+### How to run the example
 
-#### Clone the repository and run the example.
-
-Clone the Socketnaut repo.
+#### Clone the Socketnaut repository.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-Change directory into the relevant example directory.
+#### Change directory into the relevant example directory.
 
 ```bash
 cd socketnaut/examples/hello_world
 ```
 
-Install the example dependencies.
+#### Install the example dependencies.
 
 ```bash
 npm install && npm update
 ```
 
-Run the application.
+#### Run the application.
 
 ```bash
 npm start
@@ -91,7 +91,7 @@ In another shell send 1000 requests to the endpoint.
 time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl
 ```
 
-#### Output
+##### Output
 
 One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `http_server.js` module for detail.
 

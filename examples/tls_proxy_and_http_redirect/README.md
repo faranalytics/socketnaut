@@ -7,9 +7,9 @@ In this advanced example the proxy is a TLS server. You will create two services
 - An HTTP Service that redirects to a secure TLS Service
 - A secure TLS Service that manages a pool of HTTP servers
 
-## Implementation
+## Implement the example
 
-`index.ts`
+### Implement the `index.ts` module
 
 ```ts
 ...
@@ -31,9 +31,9 @@ const tlsProxy = createServiceProxy({
 ...
 ```
 
-The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request, logs the proxy socket tuple, and echoes the message body.
+### Implement the `service.ts` module
 
-`service.ts`
+The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request, logs the proxy socket tuple, and echoes the message body.
 
 ```js
 import * as http from "node:http";
@@ -60,41 +60,40 @@ server.on(
 );
 ```
 
-## Run the Example
+## Run the example
 
 ### Requirements
 
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.
+- The `net.Server` will attempt to bind to `0.0.0.0:3080`
+- The `tls.Server` will attempt to bind to `0.0.0.0:3443`
 
-### Instructions
+### How to run the example
 
-#### Clone the repository and run the example.
-
-Clone the Socketnaut repo.
+#### Clone the Socketnaut repository.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-Change directory into the relevant example directory.
+#### Change directory into the relevant example directory.
 
 ```bash
 cd socketnaut/examples/tls_proxy_and_http_redirect
 ```
 
-Install the example dependencies.
+#### Install the example dependencies.
 
 ```bash
 npm install && npm update
 ```
 
-Build the TypeScript application.
+#### Build the TypeScript application.
 
 ```bash
 npm run clean:build
 ```
 
-Specify a `key.pem` and `cert.pem`.
+#### Specify a `key.pem` and `cert.pem`.
 
 The HTTPS server is configured to read a `key.pem` and `cert.pem` from the `./ssl/` directory. However, you can configure it however you choose.
 
@@ -115,7 +114,7 @@ Alternatively, if you have `openssl` installed, you can generate the credentials
 npm run prep
 ```
 
-Run the application.
+#### Run the application.
 
 ```bash
 npm start
@@ -137,7 +136,7 @@ In another shell send 1000 requests to the HTTP endpoint. If you're using your d
 time for fun in {1..1000}; do echo "http://localhost:3080"; done | xargs -n1 -P1000 curl -k -L
 ```
 
-#### Output
+##### Output
 
 One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `service.ts` module for detail.
 

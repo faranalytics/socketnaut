@@ -4,9 +4,9 @@
 
 In this example you will use Socketnaut to scale the main module of a Koa web application. The `ServiceProxy` is configured to start up 4 `http_server.js` workers and scale up to 42 workers on demand.
 
-## Implementation
+## Implement the example
 
-`index.js`
+### Implement the `index.js` module
 
 This is the main thread.
 
@@ -28,7 +28,7 @@ const proxy = createServiceProxy({
 proxy.log.setLevel(Level.DEBUG);
 ```
 
-`http_server.js`
+### Implement the `http_server.js` module
 
 This is your scaled application. The endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request.
 
@@ -50,35 +50,33 @@ app.use(async (ctx) => {
 });
 ```
 
-## Run the Example
+## Run the example
 
 ### Requirements
 
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` for this example to work.
+- The `net.Server` will attempt to bind to `0.0.0.0:3080`
 
-### Instructions
+### How to run the example
 
-#### Clone the repository and run the example.
-
-Clone the Socketnaut repo.
+#### Clone the Socketnaut repository.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-Change directory into the relevant example directory.
+#### Change directory into the relevant example directory.
 
 ```bash
 cd socketnaut/examples/socketnaut_koa
 ```
 
-Install the example dependencies.
+#### Install the example dependencies.
 
 ```bash
 npm install && npm update
 ```
 
-Run the application. The `start` script will run the `index.js` module.
+#### Run the application. The `start` script will run the `index.js` module.
 
 ```bash
 npm start
@@ -92,7 +90,7 @@ In another shell send 1000 requests to the endpoint.
 time for fun in {1..1000}; do echo "http://0.0.0.0:3080"; done | xargs -n1 -P1000 curl
 ```
 
-#### Output
+##### Output
 
 One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `http_server.js` module for detail.
 

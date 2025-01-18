@@ -4,9 +4,9 @@
 
 In this example you will create an HTTP Service and a HTTPS Service. The HTTP server will redirect all requests to the HTTPS server.
 
-## Implementation
+## Implement the example
 
-`index.ts`
+### Implement the `index.ts` module
 
 This is the main thread. A `ServiceProxy` is instantiated for each of the HTTP and HTTPS servers.
 
@@ -35,7 +35,7 @@ const https_proxy = createServiceProxy({
 https_proxy.server.listen({ port: 3443, host: "0.0.0.0" });
 ```
 
-`http_server.ts`
+### Implement the `http_server.ts` module
 
 The HTTP server will redirect requests to the HTTPS server listening on port 3443.
 
@@ -64,7 +64,7 @@ server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
 const agent = createServiceAgent({ server });
 ```
 
-`https_server.ts`
+### Implement the `https_server.ts` module
 
 The HTTPS server endpoint i.e., `/`, runs a for loop that blocks for 100ms on each request and returns the string "Hello, World!".
 
@@ -96,37 +96,36 @@ const agent = createServiceAgent({ server });
 
 ### Requirements
 
-Please make sure your firewall is configured to allow connections on `0.0.0.0:3080` and `0.0.0.0:3443` for this example to work.
+- The `net.Server` will attempt to bind to `0.0.0.0:3080`
+- The `tls.Server` will attempt to bind to `0.0.0.0:3443`
 
-### Instructions
+### How to run the example
 
-#### Clone the repository and run the example.
-
-Clone the Socketnaut repo.
+#### Clone the Socketnaut repository.
 
 ```bash
 git clone https://github.com/faranalytics/socketnaut.git
 ```
 
-Change directory into the relevant example directory.
+#### Change directory into the relevant example directory.
 
 ```bash
 cd socketnaut/examples/redirect_http_to_https
 ```
 
-Install the example dependencies.
+#### Install the example dependencies.
 
 ```bash
 npm install && npm update
 ```
 
-Build the TypeScript application.
+#### Build the TypeScript application.
 
 ```bash
 npm run clean:build
 ```
 
-Specify a `key.pem` and `cert.pem`.
+#### Specify a `key.pem` and `cert.pem`.
 
 The HTTPS server is configured to read a `key.pem` and `cert.pem` from the `./ssl/` directory. However, you can configure it however you choose.
 
@@ -148,7 +147,7 @@ Alternatively, if you have `openssl` installed, you can generate the credentials
 npm run prep
 ```
 
-Run the application.
+#### Run the application.
 
 ```bash
 npm start
@@ -170,7 +169,7 @@ In another shell send 1000 requests to the HTTP endpoint. If you're using your d
 time for fun in {1..1000}; do echo "http://localhost:3080"; done | xargs -n1 -P1000 curl -k -L
 ```
 
-#### Output
+##### Output
 
 One thousand concurrent requests were processed; each request blocked for 100ms. Please see the `https_server.ts` module for detail.
 
