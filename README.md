@@ -18,7 +18,7 @@ Socketnaut can be used in order to scale the **main module** of web applications
 - The Socketnaut `ServiceProxy` and `ServiceAgent` constructors consume native Node [`net.Server`](https://nodejs.org/api/net.html#class-netserver), [`http.Server`](https://nodejs.org/api/http.html#class-httpserver), [`https.Server`](https://nodejs.org/api/https.html#class-httpsserver), and [`tls.Server`](https://nodejs.org/api/tls.html#class-tlsserver) instances; _you can configure them however you choose_.
 - Import Socketnaut as a Node.js module (see the [Hello, World!](#an-instance-of-hello-world-nodejs) example) or take advantage of the packaged type definitions and import it into your TypeScript project.
 
-## Table of Contents
+## Table of contents
 
 - [Installation](#installation)
 - [Concepts](#concepts)
@@ -181,7 +181,7 @@ Returns: `<Promise<socketnaut.ProxySocketAddressInfo>>`
 
 The method returns a `Promise` that will resolve to an object that contains information that describes the proxy's socket tuple (i.e., in most cases this will contain the client's IP address and port).
 
-## Tuning Strategies
+## Tuning strategies
 
 Scaling can be tuned by specifying a minimum and maximum, or a specific number, of allocated worker threads to be spawned.
 
@@ -209,7 +209,7 @@ The `workerCount` argument sets the number of worker threads to be spawned when 
 
 By variously specifying `minWorkers`, `maxWorkers`, and `workersCheckingInterval`, or `workerCount`, you can tune Socketnaut according to the requirements of your environment.
 
-## Client-Proxy Socket Remote Address and Port
+## Client-Proxy socket remote address and port
 
 Socketnaut provides a facility for obtaining information about the client-proxy socket. When a proxied request is made to an `http.Server`, the `request` handler is passed a `http.IncomingMessage`. The remote address of the socket, accessed using `http.IncomingMessage.socket.remoteAddress`, will provide the remote address of the proxy (usu. 127.0.0.1) - not the remote address of the client. Implementations such as **Proxy Protocol** and the `Forwarded` HTTP header are commonly used in order to address this issue.
 
