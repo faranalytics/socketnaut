@@ -1,6 +1,6 @@
 {
   "name": "socketnaut",
-  "version": "1.6.13",
+  "version": "1.6.14",
   "description": "Scalable multithreaded Node.js servers made easy.",
   "main": "./dist/index.js",
   "scripts": {
