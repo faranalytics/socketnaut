@@ -193,7 +193,7 @@ export class ServiceProxy extends EventEmitter {
         clientProxySocket.destroy();
         this.proxySocketAddressInfo.delete(proxyServerSocketAddressInfoRepr);
       });
-      
+
       proxyServerSocket.on("timeout", () => {
         log.debug(`Proxy-Server socket timeout. Connect options: ${JSON.stringify(socketConnectOpts)}.`);
       });
