@@ -134,7 +134,6 @@ In the previous example, the TLS endpoint was in the worker thread; however, it 
 #### socketnaut.createServiceProxy(options)
 
 - options `<ServiceProxyOptions>`
-
   - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
 
   - `minWorkers` `<number>` Optional argument that specifies the minimum number of worker threads permitted. **Default**: `0`
@@ -166,7 +165,6 @@ Performs a graceful shutdown. The `Server` is closed. Event listeners are remove
 #### socketnaut.createServiceAgent(options)
 
 - options `<ServiceAgentOptions>`
-
   - `server` `<node:http.Server>` or `<node:https.Server>` or `<node:net.Server>` or `<node:tls.Server>` A native Node.js `Server` configured however you choose.
 
 Returns: `<socketnaut.ServiceAgent>`
@@ -190,7 +188,6 @@ Scaling can be tuned by specifying a minimum and maximum, or a specific number, 
 #### socketnaut.createServiceProxy(options)
 
 - options `<ServiceProxyOptions>`
-
   - `maxWorkers` `<number>` Optional argument that specifies the maximum number of worker threads permitted.
 
   - `minWorkers` `<number>` Optional argument that specifies the minimum number of worker threads permitted. **Default**: `0`
@@ -222,22 +219,17 @@ const server = http.createServer();
 
 const agent = createServiceAgent({ server });
 
-server.on(
-  "request",
-  async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const proxySocketAddressInfo = await agent.requestProxySocketAddressInfo(
-      req.socket
-    );
-    console.log(proxySocketAddressInfo);
-    /* Output
+server.on("request", async (req: http.IncomingMessage, res: http.ServerResponse) => {
+  const proxySocketAddressInfo = await agent.requestProxySocketAddressInfo(req.socket);
+  console.log(proxySocketAddressInfo);
+  /* Output
     {
         local: { address: '192.0.2.1', family: 'IPv4', port: 3443 },
         remote: { address: '198.51.100.1', family: 'IPv4', port: 35798 }
     }
     */
-    res.end();
-  }
-);
+  res.end();
+});
 ```
 
 The information returned by the `ServiceAgent.requestProxySocketAddressInfo` method can be used in order to associate the remote client address and port with each HTTP request e.g., for logging purposes.
