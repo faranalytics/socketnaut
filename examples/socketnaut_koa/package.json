@@ -12,5 +12,8 @@
     "koa": "^2.14.2",
     "socketnaut": "^1.6.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@types/koa": "^3.0.1"
+  }
 }
