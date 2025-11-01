@@ -329,6 +329,7 @@ export class ServiceProxy extends EventEmitter {
   };
 
   public shutdown = async (): Promise<PromiseSettledResult<unknown>[]> => {
+    this.minWorkers = 0;
     clearTimeout(this.workersCheckingIntervalTimeout);
     await new Promise((r, e) => {
       this.server.close((err) => {
@@ -344,7 +345,6 @@ export class ServiceProxy extends EventEmitter {
     } else if (this.server instanceof net.Server) {
       this.server.removeAllListeners("connection");
     }
-    this.minWorkers = 0;
     const exits = this.agents.map((agent: WorkerAgent) => {
       const promise = new Promise((r, j) => {
         agent.worker.on("exit", r);
