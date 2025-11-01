@@ -24,7 +24,8 @@ export {
 };
 
 if (threads.isMainThread) {
-  const { version } = require("../package.json") as { version: string };
-  log.info(`socketnaut v${version}`);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { version } = require("../package.json");
+  log.info(`socketnaut v${String(version)}`);
   log.info(`pid ${process.pid.toString()}`);
 }
