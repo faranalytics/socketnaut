@@ -24,8 +24,12 @@ export {
 };
 
 if (threads.isMainThread) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { version } = require("../package.json");
-  log.info(`socketnaut v${String(version)}`);
-  log.info(`pid ${process.pid.toString()}`);
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { version } = require("../package.json");
+    log.info(`socketnaut v${String(version)}`);
+    log.info(`pid ${process.pid.toString()}`);
+  } catch (err) {
+    log.error(err instanceof Error ? (err.stack ?? err.message) : String(err));
+  }
 }
